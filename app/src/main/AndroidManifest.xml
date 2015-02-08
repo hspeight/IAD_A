@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.itsadate.iad_a" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/iad_logo"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Holo" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EventEditor"
+            android:label="@string/title_activity_event_manager"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.itsadate.iad_a.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ShowCounter"
+            android:label="@string/title_activity_event_editor"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.itsadate.iad_a.MainActivity" />
+        </activity>
+        <!-- label="No Events" prevents the activity remaining on the stack -->
+        <activity
+            android:name=".NoEventsExist"
+            android:label="No Events"
+            android:noHistory="true"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.itsadate.iad_a.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Utility"
+            android:label="@string/title_activity_utility" >
+        </activity>
+    </application>
+
+</manifest>
