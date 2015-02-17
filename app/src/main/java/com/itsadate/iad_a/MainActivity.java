@@ -88,6 +88,7 @@ public class MainActivity extends Activity {
     public void playIconClicked (View v){
 
         Intent intent = new Intent(getBaseContext(), ShowCounter.class);
+        intent.putExtra("ROW_ID",rowID[(int)v.getTag()]);
         startActivity(intent);
 
     }
@@ -125,7 +126,7 @@ public class MainActivity extends Activity {
         String[] d = new String[] {"up from","down to"};
         long millis = eventTime;
         millis *= 1000;
-        DateTime dt = new DateTime(millis, DateTimeZone.forOffsetHours(0)); // needs to be a local date
+        DateTime dt = new DateTime(millis, DateTimeZone.getDefault()); // needs to be a local date
         DateTimeFormatter dtf = DateTimeFormat.forPattern("dd MMM yyyy HH:mm");
 
         return "Count " + d[direction] + " " + dtf.print(dt);
@@ -171,7 +172,7 @@ public class MainActivity extends Activity {
     }
 
     public boolean deleteEvent(final int rowid){
-        System.out.println("!!- " + rowid);
+        //System.out.println("!!- " + rowid);
         //final Events myEvent = dbHandler.getMyEvent(rowID);
 
         //Toast.makeText(getApplicationContext(), "Delete clicked "  + rowID, Toast.LENGTH_SHORT).show();

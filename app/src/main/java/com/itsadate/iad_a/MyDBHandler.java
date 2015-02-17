@@ -163,6 +163,21 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
+    //Delete all rows
+    public boolean deleteAllEvents () {
+
+        boolean result = false;
+
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            db.execSQL("DELETE FROM " + TABLE_EVENTS +  ";");
+            result = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     // Get row count
     public  long getRowCount() {
 

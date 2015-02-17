@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -12,9 +12,9 @@
         android:text="Add"
         android:id="@+id/buttonAdd"
         android:onClick="addButtonClicked"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="63dp" />
+        android:layout_marginTop="68dp"
+        android:layout_below="@+id/textViewDirection" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -28,12 +28,15 @@
 
     <TextView
         android:id="@+id/inputDate"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="InputDate"
         android:layout_alignTop="@+id/textViewDirection"
-        android:layout_toRightOf="@+id/checkBoxTime"
-        android:layout_toEndOf="@+id/checkBoxTime" />
+
+        android:layout_alignParentRight="false"
+        android:layout_toRightOf="@+id/textViewDirection"
+        android:paddingStart="20dp"
+        android:paddingLeft="20dp" />
 
     <RadioGroup
         android:id="@+id/radioDirection"
@@ -75,24 +78,15 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Include Time?"
-        android:id="@+id/checkBoxTime"
-        android:checked="false"
-        android:layout_below="@+id/textViewDirection"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Time"
         android:id="@+id/textViewTime"
-        android:layout_alignBottom="@+id/checkBoxTime"
-        android:layout_alignRight="@+id/radioDirection"
-        android:layout_alignEnd="@+id/radioDirection" />
+        android:layout_alignTop="@+id/inputDate"
+        android:layout_alignEnd="@+id/radioDirection"
+        android:layout_toRightOf="@+id/inputDate"
+        android:paddingLeft="20dp"
+        android:gravity="right" />
 
 </RelativeLayout>

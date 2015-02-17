@@ -49,7 +49,7 @@ public class EventEditor extends Activity implements View.OnClickListener {
     private int timeInSeconds;
     private String tranType;
     private int countDirection;
-    private int useTime;
+    //private int useTime;
     private String rowID;
 
     /** This integer will uniquely define the dialog to be used for displaying date picker.*/
@@ -60,7 +60,10 @@ public class EventEditor extends Activity implements View.OnClickListener {
                               int minute) {
             mHour = hourOfDay;
             mMinute = minute;
-            updateTime();
+            textTime.setText(new StringBuilder() .append(pad(mHour)).append(":") .append(pad(mMinute)));
+
+            //updateDisplay();
+            //updateTime();
         }
     };
 
@@ -85,7 +88,7 @@ public class EventEditor extends Activity implements View.OnClickListener {
     /** Updates the date in the TextView */
     private void updateDisplay() {
 
-        addButton.setEnabled(true);
+        //addButton.setEnabled(true);
 
         //  boolean invalidDate = false;
         final DateTime dtNow = new DateTime();
@@ -96,19 +99,20 @@ public class EventEditor extends Activity implements View.OnClickListener {
         idx = rg.indexOfChild(radioButton);
 
         if (idx == 1) {
-            textUpDown.setText("Target Date");
+            textUpDown.setText("Target Date & Time:");
         } else {
-            textUpDown.setText("Start Date");
+            textUpDown.setText("Start Date & Time:");
         }
 
         pDisplayDate.setTextColor(Color.BLUE);
-
+        textTime.setTextColor(Color.BLUE);
         final LocalDateTime dt = new LocalDateTime(pYear, pMonth + 1, pDay, 0, 0);
         String month = dt.monthOfYear().getAsShortText();
         pDisplayDate.setText(pDay + " " + month  + " " + pYear);
 
-        int valDate = validateInDate(dt.toString());
-
+        //System.out.println("!!- "  + mHour + "/" + mMinute);
+        //int valDate = validateInDate(dt.toString());
+/*
         if (idx == 0 && valDate == 1) { // Count up selected but date is in future
             pDisplayDate.setTextColor(Color.RED);
             Toast.makeText(getApplicationContext(), "Future date not allowed", Toast.LENGTH_SHORT).show();
@@ -120,10 +124,10 @@ public class EventEditor extends Activity implements View.OnClickListener {
                 addButton.setEnabled(false);
             }
         }
-
-        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxTime);
-        if (checkBox.isChecked()) {
-            cidx = 1;
+*/
+       // CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxTime);
+       // if (checkBox.isChecked()) {
+            //cidx = 1;
             textTime.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     new TimePickerDialog(EventEditor.this,
@@ -134,17 +138,18 @@ public class EventEditor extends Activity implements View.OnClickListener {
                 }
                 //    Toast.makeText(getApplicationContext(), "Time field clicked", Toast.LENGTH_SHORT).show();
             });
-            if ((tranType.equals("update")) && (useTime == 1))
+            //if ((tranType.equals("update")) && (useTime == 1))
+            if (tranType.equals("update"))
                 textTime.setText(pad(mHour) + ":" + pad(mMinute));
             else
                 textTime.setText(pad(dtNow.getHourOfDay()) + ":" + pad(dtNow.getMinuteOfHour()));
-        } else {
-            cidx = 0;
-            textTime.setText("");
-        }
+        //} else {
+            //cidx = 0;
+            //textTime.setText("");
+        //}
 
     }
-
+/*
     // updates the time we display in the TextView
     private void updateTime() {
         textTime.setText(
@@ -154,6 +159,7 @@ public class EventEditor extends Activity implements View.OnClickListener {
                         .append(pad(mHour)).append(":")
                         .append(pad(mMinute)));
     }
+*/
     private static String pad(int c) {
         if (c >= 10)
             return String.valueOf(c);
@@ -161,12 +167,16 @@ public class EventEditor extends Activity implements View.OnClickListener {
             return "0" + String.valueOf(c);
     }
 
-    private int validateInDate(String inDate) {
+    //private int validateInDate(String inDate) {
+    private int validateInDate(int timeInSecs) {
 
-        DateTime cd = new DateTime(); //current date
-        return(DateTimeComparator.getDateOnlyInstance().compare(inDate, cd));
-
-        //return result;
+        //DateTime cd = new DateTime(); //current date
+        long epoch1 = System.currentTimeMillis() / 1000;
+        int epoch = (int) epoch1;
+        //int epoch = (int) System.currentTimeMillis() / 1000;
+        //return(DateTimeComparator.getDateOnlyInstance().compare(inDate, cd));
+        //System.out.println("!!- " + epoch + "/" + timeInSecs + "/" + (epoch - timeInSecs));
+        return epoch - timeInSecs;
     }
 
     @Override
@@ -178,7 +188,7 @@ public class EventEditor extends Activity implements View.OnClickListener {
         hsEditText = (EditText) findViewById(R.id.hsEditText);
         textUpDown = (TextView) findViewById(R.id.textViewDirection);
         final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioDirection);
-        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxTime);
+        //CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxTime);
         pDisplayDate = (TextView) findViewById(R.id.inputDate);
         textTime = (TextView) findViewById(R.id.textViewTime);
         addButton = (Button) findViewById(R.id.buttonAdd);
@@ -186,7 +196,7 @@ public class EventEditor extends Activity implements View.OnClickListener {
 
         dbHandler = new MyDBHandler(this, null, null, 1);
 
-        // If this is an update there will be an associated row ID in the extras
+        // If this is an edit there will be an associated row ID in the extras
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             tranType = "update";
@@ -194,20 +204,20 @@ public class EventEditor extends Activity implements View.OnClickListener {
             Events myEvent = dbHandler.getMyEvent(rowID);
             hsEditText.setText(myEvent.get_eventname());
             countDirection = myEvent.get_direction();
-            useTime = myEvent.get_evusetime();
+            //useTime = myEvent.get_evusetime();
 
             if (countDirection == 1)
                 radioGroup.check(R.id.radioButtonCountDown);
             else
                 radioGroup.check(R.id.radioButtonCountUp);
-            if (useTime == 1) {
+            //if (useTime == 1) {
                 // cidx = 1;
-                checkBox.setChecked(true);
-            }
+            //    checkBox.setChecked(true);
+            //}
 
             long millis = myEvent.get_evtime();
             millis *= 1000;
-            DateTime dt = new DateTime(millis, DateTimeZone.forOffsetHours(0));
+            DateTime dt = new DateTime(millis, DateTimeZone.getDefault());
             DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd-HH-mm");
 
             pYear = Integer.parseInt(dtf.print(dt).split("-")[0]);
@@ -221,6 +231,7 @@ public class EventEditor extends Activity implements View.OnClickListener {
             pYear = cal.get(Calendar.YEAR);
             pMonth = cal.get(Calendar.MONTH);
             pDay = cal.get(Calendar.DAY_OF_MONTH);
+            //mHour = cal.get(Calendar.HOUR_OF_DAY);
         }
 
         /** Listener for click event of the date field */
@@ -241,12 +252,12 @@ public class EventEditor extends Activity implements View.OnClickListener {
         });
 
         //CheckBox chkTime = (CheckBox) findViewById(R.id.checkBoxTime);
-        checkBox.setOnClickListener(new View.OnClickListener() {
+        //checkBox.setOnClickListener(new View.OnClickListener() {
             //@Override
-            public void onClick(View v) {
-                updateDisplay();
-            }
-        });
+          //  public void onClick(View v) {
+          //      updateDisplay();
+          //  }
+        //});
         /** Display the current date in the TextView */
         updateDisplay();
     }
@@ -262,18 +273,35 @@ public class EventEditor extends Activity implements View.OnClickListener {
             return;
         }
 
-        String dbTime = "00:00";
-        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxTime);
-        if (checkBox.isChecked()) {
-            dbTime = (String) textTime.getText(); // Use time entered by user
-        }
+        //String dbTime = "00:01"; // 1 minute past midnight
+        //CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxTime);
+        //if (checkBox.isChecked()) {
+           String dbTime = (String) textTime.getText(); // Use time entered by user
+        //}
 
         String givenDateString = pDisplayDate.getText() + " " + dbTime; //e.g. 7 Jul 2014 15:30
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm");
         try {
             Date mDate = sdf.parse(givenDateString);
-            //long timeInMilliseconds = mDate.getTime();
+            //long timeInMillis = mDate.getTime(); // Time entered in millis
             timeInSeconds = (int)(mDate.getTime() / 1000);
+            int diffInSecs = validateInDate(timeInSeconds);
+            //System.out.println("!!- "  + "diff in secs is " + diffInSecs);
+            if (idx == 0 && diffInSecs < 0) { // Count up selected but date is in future
+                pDisplayDate.setTextColor(Color.RED);
+                textTime.setTextColor(Color.RED);
+                Toast.makeText(getApplicationContext(), "Future date not allowed", Toast.LENGTH_SHORT).show();
+                //addButton.setEnabled(false);
+                return;
+            } else {
+                if (idx == 1 && diffInSecs > 0) { // Count down selected but date is not in future
+                    pDisplayDate.setTextColor(Color.RED);
+                    textTime.setTextColor(Color.RED);
+                    Toast.makeText(getApplicationContext(), "This must be a future date", Toast.LENGTH_SHORT).show();
+                    //addButton.setEnabled(false);
+                    return;
+                }
+            }
         } catch (ParseException e) {
             //System.out.println("!!- " + pDisplayDate.getText() + dbTime + "bad!");
             e.printStackTrace();

@@ -10,7 +10,11 @@ what should happen when a countdown is edited after the target date is reached?
 maximum number of events cannot exceed x
 get rid of robot icon from delete dialog
 when editing, title field should expand height to fit long titles
+allow future date for count up but don't start counting until time is reached
+screen rotation
+
 
 Pre release
 -----------
 run a check from the Gradle tasks tool then check html report
+check for System print code

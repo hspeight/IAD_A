@@ -54,10 +54,13 @@
         <activity android:name="com.dropbox.sync.android.DbxAuthActivity" />
         <activity
             android:name="com.dropbox.client2.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
             android:launchMode="singleTask" >
             <intent-filter>
-                <data android:scheme="db-APP_KEY" />
+                <data android:scheme="db-m2vvdeh11l1bhwx" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

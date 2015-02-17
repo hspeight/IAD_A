@@ -7,8 +7,13 @@ import android.os.CountDownTimer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+//import android.widget.Button;
 import android.widget.TextView;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,62 +27,107 @@ public class ShowCounter extends Activity {
     //DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
     Calendar c = Calendar.getInstance();
-    long secs;
+    int secs;
     long modSecs; //need to learn how to cast
     long mins;
+    String rowID;
+    CountDownTimer cdt;
+
+
+    MyDBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_counter);
 
-        final TextView textSecs = (TextView)findViewById(R.id.textSecs);
-        final TextView textMins = (TextView)findViewById(R.id.textMins);
-        final TextView textHour = (TextView)findViewById(R.id.textHour);
-        final TextView textDays = (TextView)findViewById(R.id.textDays);
-        final TextView textStartDate = (TextView)findViewById(R.id.textStartDate);
         //final TextView textView2 = (TextView)findViewById(R.id.textView2);
-        Button myButton;
+        //Button myButton;
+        dbHandler = new MyDBHandler(this, null, null, 1);
 
-        String myDate = "2014-12-29 04:00:09 +0000";
-        Date startDate = null;
-        try {
-            startDate = df.parse(myDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        // If this is an edit there will be an associated row ID in the extras
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            rowID = bundle.getString("ROW_ID");
+            //displayEventInfo(bundle);
+        } else {
+            System.out.println("!!- " + "error");
+            //textTit.setText("Error reading event row data");
         }
-        textStartDate.setText(myDate);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        displayEventInfo(rowID);
+       // System.out.println("!!- resumed with rowid " + rowID);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cdt.cancel(); //stop the timer
+    }
+
+    //String myDate = "2014-12-29 04:00:07 +0000";
+
         // final long timeDiff = Math.abs(startDate.getTime() - System.currentTimeMillis());
-        final long timeDiff = (Math.abs(startDate.getTime() - System.currentTimeMillis()) / 1000); // need to do this every min to keep it accurate
+    public void displayEventInfo(String rowID) {
+        final TextView textSecs = (TextView) findViewById(R.id.textSecs);
+        final TextView textMins = (TextView) findViewById(R.id.textMins);
+        final TextView textHour = (TextView) findViewById(R.id.textHour);
+        final TextView textDays = (TextView) findViewById(R.id.textDays);
+        TextView textTit = (TextView) findViewById(R.id.textTitle);
+        TextView textStartDate = (TextView) findViewById(R.id.textStartDate);
+        //String rowID;
+        //String rowID = bundle.getString("ROW_ID");
+        Events myEvent = dbHandler.getMyEvent(rowID);
+        textTit.setText(myEvent.get_eventname());
+        final int countDirection = myEvent.get_direction();
+        //System.out.println("!!- " + rowID);
+        long millis = myEvent.get_evtime();
+        //String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (millis*1000)); //test code
+        //System.out.println("!!- millis=" + millis + "/" + date);
+        millis *= 1000;
+        DateTime dt = new DateTime(millis, DateTimeZone.getDefault()); // needs to be a local date
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd MMM yyyy HH:mm");
+        String myDate = dtf.print(dt);
 
-        //double timeDiff2 = Math.abs(dateOne.getTime() - System.currentTimeMillis());
-        //System.out.println("difference:" + df.format(c.getTime()) + "!" + timeDiff + " " + System.currentTimeMillis());   // difference: 0
-        //System.out.println("!!- " + timeDiff);   // difference: 0
+        textStartDate.setText(myDate);
+        long td = System.currentTimeMillis() / 1000;
 
-        new CountDownTimer(20000000, 1000){ // 1st value is seconds in 1 year
-            public void onTick(long millisUntilFinished){
-                //textView.setText("seconds remaining: " + (timeDiff - (millisUntilFinished / 1000)));
-                // String d = df.format(c.getTime());
-                //System.out.println(">" + System.currentTimeMillis());
-                //Date resultdate = new Date(System.currentTimeMillis());
-                //
+        final int timeDiff = ((int) td) - myEvent.get_evtime() ;
 
-                //fmDate = String.valueOf(df.format(timeDiff - (millisUntilFinished / 1000)));
-                secs = (timeDiff - (millisUntilFinished / 1000)) + 20000;
+        final int millisToStart = 86500000; //86400000 = milliseconds in 1 day
+
+        cdt = new CountDownTimer(millisToStart, 1000) {
+            public void onTick(long millisUntilFinished) {
+
+                secs = timeDiff + ((millisToStart / 1000) - ((int) (millisUntilFinished / 1000)));
+                if (countDirection == 1)
+                    secs *= -1;
+                //System.out.println("!!- secs=" + secs);
                 modSecs = secs % 60;
                 mins = (secs / 60) % 60;
+               // System.out.println("!!- secs =" + secs + "/modsecs=" + modSecs + "/mins=" +mins);
                 long hours = TimeUnit.SECONDS.toHours(secs) % 24;
-                long days = TimeUnit.SECONDS.toDays(secs);
+                int days = (int) TimeUnit.SECONDS.toDays(secs);
                 //System.out.println("!-" + hours);
                 //textSecs.setText(String.valueOf((timeDiff - (millisUntilFinished / 1000)) + 20000));
                 textSecs.setText(String.valueOf(modSecs));
                 textMins.setText(String.valueOf(mins));
                 textHour.setText(String.valueOf(hours));
                 textDays.setText(String.valueOf(days));
-                //textMins.setText(String.valueOf((timeDiff - (millisUntilFinished / 1000)) + 20000));
-                //System.out.println("-!:" + String.valueOf(timeDiff - (millisUntilFinished / 1000)));
-                //textView.setText(fmDate);
-                //textView.setText("" + (timeDiff - (millisUntilFinished / 1000)));
+
+                if (secs < 0) {
+                    // go to a new new activity?
+                    //cdt.cancel();
+                    //System.out.println("!!- cancelled");
+                    //textSecs.setText("Yippee!");
+                    finish();
+                   // return;
+                }
 
             }
             public void onFinish(){

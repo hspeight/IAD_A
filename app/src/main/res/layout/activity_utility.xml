@@ -14,14 +14,16 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="63dp"
-        android:onClick="insertButtonClicked" />
+        android:onClick="loadEvents" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Clear DB"
         android:id="@+id/buttonClear"
-        android:layout_centerVertical="true"
+        android:onClick="clearEvents"
+        android:layout_below="@+id/buttonInsert"
         android:layout_centerHorizontal="true"
-        android:onClick="clearButtonClicked" />
+        android:layout_marginTop="53dp" />
+
 </RelativeLayout>

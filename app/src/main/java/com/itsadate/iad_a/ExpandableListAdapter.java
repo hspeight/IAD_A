@@ -85,6 +85,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         imgChildDelete.setTag(groupPosition);
         ImageView imgChildEdit = (ImageView) convertView.findViewById(R.id.imageViewEdit);
         imgChildEdit.setTag(groupPosition);
+        ImageView imgChildPlay = (ImageView) convertView.findViewById(R.id.imageViewPlay);
+        imgChildPlay.setTag(groupPosition);
 
 
         //System.out.println("!!-  " + " here1");
