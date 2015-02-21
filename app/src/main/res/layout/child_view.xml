@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageViewPlay"
-        android:src="@drawable/ic_ic_action_play"
+        android:src="@drawable/play"
         android:onClick="playIconClicked"
         android:minHeight="40dp"
         android:minWidth="40dp"

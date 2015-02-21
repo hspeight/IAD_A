@@ -1,18 +1,24 @@
 package com.itsadate.iad_a;
 
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+//import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 //import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
+//import android.widget.Button;
+//import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -27,30 +33,33 @@ import java.util.Date;
 
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeComparator;
+//import org.joda.time.DateTimeComparator;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class EventEditor extends Activity implements View.OnClickListener {
+public class EventEditor extends Activity {
+    //public class EventEditor extends Activity implements View.OnClickListener {
 
     private TextView pDisplayDate;
     private TextView textTime;
     private TextView textUpDown;
-    private Button addButton;
+    //private Button addButton;
     private int pYear;
     private int pMonth;
     private int pDay;
     private int mHour;
     private int mMinute;
     private int idx;
-    private int cidx;
+    //private int cidx;
     private int timeInSeconds;
     private String tranType;
     private int countDirection;
     //private int useTime;
     private String rowID;
+    private String activityDataIn;
+    private String activityDataOut;
 
     /** This integer will uniquely define the dialog to be used for displaying date picker.*/
     static final int DATE_DIALOG_ID = 0;
@@ -179,6 +188,7 @@ public class EventEditor extends Activity implements View.OnClickListener {
         return epoch - timeInSecs;
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -191,7 +201,7 @@ public class EventEditor extends Activity implements View.OnClickListener {
         //CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxTime);
         pDisplayDate = (TextView) findViewById(R.id.inputDate);
         textTime = (TextView) findViewById(R.id.textViewTime);
-        addButton = (Button) findViewById(R.id.buttonAdd);
+        //addButton = (Button) findViewById(R.id.buttonAdd);
         tranType = "add";
 
         dbHandler = new MyDBHandler(this, null, null, 1);
@@ -225,7 +235,7 @@ public class EventEditor extends Activity implements View.OnClickListener {
             pDay = Integer.parseInt(dtf.print(dt).split("-")[2]);
             mHour = Integer.parseInt(dtf.print(dt).split("-")[3]);
             mMinute = Integer.parseInt(dtf.print(dt).split("-")[4]);
-            addButton.setText("Update");
+            //addButton.setText("Update");
         } else {
             final Calendar cal = Calendar.getInstance();
             pYear = cal.get(Calendar.YEAR);
@@ -260,6 +270,31 @@ public class EventEditor extends Activity implements View.OnClickListener {
         //});
         /** Display the current date in the TextView */
         updateDisplay();
+
+        // BEGIN_INCLUDE (inflate_set_custom_view)
+        // Inflate a "Done" custom action bar view to serve as the "Up" affordance.
+        final LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
+                .getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View customActionBarView = inflater.inflate(
+                R.layout.actionbar_custom_view_done, null);
+        customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                // "Done"
+                        addButtonClicked(v);
+                    }
+                });
+
+        // Show the custom action bar view and hide the normal Home icon and title.
+        final ActionBar actionBar = getActionBar();
+        actionBar.setDisplayOptions(
+                ActionBar.DISPLAY_SHOW_CUSTOM,
+                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
+                        | ActionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setCustomView(customActionBarView);
+        // END_INCLUDE (inflate_set_custom_view)
+       // setContentView(R.layout.activity_done_button);
     }
 
     public void addButtonClicked(View view) {
@@ -310,11 +345,11 @@ public class EventEditor extends Activity implements View.OnClickListener {
         //int rowsInDB = dbHandler.getRowCount()
         //System.out.println("!!- "  + dbHandler.getRowCount());
         if (tranType.equals("update")) {
-            Events event = new Events(Integer.parseInt(rowID), EventTitle, idx, timeInSeconds, cidx);
+            Events event = new Events(Integer.parseInt(rowID), EventTitle, idx, timeInSeconds, 0);
             dbHandler.updateEvent(event);
             Toast.makeText(getApplicationContext(), "Event updated", Toast.LENGTH_SHORT).show();
         } else {
-            Events event = new Events(EventTitle, idx, timeInSeconds, cidx);
+            Events event = new Events(EventTitle, idx, timeInSeconds, 0);
             dbHandler.addEvent(event);
             Toast.makeText(getApplicationContext(), "Your event has been created", Toast.LENGTH_SHORT).show();
         }
@@ -332,9 +367,9 @@ public class EventEditor extends Activity implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.action_delete:
-                // deleteEvent();
-                return true;
+        //    case R.id.action_delete:
+        //        // deleteEvent();
+        //        return true;
             case R.id.action_settings:
                 //openSettings();
                 return true;
@@ -377,12 +412,52 @@ public class EventEditor extends Activity implements View.OnClickListener {
             return true;
         }
     */
+   // @Override
+   // public void onClick(View view) {
+
+   // }
+
+/*
     @Override
-    public void onClick(View view) {
+    protected void onPause() {
+        super.onPause();
+        activityDataOut = hsEditText.getText().toString();
+        System.out.println("!!- pausing with " + activityDataOut);
 
+        //onResume();
     }
-    /** Create a new dialog for date picker */
+*/
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityDataIn = hsEditText.getText().toString();
+        System.out.println("!!- resumed with  " + activityDataIn);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (! activityDataIn .equals(hsEditText.getText().toString()) ) {
+            // Create the fragment and show it as a dialog.
+            EventDialog eventDialog = new EventDialog();
+            //eventDialog.show(fm, "fragment_edit_name");
+            eventDialog.show(getFragmentManager(), "dialog");
+        } else {
+            // No changes detected
+            finish();
+        }
+    }
+
+    public void doPositiveClick(View v) {
+        // Do stuff here.
+        //Log.i("FragmentAlertDialog", "Positive click!");
+        addButtonClicked(v);
+    }
+    public void doNegativeClick() {
+        // Do stuff here.
+        //Log.i("FragmentAlertDialog", "Positive click!");
+        finish();
+    }
 
     @Override
     protected Dialog onCreateDialog(int id) {

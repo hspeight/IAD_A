@@ -1,92 +1,113 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.hector.myproj03.EventEditor">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add"
-        android:id="@+id/buttonAdd"
-        android:onClick="addButtonClicked"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
-        android:layout_below="@+id/textViewDirection" />
-
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/hsEditText"
-        android:width="300dp"
-        android:inputType="text"
         android:imeOptions="actionDone"
         android:hint = "Enter your event title here"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="#ffe2ebff"
+        android:inputType="text" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/radioDirection"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="58dp"
+        android:id="@+id/linearLayout4">
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"/>
+
+        <RadioGroup
+            android:id="@+id/radioDirection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hsEditText">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Count Up"
+                android:id="@+id/radioButtonCountUp"
+
+                android:checked="true"
+                android:hint="Count up from today or a past date" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Count Down"
+                android:id="@+id/radioButtonCountDown"
+
+                android:checked="false"
+                android:hint="Count down to a future date" />
+        </RadioGroup>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/inputDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="InputDate"
-        android:layout_alignTop="@+id/textViewDirection"
 
-        android:layout_alignParentRight="false"
+        android:paddingRight="20dp"
+        android:layout_marginLeft="43dp"
+        android:layout_marginStart="43dp"
+        android:layout_below="@+id/textView"
         android:layout_toRightOf="@+id/textViewDirection"
-        android:paddingStart="20dp"
-        android:paddingLeft="20dp" />
-
-    <RadioGroup
-        android:id="@+id/radioDirection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/hsEditText">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Count Up"
-            android:id="@+id/radioButtonCountUp"
-
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:checked="true"
-            android:hint="Count up from today or a past date" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Count Down"
-            android:id="@+id/radioButtonCountDown"
-
-            android:layout_alignRight="@+id/inputDate"
-            android:layout_alignEnd="@+id/inputDate"
-            android:checked="false"
-            android:hint="Count down to a future date" />
-    </RadioGroup>
+        android:layout_toEndOf="@+id/textViewDirection" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="From Date"
         android:id="@+id/textViewDirection"
-        android:layout_below="@+id/radioDirection"
+        android:autoText="false"
+        android:layout_alignTop="@+id/inputDate"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Time"
         android:id="@+id/textViewTime"
-        android:layout_alignTop="@+id/inputDate"
-        android:layout_alignEnd="@+id/radioDirection"
-        android:layout_toRightOf="@+id/inputDate"
-        android:paddingLeft="20dp"
-        android:gravity="right" />
+        android:paddingRight="20dp"
+
+        android:layout_below="@+id/inputDate"
+        android:layout_alignLeft="@+id/inputDate"
+        android:layout_alignStart="@+id/inputDate"
+        android:layout_marginTop="5dp" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_below="@+id/textViewTime"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_below="@+id/linearLayout4"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/textView"
+        android:layout_marginBottom="5dp" />
 
 </RelativeLayout>

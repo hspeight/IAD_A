@@ -12,6 +12,9 @@ get rid of robot icon from delete dialog
 when editing, title field should expand height to fit long titles
 allow future date for count up but don't start counting until time is reached
 screen rotation
+allow option to scroll event banner across top
+translations
+make sure all drawables are correct dpi
 
 
 Pre release

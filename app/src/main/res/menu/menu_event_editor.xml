@@ -4,11 +4,7 @@
     tools:context="com.example.hector.myproj03.EventEditor">
 
 
-    <item android:id="@+id/action_delete"
-        android:title="@string/action_delete"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_action_discard"
-        android:showAsAction="ifRoom" />
+
 
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"

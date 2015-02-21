@@ -10,7 +10,7 @@
         android:allowBackup="true"
         android:icon="@drawable/iad_logo"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo" >
+        android:theme="@android:style/Theme.Holo.Light" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -49,6 +49,10 @@
         <activity
             android:name=".Utility"
             android:label="@string/title_activity_utility" >
+        </activity>
+        <activity
+            android:name=".CountdownFinished"
+            android:label="@string/title_activity_cdf" >
         </activity>
 
         <activity android:name="com.dropbox.sync.android.DbxAuthActivity" />

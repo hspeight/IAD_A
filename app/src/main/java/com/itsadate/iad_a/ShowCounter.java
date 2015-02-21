@@ -125,6 +125,8 @@ public class ShowCounter extends Activity {
                     //cdt.cancel();
                     //System.out.println("!!- cancelled");
                     //textSecs.setText("Yippee!");
+                    Intent cdf = new Intent(getBaseContext(), CountdownFinished.class);
+                    startActivity(cdf);
                     finish();
                    // return;
                 }

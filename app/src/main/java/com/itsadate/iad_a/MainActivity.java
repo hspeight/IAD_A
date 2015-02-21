@@ -31,7 +31,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 public class MainActivity extends Activity {
 
-    int maxAllowableEvents = 15; // not yet in use
+    int maxAllowableEvents = 5; // not yet in use. Wil be 9999 in paid version
 
     MyDBHandler dbHandler;
 
@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
     HashMap<String, List<String>> listDataChild;
     public String rowID []; // Array of _id column form database
     public ImageView bin = null;
-    public int binImageRow;
+    //public int binImageRow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +147,12 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent addAct = new Intent(MainActivity.this, EventEditor.class);
-                startActivity(addAct);
+                long eventsInPlay = dbHandler.getRowCount();
+                if (eventsInPlay >= maxAllowableEvents) {
+                    Toast.makeText(getApplicationContext(), "You have too many events", Toast.LENGTH_SHORT).show();
+                } else {
+                    startActivity(addAct);
+                }
                 return true;
             case R.id.action_utility:
                 Intent utility = new Intent(MainActivity.this, Utility.class);
@@ -188,7 +193,7 @@ public class MainActivity extends Activity {
                         if (result) {
                             Toast.makeText(getApplicationContext(), "Event Deleted", Toast.LENGTH_SHORT).show();
                             //finish();
-                            onPause();; // call onpause so that on onresume can be called to refresh list
+                            onPause(); // call onpause so that on onresume can be called to refresh list
                             onResume();
                         }
                     }
