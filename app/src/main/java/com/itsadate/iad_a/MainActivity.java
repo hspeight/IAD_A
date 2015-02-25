@@ -75,7 +75,11 @@ public class MainActivity extends Activity {
         // System.out.println("!!-  tag is " + v.getTag().toString());
         // Toast.makeText(getApplicationContext(), "Delete", Toast.LENGTH_SHORT).show();
         // deleteEvent(v.getTag().toString());
-        deleteEvent((int)v.getTag());
+        //deleteEvent((int)v.getTag());
+        dbHandler.deleteEvent(rowID[(int)v.getTag()]);
+        //System.out.println("!!-  tag is " + rowID[(int)v.getTag()]);
+        onPause(); // call onpause so that on onresume can be called to refresh list
+        onResume();
 
     }
     public void editIconClicked (View v){
@@ -97,10 +101,10 @@ public class MainActivity extends Activity {
     public void setGroupParents() {
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
-        String evstring = dbHandler.getEventIDs();
+        String evstring = dbHandler.getActiveEventIDs("A");
         //System.out.println("!!- " + "*" + evstring + "*");
         String[] foods = evstring.split(":");
-        rowID = new String[foods.length]; // set number of array elements equal to number of events in database
+        rowID = new String[foods.length]; // set number of array elements equal to number of events returned
         //System.out.println("!!- " + "^" + foods.length + "^");
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
@@ -147,9 +151,10 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent addAct = new Intent(MainActivity.this, EventEditor.class);
-                long eventsInPlay = dbHandler.getRowCount();
+                long eventsInPlay = dbHandler.getRowCount("A"); //get number of active rows
                 if (eventsInPlay >= maxAllowableEvents) {
-                    Toast.makeText(getApplicationContext(), "You have too many events", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getApplicationContext(), "You have too many events (" + eventsInPlay + ")" , Toast.LENGTH_SHORT).show();
                 } else {
                     startActivity(addAct);
                 }
@@ -157,6 +162,10 @@ public class MainActivity extends Activity {
             case R.id.action_utility:
                 Intent utility = new Intent(MainActivity.this, Utility.class);
                 startActivity(utility);
+                return true;
+            case R.id.action_deleted:
+                Intent deleted = new Intent(MainActivity.this, DeletedItems.class);
+                startActivity(deleted);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

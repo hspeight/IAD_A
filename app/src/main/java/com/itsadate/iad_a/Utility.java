@@ -55,15 +55,15 @@ public class Utility extends Activity {
 
         String[] eString = new String[9];
 
-        eString[0] = "Da Ting`0`1419825600`0";
-        eString[1] = "This is the first ever event!`0`1423440390`0";
-        eString[2] = "And this is the second`1`1424540190`0";
-        eString[3] = "Curly Watts Anniversary Countdown`0`1414440190`0";
-        eString[4] = "Since my 55th Birthday`0`1421317800`0";
-        eString[5] = "Until my 56th Birthday`1`1452853800`0";
-        eString[6] = dtf1.print(dt1) + "`0`" + nowMinus24Hrs / 1000 + "`0";
-        eString[7] = dtf2.print(dt2) + "`1`" + nowPlus24Hrs / 1000 + "`0";
-        eString[8] = dtf3.print(dt3) + "`1`" + nowPlus1Min / 1000 + "`0";
+        eString[0] = "Da Ting`0`1419825600`A";
+        eString[1] = "This is the first ever event!`0`1423440390`A";
+        eString[2] = "And this is the second`1`1424540190`A";
+        eString[3] = "Curly Watts Anniversary Countdown`0`1414440190`A";
+        eString[4] = "Since my 55th Birthday`0`1421317800`I";
+        eString[5] = "Until my 56th Birthday`1`1452853800`A";
+        eString[6] = dtf1.print(dt1) + "`0`" + nowMinus24Hrs / 1000 + "`A";
+        eString[7] = dtf2.print(dt2) + "`1`" + nowPlus24Hrs / 1000 + "`I";
+        eString[8] = dtf3.print(dt3) + "`1`" + nowPlus1Min / 1000 + "`A";
         //eString[9] = dtf2.print(dt2) + "`1`" + nowPlus24Hrs / 1000 + "`0";
 
         int i;
@@ -73,12 +73,12 @@ public class Utility extends Activity {
             String[] parts = eString[i].split("`");
 
             //System.out.println("!!- " + i + " done");
-            Events event = new Events(parts[0], Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
+            Events event = new Events(parts[0], Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), parts[3]);
             dbHandler.addEvent(event);
 
         }
 
-        long n = dbHandler.getRowCount();
+        long n = dbHandler.getRowCount("ALL"); // needs attention
         Toast.makeText(getApplicationContext(), "DB contains " + n + " events", Toast.LENGTH_SHORT).show();
 
     }

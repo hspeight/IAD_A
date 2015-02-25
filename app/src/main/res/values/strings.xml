@@ -19,6 +19,7 @@
     <string name="title_activity_utility">Utility</string>
     <string name="title_activity_cdf">Finished</string>
     <string name="done">Done</string>
-    <string name="done_button_description">In this presentation, a <b>done button</b> replaces the action bar\'s <i>Up</i> affordance and app icon, while the cancel action is made available in the action overflow. This is well-suited to scenarios where additional view details or actions may be needed in the action bar.</string>
+    <string name="restore">Restore</string>
+    <string name="delete_perm">Delete</string>
 
 </resources>

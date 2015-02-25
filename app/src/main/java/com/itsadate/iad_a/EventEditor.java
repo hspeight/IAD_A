@@ -39,9 +39,12 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class EventEditor extends Activity {
+public class EventEditor extends Activity
+        implements EventDialog.OnDataPass { //Required for interaction between fragment & activity
+
     //public class EventEditor extends Activity implements View.OnClickListener {
 
+    private View myView;
     private TextView pDisplayDate;
     private TextView textTime;
     private TextView textUpDown;
@@ -60,6 +63,7 @@ public class EventEditor extends Activity {
     private String rowID;
     private String activityDataIn;
     private String activityDataOut;
+    //private String collateActivityInfo;
 
     /** This integer will uniquely define the dialog to be used for displaying date picker.*/
     static final int DATE_DIALOG_ID = 0;
@@ -195,6 +199,7 @@ public class EventEditor extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_event_editor);
+        myView = findViewById(R.id.viewID); // reference to view to be used in addbuttonpressed method
         hsEditText = (EditText) findViewById(R.id.hsEditText);
         textUpDown = (TextView) findViewById(R.id.textViewDirection);
         final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioDirection);
@@ -345,11 +350,11 @@ public class EventEditor extends Activity {
         //int rowsInDB = dbHandler.getRowCount()
         //System.out.println("!!- "  + dbHandler.getRowCount());
         if (tranType.equals("update")) {
-            Events event = new Events(Integer.parseInt(rowID), EventTitle, idx, timeInSeconds, 0);
+            Events event = new Events(Integer.parseInt(rowID), EventTitle, idx, timeInSeconds, "A");
             dbHandler.updateEvent(event);
             Toast.makeText(getApplicationContext(), "Event updated", Toast.LENGTH_SHORT).show();
         } else {
-            Events event = new Events(EventTitle, idx, timeInSeconds, 0);
+            Events event = new Events(EventTitle, idx, timeInSeconds, "A");
             dbHandler.addEvent(event);
             Toast.makeText(getApplicationContext(), "Your event has been created", Toast.LENGTH_SHORT).show();
         }
@@ -379,67 +384,24 @@ public class EventEditor extends Activity {
 
     }
 
-
-    /*
-        public boolean deleteEvent(String RowID){
-
-            //Toast.makeText(getApplicationContext(), "Delete clicked "  + rowID, Toast.LENGTH_SHORT).show();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-           // System.out.println("!!- here");
-            builder.setTitle("Delete Event?")
-                    .setIcon(R.drawable.ic_launcher)
-                    .setMessage("Click OK to delete the event")
-                    .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            boolean result = dbHandler.deleteEvent(rowID);
-                            if (result) {
-                                Toast.makeText(getApplicationContext(), "Event Deleted", Toast.LENGTH_SHORT).show();
-                                finish();
-                                //onPause();; // call onpause so that on onresume can be called to refresh list
-                                //onResume();
-                            }
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-
-            return true;
-        }
-    */
-   // @Override
-   // public void onClick(View view) {
-
-   // }
-
-/*
-    @Override
-    protected void onPause() {
-        super.onPause();
-        activityDataOut = hsEditText.getText().toString();
-        System.out.println("!!- pausing with " + activityDataOut);
-
-        //onResume();
-    }
-*/
-
     @Override
     protected void onResume() {
         super.onResume();
-        activityDataIn = hsEditText.getText().toString();
-        System.out.println("!!- resumed with  " + activityDataIn);
+
+        activityDataIn = collateActivityInfo();
     }
 
     @Override
     public void onBackPressed() {
-        if (! activityDataIn .equals(hsEditText.getText().toString()) ) {
+
+        activityDataOut = collateActivityInfo();
+
+        if (! activityDataIn .equals(activityDataOut) ) {
             // Create the fragment and show it as a dialog.
             EventDialog eventDialog = new EventDialog();
+            Bundle bundle = new Bundle();
+            bundle.putString("dialogMessage", "Save changes before exit?");
+            eventDialog.setArguments(bundle);
             //eventDialog.show(fm, "fragment_edit_name");
             eventDialog.show(getFragmentManager(), "dialog");
         } else {
@@ -448,15 +410,24 @@ public class EventEditor extends Activity {
         }
     }
 
-    public void doPositiveClick(View v) {
-        // Do stuff here.
-        //Log.i("FragmentAlertDialog", "Positive click!");
-        addButtonClicked(v);
+    @Override
+    public void onDataPass(String data) {
+
+        if (data .equals("Yes")) {
+            addButtonClicked(myView);
+        } else {
+            finish();
+        }
+        //Toast.makeText(getApplicationContext(), "Edit activity - "  + data, Toast.LENGTH_SHORT).show();
+        //Log.d("LOG","hello " + data);
     }
-    public void doNegativeClick() {
-        // Do stuff here.
-        //Log.i("FragmentAlertDialog", "Positive click!");
-        finish();
+
+    public String collateActivityInfo() {
+
+        return hsEditText.getText().toString()
+                + idx
+                + pDisplayDate.getText()
+                + textTime.getText();
     }
 
     @Override
@@ -471,4 +442,3 @@ public class EventEditor extends Activity {
     }
 
 }
-
