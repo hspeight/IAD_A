@@ -11,6 +11,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import android.widget.Toast;
@@ -31,7 +34,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 public class MainActivity extends Activity {
 
-    int maxAllowableEvents = 5; // not yet in use. Wil be 9999 in paid version
+    int maxAllowableEvents = 12; // not yet in use. Wil be 9999 in paid version
 
     MyDBHandler dbHandler;
 
@@ -40,7 +43,7 @@ public class MainActivity extends Activity {
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     public String rowID []; // Array of _id column form database
-    public ImageView bin = null;
+    public ImageView play = null;
     //public int binImageRow;
 
     @Override
@@ -48,6 +51,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         dbHandler = new MyDBHandler(this, null, null, 1);
         setContentView(R.layout.main_activity);
+
+
 
         setGroupParents();
 
@@ -91,6 +96,8 @@ public class MainActivity extends Activity {
     }
     public void playIconClicked (View v){
 
+        //Drawable playButton = v.getResources().getDrawable(R.drawable.ic_action_play_disabled);
+        //playButton.setAlpha(Color.RED);
         Intent intent = new Intent(getBaseContext(), ShowCounter.class);
         intent.putExtra("ROW_ID",rowID[(int)v.getTag()]);
         startActivity(intent);
@@ -127,7 +134,7 @@ public class MainActivity extends Activity {
     }
 
     public String formatDateTime(int eventTime,int direction){
-        String[] d = new String[] {"up from","down to"};
+        String[] d = new String[] {"up from\n","down to\n"};
         long millis = eventTime;
         millis *= 1000;
         DateTime dt = new DateTime(millis, DateTimeZone.getDefault()); // needs to be a local date
@@ -167,6 +174,10 @@ public class MainActivity extends Activity {
                 Intent deleted = new Intent(MainActivity.this, DeletedItems.class);
                 startActivity(deleted);
                 return true;
+            case R.id.action_settings:
+                Intent settings = new Intent(MainActivity.this, Utility.class); //will change to Settings.class when created
+                startActivity(settings);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -184,7 +195,7 @@ public class MainActivity extends Activity {
         expListView.setAdapter(listAdapter);
 
     }
-
+/*
     public boolean deleteEvent(final int rowid){
         //System.out.println("!!- " + rowid);
         //final Events myEvent = dbHandler.getMyEvent(rowID);
@@ -217,5 +228,5 @@ public class MainActivity extends Activity {
 
         return true;
     }
-
+*/
 }

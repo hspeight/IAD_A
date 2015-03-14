@@ -14,5 +14,6 @@
         android:drawableLeft="@drawable/ic_action_discard"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
+        android:focusable="false"
         android:text="@string/delete_perm" />
 </FrameLayout>

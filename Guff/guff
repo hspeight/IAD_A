@@ -3,3 +3,5 @@ sqlite3 /data/data/com.example.hector.myproj03/databases/events.db "select * fro
 
 sqlite3 /data/data/com.itsadate.iad_a/databases/events.db "select * from events"
 
+sqlite3 /data/data/com.itsadate.iad_a/databases/events.db "PRAGMA table_info(events);"
+

@@ -53,17 +53,19 @@ public class Utility extends Activity {
        // System.out.println("!!- " + dtf1.print(dt1) + "/" + dtf2.print(dt2));
                 //String twenty4HoursAgo = "24 hours ago";
 
-        String[] eString = new String[9];
+        String[] eString = new String[11];
 
-        eString[0] = "Da Ting`0`1419825600`A";
-        eString[1] = "This is the first ever event!`0`1423440390`A";
-        eString[2] = "And this is the second`1`1424540190`A";
-        eString[3] = "Curly Watts Anniversary Countdown`0`1414440190`A";
-        eString[4] = "Since my 55th Birthday`0`1421317800`I";
-        eString[5] = "Until my 56th Birthday`1`1452853800`A";
-        eString[6] = dtf1.print(dt1) + "`0`" + nowMinus24Hrs / 1000 + "`A";
-        eString[7] = dtf2.print(dt2) + "`1`" + nowPlus24Hrs / 1000 + "`I";
-        eString[8] = dtf3.print(dt3) + "`1`" + nowPlus1Min / 1000 + "`A";
+        eString[0] = "Da Ting`0`1419825600`A`0`0`0`0";
+        eString[1] = "This is the first ever event!`0`1423440390`A`1`1`1`1";
+        eString[2] = "And this is the second`1`1424540190`A`1`0`0`0";
+        eString[3] = "Curly Watts Anniversary Countdown`0`1414440190`A`0`1`1`0";
+        eString[4] = "Since my 55th Birthday`0`1421317800`I`1`0`0`1";
+        eString[5] = "Until my 56th Birthday`1`1452853800`A`1`1`1`0";
+        eString[6] = dtf1.print(dt1) + "`0`" + nowMinus24Hrs / 1000 + "`A`0`1`0`1";
+        eString[7] = dtf2.print(dt2) + "`1`" + nowPlus24Hrs / 1000 + "`I`0`0`0`1";
+        eString[8] = dtf3.print(dt3) + "`1`" + nowPlus1Min / 1000 + "`A`1`0`0`1";
+        eString[9] = "Event with a veeeeeeeeery long title to see how it looks in the list except it needs to be even longer `0`1414840190`A`0`0`0`1";
+        eString[10] = "Since my 55th`0`1421318386`A`0`0`0`0";
         //eString[9] = dtf2.print(dt2) + "`1`" + nowPlus24Hrs / 1000 + "`0";
 
         int i;
@@ -73,7 +75,8 @@ public class Utility extends Activity {
             String[] parts = eString[i].split("`");
 
             //System.out.println("!!- " + i + " done");
-            Events event = new Events(parts[0], Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), parts[3]);
+            Events event = new Events(parts[0], Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), parts[3],
+                    Integer.parseInt(parts[4]),Integer.parseInt(parts[5]),Integer.parseInt(parts[6]),Integer.parseInt(parts[7]));
             dbHandler.addEvent(event);
 
         }

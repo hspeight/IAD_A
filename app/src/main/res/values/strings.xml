@@ -21,5 +21,6 @@
     <string name="done">Done</string>
     <string name="restore">Restore</string>
     <string name="delete_perm">Delete</string>
+    <string name="get_answer">Click to get Selected Answer</string>
 
 </resources>

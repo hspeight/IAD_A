@@ -19,7 +19,6 @@
         android:textColor="#f9f93d"
         android:singleLine="true"
         android:background="@color/BlueViolet"
-        android:minHeight="40dp"
         android:gravity="center|left" />
 
 </LinearLayout>

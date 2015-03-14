@@ -12,5 +12,6 @@
         android:drawableLeft="@drawable/ic_action_undo"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
+        android:focusable="false"
         android:text="@string/restore" />
 </FrameLayout>

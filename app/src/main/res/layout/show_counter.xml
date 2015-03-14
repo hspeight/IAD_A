@@ -15,10 +15,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/textStartDate"
-        android:layout_marginTop="99dp"
-        android:layout_below="@+id/textTitle"
-        android:layout_alignRight="@+id/textBanner"
-        android:layout_alignEnd="@+id/textBanner" />
+        android:layout_marginTop="120dp"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,9 +41,10 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/textStartDate"
-        android:layout_marginTop="137dp">
+        android:layout_marginTop="137dp"
+        android:gravity="center_horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -54,7 +53,9 @@
             android:layout_below="@+id/textTitle"
             android:layout_marginRight="10dp"
             android:minWidth="30dp"
-            android:text="dd" />
+            android:text="dd"
+            android:typeface="monospace"
+            android:textSize="30dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -64,7 +65,8 @@
             android:layout_alignTop="@+id/textDays"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="10dp"
-            android:text="hh" />
+            android:text="hh"
+            android:textSize="30dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +76,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginRight="10dp"
             android:minWidth="30dp"
-            android:text="mm" />
+            android:text="mm"
+            android:textSize="30dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,7 +86,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:minWidth="30dp"
-            android:text="ss" />
+            android:text="ss"
+            android:textSize="30dp" />
 
     </LinearLayout>
 

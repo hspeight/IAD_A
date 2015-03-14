@@ -1,10 +1,12 @@
 Next
 ----
-Check remaining fields for changes on back button - done
+Check remaining fields for changes on back button -
 Permanent delete confirmation alertdialog in delete activity - done
-Implement restore function.
-checkboxes for show secs, show mins, show hours
-Apply theme
+Implement restore function - done
+add count up/down info to archived items - done
+checkboxes for show secs, show mins, show hours - done
+Apply theme (supply different combinations of background color,row color,text color) -
+Add a progress bar for countdown's
 
 need to backup & restore entries before upgrading sqlite db
 create app icon

@@ -13,7 +13,7 @@ import java.sql.SQLDataException;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 17;
     private static final String DATABASE_NAME = "events.db";
     public static final  String TABLE_EVENTS = "events";
     public static final  String COLUMN_ID = "_id";
@@ -21,6 +21,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final  String COLUMN_EVENT_DIR = "direction";
     public static final  String COLUMN_EVENT_TIME = "evtime";
     public static final  String COLUMN_EVENT_STATUS = "evstatus"; // (A)ctive/(I)nactive
+    public static final  String COLUMN_EVENT_INC_HRS = "inchrs";
+    public static final  String COLUMN_EVENT_INC_MIN = "incmin";
+    public static final  String COLUMN_EVENT_INC_SEC = "incsec";
+    public static final  String COLUMN_EVENT_DAYSONLY = "daysonly";
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -34,7 +38,11 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_EVENT_NAME + " TEXT, " +
                 COLUMN_EVENT_DIR + " INTEGER, " +
                 COLUMN_EVENT_TIME + " INTEGER, " +
-                COLUMN_EVENT_STATUS + " TEXT " +
+                COLUMN_EVENT_STATUS + " TEXT, " +
+                COLUMN_EVENT_INC_HRS + " INTEGER, " +
+                COLUMN_EVENT_INC_MIN + " INTEGER, " +
+                COLUMN_EVENT_INC_SEC + " INTEGER, " +
+                COLUMN_EVENT_DAYSONLY + " INTEGER " +
                 ");";
         try{
             db.execSQL(query);
@@ -59,6 +67,11 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_EVENT_DIR, event.get_direction());
         values.put(COLUMN_EVENT_TIME, event.get_evtime());
         values.put(COLUMN_EVENT_STATUS, event.get_evstatus());
+        values.put(COLUMN_EVENT_INC_HRS, event.get_inchrs());
+        values.put(COLUMN_EVENT_INC_MIN, event.get_incmin());
+        values.put(COLUMN_EVENT_INC_SEC, event.get_incsec());
+        values.put(COLUMN_EVENT_DAYSONLY, event.get_dayyears());
+        // add code here for new fields
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_EVENTS, null, values);
         db.close();
@@ -87,39 +100,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
         return dbString;
     }
-/*
-    public String getAllEvents() {
 
-        String dbString = "";
-        SQLiteDatabase db = getReadableDatabase();
-        //SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_EVENTS +" WHERE 1;";
-        // System.out.println("!!- "  + query);
-        Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
-
-        while (!c.isAfterLast()) {
-            //System.out.println("!!- "  + "in while " + c.getCount());
-            if (c.getString(c.getColumnIndex("eventname")) != null) {
-                dbString += c.getString(c.getColumnIndex("_id"));
-                dbString += "::"; // Delimiter between record ID & event title
-                dbString += c.getString(c.getColumnIndex("eventname"));
-                dbString += "~"; // Record delimiter
-                c.moveToNext();
-            }
-
-        }
-        db.close();
-        return dbString;
-    }
-*/
     // Getting a single event
     public  Events getMyEvent(String rowid) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_EVENTS, new String[] { COLUMN_ID,
-                        COLUMN_EVENT_NAME, COLUMN_EVENT_DIR,COLUMN_EVENT_TIME,COLUMN_EVENT_STATUS }, COLUMN_ID + "=?",
+                        COLUMN_EVENT_NAME, COLUMN_EVENT_DIR,COLUMN_EVENT_TIME,COLUMN_EVENT_STATUS,
+                        COLUMN_EVENT_INC_HRS,COLUMN_EVENT_INC_MIN,COLUMN_EVENT_INC_SEC,
+                        COLUMN_EVENT_DAYSONLY }, COLUMN_ID + "=?",
                 new String[] { rowid }, null, null, null, null);
 
         if (cursor != null)
@@ -127,9 +117,15 @@ public class MyDBHandler extends SQLiteOpenHelper {
         //System.out.println("!!- "  + "checkbox is " + Integer.parseInt(cursor.getString(4)));
         db.close();
         return new Events(cursor.getString(1),
-                Integer.parseInt(cursor.getString(2)), Integer.parseInt(cursor.getString(3)),
+                Integer.parseInt(cursor.getString(2)),
+                Integer.parseInt(cursor.getString(3)),
                 //Integer.parseInt(cursor.getString(4)));
-                cursor.getString(4));
+                cursor.getString(4),
+                Integer.parseInt(cursor.getString(5)),
+                Integer.parseInt(cursor.getString(6)),
+                Integer.parseInt(cursor.getString(7)),
+                Integer.parseInt(cursor.getString(8))
+                                );
     }
 
     // Updating a single event
@@ -148,21 +144,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return 1; //needs a proper return code
 
     }
-        //System.out.println("!!- "  + myEvent.get_id() + myEvent.get_eventname() + myEvent.get_evusetime() + myEvent.get_direction() + myEvent.get_evusetime());
-
-/*
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_EVENT_NAME, myEvent.get_eventname());
-        values.put(COLUMN_EVENT_DIR, myEvent.get_direction());
-        values.put(COLUMN_EVENT_TIME, myEvent.get_evtime());
-        values.put(COLUMN_EVENT_STATUS, myEvent.get_evstatus());
-        db.close();
-        // updating row
-        return db.update(TABLE_EVENTS, values, COLUMN_ID + " = ?",
-                new String[] { String.valueOf(myEvent.get_id()) });
-    }
-*/
-
 
     //Delete a row from the database
     public boolean deleteEvent (String eventID) {
@@ -214,6 +195,22 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
+    public boolean restoreSpecificEvents (String rowIDs) {
+
+        boolean result = false;
+
+        SQLiteDatabase db = getWritableDatabase();
+        //System.out.println("!!- " + "rows to delete = " + rowIDs);
+        try {
+            db.execSQL("UPDATE " + TABLE_EVENTS +  " SET " + COLUMN_EVENT_STATUS + " = \"A\" WHERE _ID IN (" + rowIDs + ");");
+            result = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        db.close();
+        return result;
+    }
+
     // Get row count
     public  long getRowCount(String status) {
 
@@ -226,26 +223,4 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return DatabaseUtils.queryNumEntries(db, TABLE_EVENTS, whereClause);
 
     }
-/*
-    public String dbtostring() {
-
-        String dbString = "";
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_EVENTS + " WHERE 1;";
-
-        Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
-
-        while (!c.isAfterLast()) {
-            if (c.getString(c.getColumnIndex("eventname")) != null) {
-                dbString += c.getString(c.getColumnIndex("eventname"));
-                dbString += "\n";
-            }
-
-        }
-        db.close();
-        return dbString;
-    }
-*/
-
 }
