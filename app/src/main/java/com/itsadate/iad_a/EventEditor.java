@@ -73,8 +73,8 @@ public class EventEditor extends Activity
     private RadioButton countDown = null;
     private RadioButton daysOnly = null;
     private RadioButton daysAndYears = null;
-    private CheckBox includeHrs = null;
-    private CheckBox includeMin = null;
+    //private CheckBox includeHrs = null;
+    //private CheckBox includeMin = null;
     private CheckBox includeSec = null;
 
     private RadioGroup cd;
@@ -106,8 +106,8 @@ public class EventEditor extends Activity
         } else {
             dy.check(R.id.radioButtonDaysOnly);
         }
-        if (chk_hrs == 1) { includeHrs.setChecked(true); }
-        if (chk_min == 1) { includeMin.setChecked(true); }
+        //if (chk_hrs == 1) { includeHrs.setChecked(true); }
+        //if (chk_min == 1) { includeMin.setChecked(true); }
         if (chk_sec == 1) { includeSec.setChecked(true); }
 
         //pDisplayDate.setTextColor(Color.BLUE);
@@ -169,8 +169,8 @@ public class EventEditor extends Activity
         countDown = (RadioButton) findViewById(R.id.radioButtonCountDown);
         daysOnly = (RadioButton) findViewById(R.id.radioButtonDaysOnly);
         daysAndYears = (RadioButton) findViewById(R.id.radioButtonYearsAndDays);
-        includeHrs = (CheckBox) findViewById(R.id.checkBoxHours);
-        includeMin = (CheckBox) findViewById(R.id.checkBoxMins);
+        //includeHrs = (CheckBox) findViewById(R.id.checkBoxHours);
+        //includeMin = (CheckBox) findViewById(R.id.checkBoxMins);
         includeSec = (CheckBox) findViewById(R.id.checkBoxSecs);
 
         tranType = "add";
@@ -208,7 +208,7 @@ public class EventEditor extends Activity
             mHour = cal.get(Calendar.HOUR_OF_DAY);
             mMinute = cal.get(Calendar.MINUTE);
             idx_cd = 1; idx_dy = 1;
-            chk_hrs = 1; chk_min = 0; chk_sec =1;
+            chk_hrs = 1; chk_min = 0; chk_sec = 1;
         }
         //if (idx_cd == 1)
             //cd.check(R.id.radioButtonCountDown);
@@ -324,11 +324,23 @@ public class EventEditor extends Activity
         //int rowsInDB = dbHandler.getRowCount()
         //System.out.println("!!- "  + dbHandler.getRowCount());
         if (tranType.equals("update")) {
-            Events event = new Events(Integer.parseInt(rowID), EventTitle, idx_cd, timeInSeconds, "A", 1,0,1,idx_dy);
+            Events event = new Events(Integer.parseInt(rowID), EventTitle, idx_cd, timeInSeconds, "A",
+                                        //includeHrs.isChecked() ? 1 : 0,
+                                        0,
+                                        //includeMin.isChecked() ? 1 : 0,
+                                        0,
+                                        includeSec.isChecked() ? 1 : 0,
+                                        idx_dy);
             dbHandler.updateEvent(event);
             //Toast.makeText(getApplicationContext(), "Event updated", Toast.LENGTH_SHORT).show();
         } else {
-            Events event = new Events(EventTitle, idx_cd, timeInSeconds, "A", 0,1,0,idx_dy);
+            Events event = new Events(EventTitle, idx_cd, timeInSeconds, "A",
+                                        //includeHrs.isChecked() ? 1 : 0,
+                                        0,
+                                        //includeMin.isChecked() ? 1 : 0,
+                                        0,
+                                        includeSec.isChecked() ? 1 : 0,
+                                        idx_dy);
             dbHandler.addEvent(event);
             //Toast.makeText(getApplicationContext(), "Your event has been created", Toast.LENGTH_SHORT).show();
         }
@@ -404,8 +416,8 @@ public class EventEditor extends Activity
                 + dateButton.getText()
                 + timeButton.getText()
                 + daysOnly.isChecked()
-                + includeHrs.isChecked()
-                + includeMin.isChecked()
+                //+ includeHrs.isChecked()
+                //+ includeMin.isChecked()
                 + includeSec.isChecked();
     }
 

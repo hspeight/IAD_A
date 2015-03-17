@@ -8,7 +8,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/iad_logo"
+        android:icon="@drawable/ic_launcher_blah2"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light" >
         <activity

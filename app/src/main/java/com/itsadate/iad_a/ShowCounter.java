@@ -2,16 +2,20 @@ package com.itsadate.iad_a;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.CountDownTimer;
 //import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 //import android.widget.Button;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -29,10 +33,13 @@ public class ShowCounter extends Activity {
     Calendar c = Calendar.getInstance();
     int secs;
     long modSecs; //need to learn how to cast
+    int modDays;
     long mins;
     String rowID;
     CountDownTimer cdt;
-
+    ProgressBar mProgressBar;
+//    boolean mbActive;
+//    int progressMade = 300000; // in ms --> 10s
 
     MyDBHandler dbHandler;
 
@@ -45,17 +52,58 @@ public class ShowCounter extends Activity {
         //Button myButton;
         dbHandler = new MyDBHandler(this, null, null, 1);
 
-        // If this is an edit there will be an associated row ID in the extras
+        // There should always be an associated row ID in the extras
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             rowID = bundle.getString("ROW_ID");
             //displayEventInfo(bundle);
         } else {
-            System.out.println("!!- " + "error");
+            System.out.println("!!- " + "error"); // need to do something better than this
             //textTit.setText("Error reading event row data");
         }
-    }
 
+
+/*
+        mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
+
+        final Thread timerThread = new Thread() {
+            @Override
+            public void run() {
+                mbActive = true;
+                try {
+                    int waited = 0;
+                    while(mbActive && (waited < progressMade)) {
+                        sleep(200);
+                        if(mbActive) {
+                            waited += 200;
+                            updateProgress(waited);
+                        }
+                    }
+                } catch(InterruptedException e) {
+                    // do nothing
+                } finally {
+                    // do nothing
+                }
+            }
+        };
+        timerThread.start();
+*/
+    }
+/*
+    public void updateProgress(final int timePassed) {
+
+        if(null != mProgressBar) {
+
+            // Ignore rounding error here
+
+            final int progress = mProgressBar.getMax() * timePassed / progressMade;
+
+            mProgressBar.setProgress(progress);
+
+        }
+
+    }
+*/
     @Override
     protected void onResume() {
         super.onResume();
@@ -78,13 +126,31 @@ public class ShowCounter extends Activity {
         final TextView textMins = (TextView) findViewById(R.id.textMins);
         final TextView textHour = (TextView) findViewById(R.id.textHour);
         final TextView textDays = (TextView) findViewById(R.id.textDays);
+        final TextView textYears = (TextView) findViewById(R.id.textYears);
+        //Typeface font = Typeface.createFromAsset(this.getAssets(), "fonts/digital-7.ttf");
+        Typeface font = Typeface.createFromAsset(this.getAssets(), "fonts/courier-new-italic-1361512243.ttf");
+        //Typeface font = Typeface.createFromAsset(this.getAssets(), "fonts/komika-title-tall-1361511394.ttf");
+        //Typeface font = Typeface.createFromAsset(this.getAssets(), "fonts/futurist-fixed-width-bold-1361537378.ttf");
+
+        textYears.setTypeface(font);
+        textDays.setTypeface(font);
+        textHour.setTypeface(font);
+        textMins.setTypeface(font);
+        textSecs.setTypeface(font);
+
         TextView textTit = (TextView) findViewById(R.id.textTitle);
         TextView textStartDate = (TextView) findViewById(R.id.textStartDate);
+
+
         //String rowID;
         //String rowID = bundle.getString("ROW_ID");
         Events myEvent = dbHandler.getMyEvent(rowID);
         textTit.setText(myEvent.get_eventname());
         final int countDirection = myEvent.get_direction();
+
+        if (myEvent.get_incsec() == 0)
+            textSecs.setVisibility(View.GONE); // completely remove the secs view
+
         //System.out.println("!!- " + rowID);
         long millis = myEvent.get_evtime();
         //String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (millis*1000)); //test code
@@ -103,7 +169,7 @@ public class ShowCounter extends Activity {
 
         cdt = new CountDownTimer(millisToStart, 1000) {
             public void onTick(long millisUntilFinished) {
-
+                //progressMade = (int) millisUntilFinished;
                 secs = timeDiff + ((millisToStart / 1000) - ((int) (millisUntilFinished / 1000)));
                 if (countDirection == 1)
                     secs *= -1;
@@ -113,12 +179,15 @@ public class ShowCounter extends Activity {
                // System.out.println("!!- secs =" + secs + "/modsecs=" + modSecs + "/mins=" +mins);
                 long hours = TimeUnit.SECONDS.toHours(secs) % 24;
                 int days = (int) TimeUnit.SECONDS.toDays(secs);
+                double years = days / 365.25;
+                modDays = (int) Math.floor(days % 365.25);
                 //System.out.println("!-" + hours);
                 //textSecs.setText(String.valueOf((timeDiff - (millisUntilFinished / 1000)) + 20000));
                 textSecs.setText(String.valueOf(modSecs));
                 textMins.setText(String.valueOf(mins));
                 textHour.setText(String.valueOf(hours));
-                textDays.setText(String.valueOf(days));
+                textDays.setText(String.valueOf(modDays));
+                textYears.setText(String.valueOf((int)Math.floor(years)));
 
                 if (secs < 0) {
                     // go to a new new activity?

@@ -137,6 +137,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
         cv.put(COLUMN_EVENT_NAME, myEvent.get_eventname());
         cv.put(COLUMN_EVENT_DIR, myEvent.get_direction());
         cv.put(COLUMN_EVENT_TIME, myEvent.get_evtime());
+        cv.put(COLUMN_EVENT_INC_HRS, myEvent.get_inchrs());
+        cv.put(COLUMN_EVENT_INC_MIN, myEvent.get_incmin());
+        cv.put(COLUMN_EVENT_INC_SEC, myEvent.get_incsec());
        // System.out.println("!!- " + " id is " + myEvent.get_id());
         db.update(TABLE_EVENTS, cv, "_id = " + myEvent.get_id(), null);
         db.close();

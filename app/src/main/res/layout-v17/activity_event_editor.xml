@@ -148,7 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Include:"
+            android:text="Show:"
             android:id="@+id/textView13"
             />
 
@@ -156,35 +156,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Hours"
-            android:id="@+id/textView10"
-            android:layout_marginLeft="10dp" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBoxHours"
-            android:checked="false" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Mins"
-            android:id="@+id/textView11"
-            android:layout_marginLeft="10dp" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBoxMins"
-            android:checked="false" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Secs"
+            android:text="Seconds"
             android:id="@+id/textView12"
             android:layout_marginLeft="10dp" />
 
@@ -206,30 +178,14 @@
         android:layout_below="@+id/linearLayout5"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Show:"
-            android:id="@+id/textView131"
-            android:layout_gravity="center_vertical" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="70dp">
 
         <RadioGroup
             android:id="@+id/radioYearsDays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation='horizontal'>
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/radioButtonDaysOnly"
-
-                android:checked="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_marginLeft="10dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -238,7 +194,24 @@
                 android:text="Days"
                 android:id="@+id/textView15" />
 
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButtonDaysOnly"
+
+                android:checked="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="30dp" />
+
         </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Years &amp; Days"
+            android:id="@+id/textView16" />
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -247,14 +220,7 @@
 
             android:checked="false"
             android:textAppearance="@android:style/TextAppearance.Small"
-            android:layout_marginLeft="15dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Years &amp; Days"
-            android:id="@+id/textView16" />
+            android:layout_marginLeft="5dp" />
 
     </LinearLayout>
 
@@ -266,6 +232,7 @@
         android:layout_below="@+id/linearLayout6"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
 
 
 </RelativeLayout>

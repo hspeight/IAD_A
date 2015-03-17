@@ -6,7 +6,8 @@ Implement restore function - done
 add count up/down info to archived items - done
 checkboxes for show secs, show mins, show hours - done
 Apply theme (supply different combinations of background color,row color,text color) -
-Add a progress bar for countdown's
+Allow countdowns that start on a future date (toast start date for confirmation)
+Add a progress bar for countdown's - nah dont do this
 
 need to backup & restore entries before upgrading sqlite db
 create app icon
