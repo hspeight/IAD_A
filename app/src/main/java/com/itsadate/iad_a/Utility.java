@@ -56,20 +56,21 @@ public class Utility extends Activity {
        // System.out.println("!!- " + dtf1.print(dt1) + "/" + dtf2.print(dt2));
                 //String twenty4HoursAgo = "24 hours ago";
 
-        String[] eString = new String[12];
+        String[] eString = new String[13];
 
         eString[0] = "Da Ting`0`1419825600`A`0`0`0`0";
-        eString[1] = dtf4.print(dt4) + "`1`" + nowPlus5Min / 1000 + "`A`1`0`0`1";
-        eString[2] = "This is the first ever event!`0`1423440390`A`1`1`1`1";
-        eString[3] = "And this is the second`1`1424540190`A`1`0`0`0";
-        eString[4] = "Curly Watts Anniversary Countdown`0`1414440190`A`0`1`1`0";
-        eString[5] = "Since my 55th Birthday`0`1421317800`I`1`0`0`1";
-        eString[6] = "Until my 56th Birthday`1`1452853800`A`1`1`1`0";
-        eString[7] = dtf1.print(dt1) + "`0`" + nowMinus24Hrs / 1000 + "`A`0`1`0`1";
-        eString[8] = dtf2.print(dt2) + "`1`" + nowPlus24Hrs / 1000 + "`I`0`0`0`1";
-        eString[9] = dtf3.print(dt3) + "`1`" + nowPlus1Min / 1000 + "`A`1`0`0`1";
-        eString[10] = "Event with a veeeeeeeeery long title to see how it looks in the list except it needs to be even longer `0`1414840190`A`0`0`0`1";
-        eString[11] = "Since my 55th`0`1421318386`A`0`0`0`0";
+        eString[1] = "Countdown to polling day`1`1430978400`A`0`0`1`0";
+        eString[2] = dtf4.print(dt4) + "`1`" + nowPlus5Min / 1000 + "`A`1`0`0`1";
+        eString[3] = "This is the first ever event!`0`1423440390`A`1`1`1`1";
+        eString[4] = "And this is the second`1`1424540190`A`1`0`0`0";
+        eString[5] = "Curly Watts Anniversary Countdown`0`1414440190`A`0`1`1`0";
+        eString[6] = "Since my 55th Birthday`0`1421317800`I`1`0`0`1";
+        eString[7] = "Until my 56th Birthday`1`1452853800`A`1`1`1`0";
+        eString[8] = dtf1.print(dt1) + "`0`" + nowMinus24Hrs / 1000 + "`A`0`1`0`1";
+        eString[9] = dtf2.print(dt2) + "`1`" + nowPlus24Hrs / 1000 + "`I`0`0`0`1";
+        eString[10] = dtf3.print(dt3) + "`1`" + nowPlus1Min / 1000 + "`A`1`0`0`1";
+        eString[11] = "Event with a veeeeeeeeery long title to see how it looks in the list except it needs to be even longer `0`1414840190`A`0`0`0`1";
+        eString[12] = "Since my 55th`0`1421318386`A`0`0`0`0";
         //eString[9] = dtf2.print(dt2) + "`1`" + nowPlus24Hrs / 1000 + "`0";
 
         int i;

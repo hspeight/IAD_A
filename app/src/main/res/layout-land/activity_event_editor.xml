@@ -35,8 +35,8 @@
 
         android:id="@+id/linearLayout4"
         android:layout_below="@+id/linearLayoutA"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <RadioGroup
             android:id="@+id/radioDirection"
@@ -66,12 +66,14 @@
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/separator_1"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_above="@+id/linearLayout"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="From Date"
+        android:id="@+id/textViewDirection"
+        android:autoText="false"
+
+        android:layout_above="@+id/buttonCounterDate"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -79,68 +81,11 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout5"
+        android:layout_below="@+id/radioYearsDays"
+        android:layout_alignLeft="@+id/radioYearsDays"
+        android:layout_alignStart="@+id/radioYearsDays">
 
-        android:layout_below="@+id/linearLayout4"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentEnd="false"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentLeft="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From Date"
-            android:id="@+id/textViewDirection"
-            android:autoText="false"
-
-            />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout2"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date Button"
-            android:id="@+id/buttonCounterDate"
-            android:width="150dp"
-            android:textSize="14dp" />
-
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:id="@+id/separator_2"
-
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="35dp" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-
-        android:id="@+id/linearLayout6"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="false"
-        android:layout_marginLeft="337dp"
-        android:layout_marginStart="337dp">
 
     </LinearLayout>
 
@@ -149,134 +94,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation='horizontal'
-        android:layout_alignBottom="@+id/separator_2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_below="@+id/checkBoxSecs"
+        android:layout_alignLeft="@+id/checkBoxSecs"
+        android:layout_alignStart="@+id/checkBoxSecs">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButtonDaysOnly"
+
+            android:checked="false"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:text="Days"
+            android:enabled="true" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButtonYearsAndDays"
+
+            android:checked="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Days &amp; Years"
+            android:enabled="true"
+            android:layout_below="@+id/checkBoxSecs"
+            android:layout_toRightOf="@+id/radioYearsDays"
+            android:layout_toEndOf="@+id/radioYearsDays" />
 
     </RadioGroup>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Include:"
-        android:id="@+id/textView13"
-        android:layout_above="@+id/checkBoxMins"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Hours"
-            android:id="@+id/textView10"
-        android:layout_above="@+id/linearLayout2"
-        android:layout_toRightOf="@+id/textView13"
-        android:layout_toEndOf="@+id/textView13"
-        android:layout_marginLeft="10dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Mins"
-        android:id="@+id/textView11"
-        android:layout_marginLeft="10dp"
-        android:layout_alignTop="@+id/textView10"
-        android:layout_toRightOf="@+id/textView10"
-        android:layout_toEndOf="@+id/textView10"
-        android:layout_marginStart="37dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Secs"
-        android:id="@+id/textView12"
-        android:layout_alignTop="@+id/textView11"
-        android:layout_toRightOf="@+id/textView11"
-        android:layout_toEndOf="@+id/textView11"
-        android:layout_marginLeft="10dp" />
-
-    <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBoxSecs"
-            android:checked="false"
-        android:layout_alignTop="@+id/linearLayout2"
-        android:layout_alignLeft="@+id/textView12"
-        android:layout_alignStart="@+id/textView12" />
-
-    <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBoxMins"
-            android:checked="false"
-        android:layout_alignTop="@+id/checkBoxSecs"
-        android:layout_alignRight="@+id/textView11"
-        android:layout_alignEnd="@+id/textView11" />
-
-    <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBoxHours"
-            android:checked="false"
-        android:layout_alignTop="@+id/checkBoxMins"
-        android:layout_toLeftOf="@+id/textView11"
-        android:layout_toStartOf="@+id/textView11" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Show:"
-        android:id="@+id/textView131"
-        android:layout_gravity="center_vertical"
-        android:layout_alignTop="@+id/textView9"
-        android:layout_alignLeft="@+id/textView13"
-        android:layout_alignStart="@+id/textView13" />
-
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/radioButtonDaysOnly"
-
-        android:checked="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_below="@+id/textView9"
-        android:layout_alignLeft="@+id/textView9"
-        android:layout_alignStart="@+id/textView9" />
-
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/radioButtonYearsAndDays"
-
-        android:checked="false"
-        android:textAppearance="@android:style/TextAppearance.Small"
-        android:layout_alignTop="@+id/radioButtonDaysOnly"
-        android:layout_toLeftOf="@+id/checkBoxSecs"
-        android:layout_toStartOf="@+id/checkBoxSecs" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Days"
-        android:id="@+id/textView9"
-        android:layout_above="@+id/separator_2"
-        android:layout_alignLeft="@+id/textView10"
-        android:layout_alignStart="@+id/textView10" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Years &amp; Days"
-        android:id="@+id/textView14"
-        android:layout_alignTop="@+id/textView9"
-        android:layout_alignLeft="@+id/textView11"
-        android:layout_alignStart="@+id/textView11" />
 
     <Button
         android:layout_width="wrap_content"
@@ -284,10 +129,33 @@
         android:text="Time Button"
         android:id="@+id/buttonCounterTime"
         android:width="150dp"
-        android:textSize="14dp"
-        android:layout_above="@+id/radioYearsDays"
+        android:textSize="14sp"
+        android:layout_alignTop="@+id/buttonCounterDate"
+        android:layout_toRightOf="@+id/buttonCounterDate"
+        android:layout_toEndOf="@+id/buttonCounterDate" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Button"
+        android:id="@+id/buttonCounterDate"
+        android:width="150dp"
+        android:textSize="14sp"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBoxSecs"
+        android:checked="false"
+        android:text="Show seconds:"
+        android:layout_alignTop="@+id/buttonCounterTime"
+        android:layout_toRightOf="@+id/buttonCounterTime"
+        android:layout_toEndOf="@+id/buttonCounterTime"
+        android:layout_marginLeft="33dp"
+        android:layout_marginStart="33dp" />
 
 
 </RelativeLayout>

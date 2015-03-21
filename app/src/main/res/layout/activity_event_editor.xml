@@ -146,7 +146,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Days Only"
-                android:id="@+id/radioButtonDaysOnly"
+                android:id="@+id/radioButtonYearsAndDays"
 
                 android:checked="true"
                 android:textAppearance="@android:style/TextAppearance.Small" />

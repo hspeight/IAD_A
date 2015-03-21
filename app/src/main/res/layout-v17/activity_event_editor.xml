@@ -144,27 +144,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Show:"
-            android:id="@+id/textView13"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Seconds"
-            android:id="@+id/textView12"
-            android:layout_marginLeft="10dp" />
-
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/checkBoxSecs"
-            android:checked="false" />
+            android:checked="false"
+            android:text="Show seconds" />
 
 
     </LinearLayout>
@@ -187,40 +172,30 @@
             android:layout_height="wrap_content"
             android:orientation='horizontal'>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Days"
-                android:id="@+id/textView15" />
-
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioButtonDaysOnly"
 
+                android:checked="false"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:layout_marginLeft="5dp"
+                android:text="Days"
+                android:enabled="true" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButtonYearsAndDays"
+
                 android:checked="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="30dp" />
+                android:layout_marginRight="30dp"
+                android:text="Days &amp; Years"
+                android:enabled="true" />
 
         </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Years &amp; Days"
-            android:id="@+id/textView16" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButtonYearsAndDays"
-
-            android:checked="false"
-            android:textAppearance="@android:style/TextAppearance.Small"
-            android:layout_marginLeft="5dp" />
 
     </LinearLayout>
 
@@ -233,6 +208,15 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/textView15"
+        android:layout_below="@+id/separator_3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp" />
 
 
 </RelativeLayout>

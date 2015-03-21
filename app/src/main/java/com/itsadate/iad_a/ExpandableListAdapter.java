@@ -165,7 +165,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        boolean result = dbHandler.deleteEvent(rowID);
+                        boolean result = dbHandler.deleteEvent(Integer.parseInt(rowID));
                         if (result) {
                             Toast.makeText(v.getContext(), "Event Deleted", Toast.LENGTH_SHORT).show();
                             //finish();

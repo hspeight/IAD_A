@@ -58,13 +58,13 @@ public class EventEditor extends Activity
     private int mMinute;
     private int idx_cd;
     private int idx_dy;
-    private int chk_hrs;
-    private int chk_min;
+    //private int chk_hrs;
+    //private int chk_min;
     private int chk_sec;
     private int timeInSeconds;
     private String tranType;
     //private int countDirection;
-    private String rowID;
+    private int rowID;
     private String activityDataIn;
     private String activityDataOut;
     //private String collateActivityInfo;
@@ -101,10 +101,10 @@ public class EventEditor extends Activity
             textUpDown.setText("Start Date & Time:");
             cd.check(R.id.radioButtonCountUp);
         }
-        if (idx_dy == 1) {
-            dy.check(R.id.radioButtonYearsAndDays);
-        } else {
+        if (idx_dy == 0) {
             dy.check(R.id.radioButtonDaysOnly);
+        } else {
+            dy.check(R.id.radioButtonYearsAndDays);
         }
         //if (chk_hrs == 1) { includeHrs.setChecked(true); }
         //if (chk_min == 1) { includeMin.setChecked(true); }
@@ -149,21 +149,12 @@ public class EventEditor extends Activity
         myView = findViewById(R.id.viewID); // reference to view to be used in addbuttonpressed method
         hsEditText = (EditText) findViewById(R.id.hsEditText);
         textUpDown = (TextView) findViewById(R.id.textViewDirection);
-        //final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioDirection);
 
         dateButton = (Button) findViewById(R.id.buttonCounterDate);
         timeButton = (Button) findViewById(R.id.buttonCounterTime);
 
         cd = (RadioGroup) findViewById(R.id.radioDirection); // Count up/down
         dy = (RadioGroup) findViewById(R.id.radioYearsDays); // Days/Days+years
-        //final RadioGroup cd = (RadioGroup) findViewById(R.id.radioDirection); // Count up/down
-        //final RadioGroup dy = (RadioGroup) findViewById(R.id.radioYearsDays); // Days/Days+years
-        //final int radioButtonID = cd.getCheckedRadioButtonId();
-        //final int radioButtonIDdy = dy.getCheckedRadioButtonId();
-        //final View radioButtoncd = cd.findViewById(radioButtonID);
-        //final View radioButtondy = dy.findViewById(radioButtonIDdy);
-        //idx_cd = cd.indexOfChild(radioButtoncd);
-        //idx_dy = dy.indexOfChild(radioButtondy);
 
         countUp = (RadioButton) findViewById(R.id.radioButtonCountUp);
         countDown = (RadioButton) findViewById(R.id.radioButtonCountDown);
@@ -181,15 +172,14 @@ public class EventEditor extends Activity
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             tranType = "update";
-            rowID = bundle.getString("ROW_ID");
+            rowID = bundle.getInt("ROW_ID");
             Events myEvent = dbHandler.getMyEvent(rowID);
             hsEditText.setText(myEvent.get_eventname());
             idx_cd = myEvent.get_direction();
             idx_dy = myEvent.get_dayyears();
-            chk_hrs = myEvent.get_inchrs();
-            chk_min = myEvent.get_incmin();
-            chk_sec = myEvent.get_incsec();
 
+            chk_sec = myEvent.get_incsec();
+            //System.out.println("!!- "  + "days & years from db is " + myEvent.get_dayyears());
             long millis = myEvent.get_evtime();
             millis *= 1000;
             DateTime dt = new DateTime(millis, DateTimeZone.getDefault());
@@ -207,17 +197,8 @@ public class EventEditor extends Activity
             pDay = cal.get(Calendar.DAY_OF_MONTH);
             mHour = cal.get(Calendar.HOUR_OF_DAY);
             mMinute = cal.get(Calendar.MINUTE);
-            idx_cd = 1; idx_dy = 1;
-            chk_hrs = 1; chk_min = 0; chk_sec = 1;
+            idx_cd = 1; chk_sec = 1;
         }
-        //if (idx_cd == 1)
-            //cd.check(R.id.radioButtonCountDown);
-        //else
-            //cd.check(R.id.radioButtonCountUp);
-        //if (idx_dy == 1)
-            //dy.check(R.id.radioButtonYearsAndDays);
-        //else
-            //dy.check(R.id.radioButtonDaysOnly);
 
         updateDisplay();
 
@@ -245,6 +226,12 @@ public class EventEditor extends Activity
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 idx_cd = countDown.isChecked() ? 1 : 0; // convert direction button to int
                 //Toast.makeText(getApplicationContext(), "button is "  + countUp.isChecked(), Toast.LENGTH_SHORT).show();
+                updateDisplay();
+            }
+        });
+        dy.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group2, int checkedId2) {
+                idx_dy = daysAndYears.isChecked() ? 1 : 0; // convert days/years button to int
                 updateDisplay();
             }
         });
@@ -304,9 +291,9 @@ public class EventEditor extends Activity
             if (idx_cd == 0 && diffInSecs < 0) { // Count up selected but date is in future
                 //pDisplayDate.setTextColor(Color.RED);
 //                textTime.setTextColor(Color.RED);
-                Toast.makeText(getApplicationContext(), "his must be a past date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Counter will start " + givenDateString, Toast.LENGTH_LONG).show();
                 //addButton.setEnabled(false);
-                return;
+                //return;
             } else {
                 if (idx_cd == 1 && diffInSecs > 0) { // Count down selected but date is not in future
                     //pDisplayDate.setTextColor(Color.RED);
@@ -324,13 +311,15 @@ public class EventEditor extends Activity
         //int rowsInDB = dbHandler.getRowCount()
         //System.out.println("!!- "  + dbHandler.getRowCount());
         if (tranType.equals("update")) {
-            Events event = new Events(Integer.parseInt(rowID), EventTitle, idx_cd, timeInSeconds, "A",
+            Events event = new Events(rowID, EventTitle, idx_cd, timeInSeconds, "A",
                                         //includeHrs.isChecked() ? 1 : 0,
                                         0,
                                         //includeMin.isChecked() ? 1 : 0,
                                         0,
                                         includeSec.isChecked() ? 1 : 0,
                                         idx_dy);
+            //System.out.println("!!- "  + "sending  " + (daysOnly.isChecked() ? 1 : 0));
+
             dbHandler.updateEvent(event);
             //Toast.makeText(getApplicationContext(), "Event updated", Toast.LENGTH_SHORT).show();
         } else {

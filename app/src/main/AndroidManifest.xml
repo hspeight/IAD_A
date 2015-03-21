@@ -2,9 +2,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.itsadate.iad_a">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
 
     <application
         android:allowBackup="true"
@@ -59,25 +56,7 @@
             android:label="@string/title_activity_cdf" >
         </activity>
 
-        <activity android:name="com.dropbox.sync.android.DbxAuthActivity" />
-        <activity
-            android:name="com.dropbox.client2.android.AuthActivity"
-            android:configChanges="orientation|keyboard"
-            android:launchMode="singleTask" >
-            <intent-filter>
-                <data android:scheme="db-m2vvdeh11l1bhwx" />
 
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <service
-            android:name="com.dropbox.sync.android.DbxSyncService"
-            android:enabled="true"
-            android:exported="false"
-            android:label="Dropbox Sync" />
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 //import android.widget.Button;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,7 +36,7 @@ public class ShowCounter extends Activity {
     long modSecs; //need to learn how to cast
     int modDays;
     long mins;
-    String rowID;
+    int rowID;
     CountDownTimer cdt;
     ProgressBar mProgressBar;
 //    boolean mbActive;
@@ -55,7 +56,7 @@ public class ShowCounter extends Activity {
         // There should always be an associated row ID in the extras
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            rowID = bundle.getString("ROW_ID");
+            rowID = bundle.getInt("ROW_ID");
             //displayEventInfo(bundle);
         } else {
             System.out.println("!!- " + "error"); // need to do something better than this
@@ -121,7 +122,7 @@ public class ShowCounter extends Activity {
     //String myDate = "2014-12-29 04:00:07 +0000";
 
         // final long timeDiff = Math.abs(startDate.getTime() - System.currentTimeMillis());
-    public void displayEventInfo(String rowID) {
+    public void displayEventInfo(int rowID) {
         final TextView textSecs = (TextView) findViewById(R.id.textSecs);
         final TextView textMins = (TextView) findViewById(R.id.textMins);
         final TextView textHour = (TextView) findViewById(R.id.textHour);
@@ -140,16 +141,27 @@ public class ShowCounter extends Activity {
 
         TextView textTit = (TextView) findViewById(R.id.textTitle);
         TextView textStartDate = (TextView) findViewById(R.id.textStartDate);
+        TextView textYearsLbl = (TextView) findViewById(R.id.textViewYearsLabel);
+        LinearLayout lin1 = (LinearLayout) findViewById(R.id.linLayout1); // Contains linear layouts for yy,dd,hh,mm,ss
 
 
         //String rowID;
         //String rowID = bundle.getString("ROW_ID");
-        Events myEvent = dbHandler.getMyEvent(rowID);
+        //final Events myEvent = dbHandler.getMyEvent(Integer.parseInt(rowID));
+        final Events myEvent = dbHandler.getMyEvent(rowID);
         textTit.setText(myEvent.get_eventname());
         final int countDirection = myEvent.get_direction();
 
         if (myEvent.get_incsec() == 0)
             textSecs.setVisibility(View.GONE); // completely remove the secs view
+
+        if (myEvent.get_dayyears() == 0) { // 0 = days only
+            //System.out.println("!!- in");
+            textYears.setVisibility(View.GONE);
+            textYearsLbl.setVisibility(View.GONE);
+            textDays.setTextScaleX(0.8f); // Should stop it overflowing if more than 3 digits
+            lin1.setWeightSum(5); // Not exactly certain why this works but it does.
+        }
 
         //System.out.println("!!- " + rowID);
         long millis = myEvent.get_evtime();
@@ -171,7 +183,7 @@ public class ShowCounter extends Activity {
             public void onTick(long millisUntilFinished) {
                 //progressMade = (int) millisUntilFinished;
                 secs = timeDiff + ((millisToStart / 1000) - ((int) (millisUntilFinished / 1000)));
-                if (countDirection == 1)
+                if (countDirection == 1) // 1 = countdown
                     secs *= -1;
                 //System.out.println("!!- secs=" + secs);
                 modSecs = secs % 60;
@@ -180,7 +192,10 @@ public class ShowCounter extends Activity {
                 long hours = TimeUnit.SECONDS.toHours(secs) % 24;
                 int days = (int) TimeUnit.SECONDS.toDays(secs);
                 double years = days / 365.25;
-                modDays = (int) Math.floor(days % 365.25);
+                if(myEvent.get_dayyears() == 0)
+                    modDays = days;
+                else
+                    modDays = (int) Math.floor(days % 365.25);
                 //System.out.println("!-" + hours);
                 //textSecs.setText(String.valueOf((timeDiff - (millisUntilFinished / 1000)) + 20000));
                 textSecs.setText(String.valueOf(modSecs));
@@ -192,7 +207,6 @@ public class ShowCounter extends Activity {
                 if (secs < 0) {
                     // go to a new new activity?
                     //cdt.cancel();
-                    //System.out.println("!!- cancelled");
                     //textSecs.setText("Yippee!");
                     Intent cdf = new Intent(getBaseContext(), CountdownFinished.class);
                     startActivity(cdf);

@@ -102,7 +102,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     // Getting a single event
-    public  Events getMyEvent(String rowid) {
+    public  Events getMyEvent(int rowid) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -110,13 +110,14 @@ public class MyDBHandler extends SQLiteOpenHelper {
                         COLUMN_EVENT_NAME, COLUMN_EVENT_DIR,COLUMN_EVENT_TIME,COLUMN_EVENT_STATUS,
                         COLUMN_EVENT_INC_HRS,COLUMN_EVENT_INC_MIN,COLUMN_EVENT_INC_SEC,
                         COLUMN_EVENT_DAYSONLY }, COLUMN_ID + "=?",
-                new String[] { rowid }, null, null, null, null);
+                new String[] { String.valueOf(rowid) }, null, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
         //System.out.println("!!- "  + "checkbox is " + Integer.parseInt(cursor.getString(4)));
         db.close();
-        return new Events(cursor.getString(1),
+        return new Events(Integer.parseInt(cursor.getString(0)),
+                cursor.getString(1),
                 Integer.parseInt(cursor.getString(2)),
                 Integer.parseInt(cursor.getString(3)),
                 //Integer.parseInt(cursor.getString(4)));
@@ -140,7 +141,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         cv.put(COLUMN_EVENT_INC_HRS, myEvent.get_inchrs());
         cv.put(COLUMN_EVENT_INC_MIN, myEvent.get_incmin());
         cv.put(COLUMN_EVENT_INC_SEC, myEvent.get_incsec());
-       // System.out.println("!!- " + " id is " + myEvent.get_id());
+        cv.put(COLUMN_EVENT_DAYSONLY, myEvent.get_dayyears());
+        //System.out.println("!!- " + " days only is " + myEvent.get_dayyears());
         db.update(TABLE_EVENTS, cv, "_id = " + myEvent.get_id(), null);
         db.close();
 
@@ -149,7 +151,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     //Delete a row from the database
-    public boolean deleteEvent (String eventID) {
+    public boolean deleteEvent (int eventID) {
 
         boolean result = false;
 
@@ -163,7 +165,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         db.close();
-        System.out.println("!!-  result is " + result);
+        //System.out.println("!!-  result is " + result);
         return result;
     }
 
@@ -215,7 +217,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     // Get row count
-    public  long getRowCount(String status) {
+    public  int getRowCount(String status) {
 
         String whereClause;
         if (status .equals("ALL"))
@@ -223,7 +225,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         else
             whereClause = "evstatus=\"" + status + "\"";
         SQLiteDatabase db = this.getReadableDatabase();
-        return DatabaseUtils.queryNumEntries(db, TABLE_EVENTS, whereClause);
+        return (int) DatabaseUtils.queryNumEntries(db, TABLE_EVENTS, whereClause);
 
     }
 }

@@ -15,6 +15,12 @@ public class Events {
     // empty constructor
     public Events() {
     }
+
+    // constructor
+    public Events(int id, String eventname) {
+        this._id = id;
+        this._eventname = eventname;
+    }
     // constructor
     public Events(int id, String eventname, int direction, int evtime, String evstatus,
                   int inchrs, int incmin, int incsec, int dayyears) {

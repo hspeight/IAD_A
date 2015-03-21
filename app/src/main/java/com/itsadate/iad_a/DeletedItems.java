@@ -44,7 +44,7 @@ public class DeletedItems extends Activity
     ArrayList deletedEvents = new ArrayList();
 
     private ListView mainListView;
-    private mItems[] itemss;
+    //private mItems[] itemss;
     private ArrayAdapter<mItems> listAdapter;
     ArrayList<String> checked = new ArrayList<String>();
     ArrayList<mItems> planetList = new ArrayList<mItems>();
@@ -124,7 +124,7 @@ public class DeletedItems extends Activity
                 });
 
                 // Create and populate planets.
-        itemss = (mItems[]) getLastNonConfigurationInstance();
+        //itemss = (mItems[]) getLastNonConfigurationInstance();
 
         ArrayList<mItems> planetList;
 /*
@@ -199,7 +199,7 @@ public class DeletedItems extends Activity
         if (evstring.length() > 0) { // need to display something if there are no events
             for (i = 0; i < foods.length; i++) {
                 //System.out.println("!!- " + i + foods.length);
-                Events myEvent = dbHandler.getMyEvent(foods[i]);
+                Events myEvent = dbHandler.getMyEvent(Integer.parseInt(foods[i]));
                 planetList.add(new mItems(myEvent.get_eventname(),formatDateTime(myEvent.get_evtime(), myEvent.get_direction()),false)); // <-- clue
                 //System.out.println("!!- " + mItems(i));
                         //listDataHeader.add(myEvent.get_eventname());
@@ -433,8 +433,9 @@ public class DeletedItems extends Activity
         //System.out.println("!!- " + rowidsSelected);
         return rowsChecked;
     }
-
+/*
     public Object onRetainNonConfigurationInstance() {
         return itemss;
     }
+*/
 }
