@@ -18,9 +18,14 @@
         android:orderInCategory="101"
         />
 
+    <item android:id="@+id/action_backrest"
+        android:title="Backup &amp; Restore"
+        android:orderInCategory="103"
+        />
+
     <item android:id="@+id/action_settings"
         android:title="Settings"
-        android:orderInCategory="103"
+        android:orderInCategory="104"
         />
 
 </menu>

@@ -8,33 +8,25 @@
     android:id="@+id/viewID">
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/hsEditText"
-        android:imeOptions="actionDone"
-        android:hint = "Enter your event title here"
-        android:layout_centerHorizontal="true"
-        android:background="@color/CornflowerBlue"
-        android:inputType="text"
-        android:enabled="true"
-        android:editable="true"
-        android:focusable="true"
-        android:clickable="true" />
+        android:id ="@+id/hsEditText"
+        android:layout_width ="match_parent"
+        android:layout_height ="wrap_content"
+
+        android:inputType="textCapSentences"
+
+        android:hint ="Event name"
+        android:layout_marginBottom="40dp" />
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/radioDirection"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="58dp"
-        android:id="@+id/linearLayout4">
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"/>
+        android:id="@+id/linearLayout4"
+        android:layout_marginTop="41dp"
+        android:layout_below="@+id/hsEditText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <RadioGroup
             android:id="@+id/radioDirection"
@@ -64,134 +56,25 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout5"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Include:"
-            android:id="@+id/textView13"
-             />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Hours"
-            android:id="@+id/textView10"
-            android:layout_marginLeft="10dp" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBoxHours"
-            android:checked="false" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Mins"
-            android:id="@+id/textView11"
-            android:layout_marginLeft="10dp" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBoxMins"
-            android:checked="false" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Secs"
-            android:id="@+id/textView12"
-            android:layout_marginLeft="10dp" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBoxSecs"
-            android:checked="false" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-
-        android:id="@+id/linearLayout6"
-        android:layout_below="@+id/linearLayout5"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-
-        <RadioGroup
-            android:id="@+id/yearsDays"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation='horizontal'>
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Days Only"
-                android:id="@+id/radioButtonYearsAndDays"
-
-                android:checked="true"
-                android:textAppearance="@android:style/TextAppearance.Small" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Years and Days"
-                android:id="@+id/radioButtonYearsAndDays"
-
-                android:checked="false"
-                android:textAppearance="@android:style/TextAppearance.Small"
-                android:layout_marginLeft="50dp" />
-        </RadioGroup>
-
-    </LinearLayout>
-
     <View
+        android:id="@+id/separator_1"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-
+        android:background="@android:color/darker_gray"
+        android:layout_above="@+id/linearLayout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="5dp" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        android:layout_below="@+id/linearLayout4"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/textView"
-        android:layout_marginBottom="5dp" />
+        android:layout_alignParentStart="true" />
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout"
 
-        android:layout_below="@+id/linearLayout6"
+        android:layout_below="@+id/linearLayout4"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="false"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -200,7 +83,7 @@
             android:id="@+id/textViewDirection"
             android:autoText="false"
 
-            android:layout_marginTop="18dp" />
+            />
 
 
     </LinearLayout>
@@ -209,10 +92,11 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2"
         android:layout_below="@+id/linearLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout2">
+        android:layout_marginBottom="10dp">
 
         <Button
             android:layout_width="wrap_content"
@@ -231,5 +115,89 @@
             android:textSize="14dp" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/separator_2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout5"
+        android:layout_below="@+id/separator_2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBoxSecs"
+            android:checked="false"
+            android:text="Show seconds" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:id="@+id/linearLayout6"
+        android:layout_below="@+id/linearLayout5"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="70dp">
+
+        <RadioGroup
+            android:id="@+id/radioYearsDays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation='horizontal'>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButtonDaysOnly"
+
+                android:checked="false"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:layout_marginLeft="5dp"
+                android:text="Days"
+                android:enabled="true" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButtonYearsAndDays"
+
+                android:checked="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="30dp"
+                android:text="Days &amp; Years"
+                android:enabled="true" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine|textCapSentences"
+        android:ems="10"
+        android:id="@+id/editTextInfo"
+        android:layout_above="@+id/linearLayout4"
+        android:layout_centerHorizontal="true"
+        android:hint="Optional event info"
+        android:singleLine="true" />
 
 </RelativeLayout>

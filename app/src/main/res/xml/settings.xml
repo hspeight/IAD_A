@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="App Theme"
+        android:key="app_theme">
+
+        <PreferenceScreen
+            android:title="Event List Colors"
+            android:summary="Select event list colour theme">
+            <intent android:action="android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS"/>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="Event Timer Colors"
+            android:summary="Select color scheme to use in event timers">
+            <intent android:action="android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS2"/>
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

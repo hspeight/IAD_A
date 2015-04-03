@@ -24,7 +24,9 @@
 
             android:maxLength ="2000"
             android:hint ="Event name"
-            />
+            android:layout_marginBottom="10dp"/>
+
+
 
     </LinearLayout>
 
@@ -34,9 +36,10 @@
         android:layout_height="wrap_content"
 
         android:id="@+id/linearLayout4"
-        android:layout_below="@+id/linearLayoutA"
+        android:layout_below="@+id/editTextInfo"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp">
 
         <RadioGroup
             android:id="@+id/radioDirection"
@@ -73,7 +76,7 @@
         android:id="@+id/textViewDirection"
         android:autoText="false"
 
-        android:layout_above="@+id/buttonCounterDate"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -141,7 +144,7 @@
         android:id="@+id/buttonCounterDate"
         android:width="150dp"
         android:textSize="14sp"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/textViewDirection"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -157,5 +160,19 @@
         android:layout_marginLeft="33dp"
         android:layout_marginStart="33dp" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine|textCapSentences"
+        android:ems="10"
+        android:id="@+id/editTextInfo"
+        android:hint="Optional event info"
+        android:singleLine="true"
+        android:maxLines="2"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        android:layout_weight="1"
+        android:layout_below="@+id/linearLayoutA"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

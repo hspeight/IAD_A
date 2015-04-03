@@ -17,10 +17,14 @@
     <string name="title_activity_event_manager">Event Manager</string>
     <string name="title_activity_event_editor">Event Editor</string>
     <string name="title_activity_utility">Utility</string>
+    <string name="title_activity_backupandrestore">Backup &amp; Restore</string>
     <string name="title_activity_cdf">Finished</string>
     <string name="done">Done</string>
     <string name="restore">Restore</string>
     <string name="delete_perm">Delete</string>
     <string name="get_answer">Click to get Selected Answer</string>
+    <string name="pref_update_setting">Update Settings</string>
+    <string name="pref_select_theme_color">Select Theme</string>
+    <string name="pref_select_color">Theme</string>
 
 </resources>

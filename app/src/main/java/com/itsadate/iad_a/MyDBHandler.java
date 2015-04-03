@@ -13,11 +13,12 @@ import java.sql.SQLDataException;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 17;
+    private static final int DATABASE_VERSION = 18;
     private static final String DATABASE_NAME = "events.db";
     public static final  String TABLE_EVENTS = "events";
     public static final  String COLUMN_ID = "_id";
     public static final  String COLUMN_EVENT_NAME = "eventname";
+    public static final  String COLUMN_EVENT_INFO = "eventinfo";
     public static final  String COLUMN_EVENT_DIR = "direction";
     public static final  String COLUMN_EVENT_TIME = "evtime";
     public static final  String COLUMN_EVENT_STATUS = "evstatus"; // (A)ctive/(I)nactive
@@ -36,6 +37,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         String query = "CREATE TABLE " + TABLE_EVENTS + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_EVENT_NAME + " TEXT, " +
+                COLUMN_EVENT_INFO + " TEXT, " +
                 COLUMN_EVENT_DIR + " INTEGER, " +
                 COLUMN_EVENT_TIME + " INTEGER, " +
                 COLUMN_EVENT_STATUS + " TEXT, " +
@@ -64,6 +66,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT_NAME, event.get_eventname());
+        values.put(COLUMN_EVENT_INFO, event.get_eventinfo());
         values.put(COLUMN_EVENT_DIR, event.get_direction());
         values.put(COLUMN_EVENT_TIME, event.get_evtime());
         values.put(COLUMN_EVENT_STATUS, event.get_evstatus());
@@ -107,8 +110,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_EVENTS, new String[] { COLUMN_ID,
-                        COLUMN_EVENT_NAME, COLUMN_EVENT_DIR,COLUMN_EVENT_TIME,COLUMN_EVENT_STATUS,
-                        COLUMN_EVENT_INC_HRS,COLUMN_EVENT_INC_MIN,COLUMN_EVENT_INC_SEC,
+                        COLUMN_EVENT_NAME,COLUMN_EVENT_INFO,COLUMN_EVENT_DIR,COLUMN_EVENT_TIME,
+                        COLUMN_EVENT_STATUS,COLUMN_EVENT_INC_HRS,COLUMN_EVENT_INC_MIN,COLUMN_EVENT_INC_SEC,
                         COLUMN_EVENT_DAYSONLY }, COLUMN_ID + "=?",
                 new String[] { String.valueOf(rowid) }, null, null, null, null);
 
@@ -118,15 +121,15 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
         return new Events(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1),
-                Integer.parseInt(cursor.getString(2)),
+                cursor.getString(2),
                 Integer.parseInt(cursor.getString(3)),
-                //Integer.parseInt(cursor.getString(4)));
-                cursor.getString(4),
-                Integer.parseInt(cursor.getString(5)),
+                Integer.parseInt(cursor.getString(4)),
+                cursor.getString(5),
                 Integer.parseInt(cursor.getString(6)),
                 Integer.parseInt(cursor.getString(7)),
-                Integer.parseInt(cursor.getString(8))
-                                );
+                Integer.parseInt(cursor.getString(8)),
+                Integer.parseInt(cursor.getString(9))
+         );
     }
 
     // Updating a single event
@@ -136,6 +139,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_EVENT_NAME, myEvent.get_eventname());
+        cv.put(COLUMN_EVENT_INFO, myEvent.get_eventinfo());
         cv.put(COLUMN_EVENT_DIR, myEvent.get_direction());
         cv.put(COLUMN_EVENT_TIME, myEvent.get_evtime());
         cv.put(COLUMN_EVENT_INC_HRS, myEvent.get_inchrs());
@@ -150,7 +154,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     }
 
-    //Delete a row from the database
+    //Mark event as inactive
     public boolean deleteEvent (int eventID) {
 
         boolean result = false;

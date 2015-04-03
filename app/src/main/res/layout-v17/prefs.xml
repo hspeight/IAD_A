@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/relLayout1">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutRG"
+        android:layout_marginTop="40dp">
+        <RadioGroup
+            android:id="@+id/eventListColors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation='horizontal'>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Background"
+                android:id="@+id/radioBgColor"
+                android:checked="true"
+                android:textAppearance="@android:style/TextAppearance.Small" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Row"
+                android:id="@+id/radioRowColor"
+                android:checked="false"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:layout_marginLeft="40dp" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Text"
+                android:id="@+id/radioTextColor"
+                android:checked="false"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:layout_marginLeft="40dp" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutR1"
+        android:layout_below="@+id/linearLayoutRG"
+        >
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/btnPrefC1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".25"
+            android:layout_margin="2dp">
+        </Button>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/btnPrefC2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".25"
+            android:layout_margin="2dp">
+        </Button>
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/btnPrefC3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".25"
+            android:layout_margin="2dp">
+        </Button>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/btnPrefC4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".25"
+            android:layout_margin="2dp">
+        </Button>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linearLayoutBG"
+        android:layout_below="@+id/linearLayoutR2">
+
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listViewHS" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutR2"
+        android:layout_below="@+id/linearLayoutR1">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/btnPrefC21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".25"
+            android:layout_margin="2dp">
+        </Button>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/btnPrefC22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".25"
+            android:layout_margin="2dp">
+        </Button>
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/btnPrefC23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".25"
+            android:layout_margin="2dp">
+        </Button>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/btnPrefC24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".25"
+            android:layout_margin="2dp">
+        </Button>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Event List Colors"
+        android:id="@+id/textView14"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp" />
+
+</RelativeLayout>

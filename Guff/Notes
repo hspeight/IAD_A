@@ -1,0 +1,3 @@
+Backup & Restore
+Only backs up (A)ctive events. Archived ones will need to be restored first in order to back them up.
+Restore overwrites current (A)ctive list

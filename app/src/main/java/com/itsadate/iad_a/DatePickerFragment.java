@@ -9,6 +9,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 
 public class DatePickerFragment extends DialogFragment {
 
@@ -60,7 +61,7 @@ public class DatePickerFragment extends DialogFragment {
                 myDialog = new DatePickerDialog(getActivity(), ondateSet, year, month, day);
                 break;
             case TIME_PICKER:
-                myDialog = new TimePickerDialog(getActivity(), ontimeSet, hour, minute, true);
+                myDialog = new TimePickerDialog(getActivity(), ontimeSet, hour, minute, DateFormat.is24HourFormat(getActivity()));
                 break;
             case DIALOG:
                 //Define your custom dialog or alert dialog here and return it.

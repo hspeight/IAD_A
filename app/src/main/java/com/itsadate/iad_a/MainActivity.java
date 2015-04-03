@@ -1,9 +1,12 @@
 package com.itsadate.iad_a;
 
 // Code courtesy of http://www.androidhive.info/2013/07/android-expandable-list-view-tutorial/
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 //import android.app.AlertDialog;
@@ -13,9 +16,12 @@ import android.content.Intent;
 
 //import android.graphics.Color;
 //import android.graphics.drawable.Drawable;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,23 +39,21 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class MainActivity extends Activity {
-
-    int maxAllowableEvents = 12; // not yet in use. Wil be 9999 in paid version
+public class MainActivity extends Activity
+    implements EventDialog.OnDataPass {
+    int maxAllowableEvents = 20; // not yet in use. Wil be 9999 in paid version
 
     MyDBHandler dbHandler;
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
+    View linLayout;
+    View linLayoutParent;
     List<String> listDataHeader;
+    List<String> listDataSubHeader;
     HashMap<String, List<String>> listDataChild;
     public Events[] eventArray;
-    //public Events iadevent[];
-    //public String rowID []; // Array of _id column from database
-    //public int rowTime []; // Array of event time column from database
-
-    //public ImageView play = null;
-    //public int binImageRow;
+    public static final String MyPREFERENCES = "MyPreferences_001";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +61,12 @@ public class MainActivity extends Activity {
         dbHandler = new MyDBHandler(this, null, null, 1);
         setContentView(R.layout.main_activity);
 
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+        // for explanation see http://developer.android.com/guide/topics/ui/settings.html#Fragment
+
         setGroupParents();
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataSubHeader, listDataChild);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
@@ -81,6 +88,11 @@ public class MainActivity extends Activity {
             }
         });
 
+        linLayout = findViewById(R.id.linLayoutMainBG);
+        //linLayout.setBackgroundColor(bgColor);
+
+        //linLayoutParent = findViewById(R.id.linLayoutParentBG);
+        //linLayoutParent.setBackgroundColor(rowColor);
     }
 
     public void deleteIconClicked (View v){
@@ -122,6 +134,7 @@ public class MainActivity extends Activity {
     public void setGroupParents() {
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        //expListView.setBackgroundColor(Color.RED);
         String evstring = dbHandler.getActiveEventIDs("A");
         //System.out.println("!!- " + "*" + evstring + "*");
         String[] foods = evstring.split(":"); // array of row_id's
@@ -131,6 +144,7 @@ public class MainActivity extends Activity {
         //rowTime = new int[foods.length];
         //System.out.println("!!- " + "^" + foods.length + "^");
         listDataHeader = new ArrayList<String>();
+        listDataSubHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
         int i;
         if (evstring.length() > 0) { // need to display something if there are no events
@@ -141,8 +155,11 @@ public class MainActivity extends Activity {
                 //eventArray[i] = new Events(1,"This is a sring");
                 //eventArray[i].e
                 listDataHeader.add(eventArray[i].get_eventname());
+                //generateInfo(eventArray[i].get_direction(), eventArray[i].get_evtime());
+                listDataSubHeader.add(generateInfo(eventArray[i].get_direction(), eventArray[i].get_evtime()));
                 List<String> child = new ArrayList<>();
-                child.add(formatDateTime(eventArray[i].get_evtime(), eventArray[i].get_direction()));
+                //child.add(formatDateTime(eventArray[i].get_evtime(), eventArray[i].get_direction()));
+                child.add(""); // No text to display but required so that child will expand
                 listDataChild.put(listDataHeader.get(i), child);
                 //rowID[i] = foods[i]; // store _id from database
                 //rowTime[i] = iadevent[i].get_evtime();
@@ -152,6 +169,23 @@ public class MainActivity extends Activity {
        //     startActivity(intent);
             //System.out.println("!!- " + "here");
         }
+    }
+
+    public String generateInfo(int direction, int dateTime) {
+
+        String indicator = "\u25B2" + " From "; // Up arrow
+        if(direction == 1)
+            indicator = "\u25BC" + " To "; // Down arrow
+
+        long millis = dateTime;
+        millis *= 1000;
+        DateTime dt = new DateTime(millis, DateTimeZone.getDefault()); // needs to be a local date
+        //DateTimeFormatter dtf = DateTimeFormat.forPattern("dd MMM yyyy hh:mm a", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.US);
+
+        return sdf.format(new Date(millis));
+        //return indicator + dtf.print(dt);
+
     }
 
     public String formatDateTime(int eventTime,int direction){
@@ -179,10 +213,12 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent addAct = new Intent(MainActivity.this, EventEditor.class);
-                int eventsInPlay = dbHandler.getRowCount("A"); //get number of active rows
+                int eventsInPlay = dbHandler.getRowCount("ALL"); //get number of active rows
                 if (eventsInPlay >= maxAllowableEvents) {
+                    boolean response = setupDialog("Upgrade to Pro?");
 
-                    Toast.makeText(getApplicationContext(), "You have too many events (" + eventsInPlay + ")" , Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "OK, Your loss pal" , Toast.LENGTH_SHORT).show();
+
                 } else {
                     startActivity(addAct);
                 }
@@ -196,12 +232,49 @@ public class MainActivity extends Activity {
                 startActivity(deleted);
                 return true;
             case R.id.action_settings:
-                Intent settings = new Intent(MainActivity.this, Utility.class); //will change to Settings.class when created
+                Intent settings = new Intent(MainActivity.this, SettingsActivity.class); //will change to Settings.class when created
+                //Intent settings = new Intent(MainActivity.this, ColorPickerPreference.class); //will change to Settings.class when created
                 startActivity(settings);
+                return true;
+            case R.id.action_backrest:
+                Intent backrest = new Intent(MainActivity.this, BackupAndRestore.class);
+                startActivity(backrest);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public boolean setupDialog(String message) {
+        //
+        EventDialog eventDialog = new EventDialog();
+
+        Bundle bundle = new Bundle();
+        //System.out.println("!!- " + " rows selected=" + rowidsSelected);
+
+        bundle.putString("dialogMessage", message);
+        eventDialog.setArguments(bundle);
+        //eventDialog.show(fm, "fragment_edit_name");
+        eventDialog.show(getFragmentManager(), "dialog");
+
+        return true;
+    }
+
+    @Override
+    public void onDataPass(String data) {
+
+        if (data .equals("Yes")) { // Yes button was clicked in Alertdialog
+            Toast.makeText(getApplicationContext(), "Good decision", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "OK, Your loss pal" , Toast.LENGTH_SHORT).show();
+        }
+            //if (opType .equals("D")) {
+            //    dbHandler.deleteSpecificEvents(rowidsSelected);
+            //} else {
+                //Toast.makeText(getApplicationContext(), "will restore " + rowidsSelected, Toast.LENGTH_SHORT).show();
+            //    dbHandler.restoreSpecificEvents(rowidsSelected);
+            //}
+            //finish();
     }
 
     @Override
@@ -210,10 +283,18 @@ public class MainActivity extends Activity {
 
         setGroupParents();
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataSubHeader, listDataChild);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
+
+        // Get instance to shared pref class
+        SharedPreferences pref = getSharedPreferences (MyPREFERENCES, MODE_PRIVATE);
+        int bgColor = pref.getInt("listBgColor", -16776961); // Get background color from pref file
+        linLayout.setBackgroundColor(bgColor);
+
+        //setTitle(getTitle() + " (" + dbHandler.getRowCount("A") + ")"); // put number of active events in title bar
+        setTitle(getString(R.string.app_name) + " (" + dbHandler.getRowCount("A") + ")"); // put number of active events in title bar
 
     }
 }

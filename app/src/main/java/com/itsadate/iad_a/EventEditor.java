@@ -5,18 +5,14 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
-//import android.app.FragmentManager;
 import android.os.Build;
 import android.os.Bundle;
-//import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-//import android.widget.Button;
-//import android.widget.CheckBox;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -29,9 +25,9 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+//import java.util.Calendar;
 import java.util.Date;
-
+import java.util.Locale;
 
 import org.joda.time.DateTime;
 //import org.joda.time.DateTimeComparator;
@@ -43,11 +39,7 @@ import org.joda.time.format.DateTimeFormatter;
 public class EventEditor extends Activity
         implements EventDialog.OnDataPass { //Required for interaction between fragment & activity
 
-    //public class EventEditor extends Activity implements View.OnClickListener {
-
     private View myView;
-    //private TextView pDisplayDate;
-//    private TextView textTime;
     private TextView textUpDown;
     private Button dateButton;
     private Button timeButton;
@@ -58,23 +50,18 @@ public class EventEditor extends Activity
     private int mMinute;
     private int idx_cd;
     private int idx_dy;
-    //private int chk_hrs;
-    //private int chk_min;
     private int chk_sec;
     private int timeInSeconds;
     private String tranType;
-    //private int countDirection;
     private int rowID;
     private String activityDataIn;
     private String activityDataOut;
-    //private String collateActivityInfo;
+    String AMPM;
 
     private RadioButton countUp = null;
     private RadioButton countDown = null;
     private RadioButton daysOnly = null;
     private RadioButton daysAndYears = null;
-    //private CheckBox includeHrs = null;
-    //private CheckBox includeMin = null;
     private CheckBox includeSec = null;
 
     private RadioGroup cd;
@@ -84,6 +71,7 @@ public class EventEditor extends Activity
     static final int DATE_DIALOG_ID = 0;
 
     EditText hsEditText;
+    EditText optionalInfo;
     MyDBHandler dbHandler;
 
     /** Updates the date in the TextView */
@@ -116,7 +104,8 @@ public class EventEditor extends Activity
         String month = dt.monthOfYear().getAsShortText();
         //pDisplayDate.setText(pDay + " " + month  + " " + pYear);
         dateButton.setText(pDay + " " + month  + " " + pYear);
-        timeButton.setText(mHour + ":" + mMinute);
+        timeButton.setText(mHour + ":" + pad(mMinute) + " " + AMPM);
+        //timeButton.setText(mHour + ":" + (mHour < 12 ? mHour + " AM" : mHour -12 + " PM"));
 
     }
 
@@ -148,6 +137,7 @@ public class EventEditor extends Activity
         setContentView(R.layout.activity_event_editor);
         myView = findViewById(R.id.viewID); // reference to view to be used in addbuttonpressed method
         hsEditText = (EditText) findViewById(R.id.hsEditText);
+        optionalInfo = (EditText) findViewById(R.id.editTextInfo);
         textUpDown = (TextView) findViewById(R.id.textViewDirection);
 
         dateButton = (Button) findViewById(R.id.buttonCounterDate);
@@ -165,6 +155,7 @@ public class EventEditor extends Activity
         includeSec = (CheckBox) findViewById(R.id.checkBoxSecs);
 
         tranType = "add";
+        String formattedDate;
 
         dbHandler = new MyDBHandler(this, null, null, 1);
 
@@ -175,6 +166,7 @@ public class EventEditor extends Activity
             rowID = bundle.getInt("ROW_ID");
             Events myEvent = dbHandler.getMyEvent(rowID);
             hsEditText.setText(myEvent.get_eventname());
+            optionalInfo.setText(myEvent.get_eventinfo());
             idx_cd = myEvent.get_direction();
             idx_dy = myEvent.get_dayyears();
 
@@ -182,21 +174,39 @@ public class EventEditor extends Activity
             //System.out.println("!!- "  + "days & years from db is " + myEvent.get_dayyears());
             long millis = myEvent.get_evtime();
             millis *= 1000;
-            DateTime dt = new DateTime(millis, DateTimeZone.getDefault());
-            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd-HH-mm");
 
-            pYear = Integer.parseInt(dtf.print(dt).split("-")[0]);
-            pMonth = (Integer.parseInt(dtf.print(dt).split("-")[1]) - 1);
-            pDay = Integer.parseInt(dtf.print(dt).split("-")[2]);
-            mHour = Integer.parseInt(dtf.print(dt).split("-")[3]);
-            mMinute = Integer.parseInt(dtf.print(dt).split("-")[4]);
+            formattedDate = formatMyDate(millis);
+            //System.out.println("!!- " + formattedDate);
+
+            //DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd-HH-mm");
+            pYear = Integer.parseInt(formattedDate.split("-")[0]);
+            pMonth = (Integer.parseInt(formattedDate.split("-")[1]) - 1);
+            pDay = Integer.parseInt(formattedDate.split("-")[2]);
+            mHour = Integer.parseInt(formattedDate.split("-")[3]);
+            mMinute = Integer.parseInt(formattedDate.split("-")[4]);
+            AMPM = formattedDate.split("-")[5];
+            //System.out.println("!!- " + AMPM);
         } else {
+            //long millis =
+            formattedDate = formatMyDate(System.currentTimeMillis());
+            //System.out.println("!!- " + formattedDate);
+            pYear = Integer.parseInt(formattedDate.split("-")[0]);
+            pMonth = (Integer.parseInt(formattedDate.split("-")[1]) - 1);
+            pDay = Integer.parseInt(formattedDate.split("-")[2]);
+            mHour = Integer.parseInt(formattedDate.split("-")[3]);
+            mMinute = Integer.parseInt(formattedDate.split("-")[4]);
+            AMPM = formattedDate.split("-")[5];
+/*
             final Calendar cal = Calendar.getInstance();
             pYear = cal.get(Calendar.YEAR);
             pMonth = cal.get(Calendar.MONTH);
             pDay = cal.get(Calendar.DAY_OF_MONTH);
             mHour = cal.get(Calendar.HOUR_OF_DAY);
             mMinute = cal.get(Calendar.MINUTE);
+*/
+            //SimpleDateFormat mSDF = new SimpleDateFormat("hh:mm a");
+            //String time = mSDF.format(cal);
+            //System.out.println("!! " + time);
             idx_cd = 1; chk_sec = 1;
         }
 
@@ -265,13 +275,22 @@ public class EventEditor extends Activity
                         | ActionBar.DISPLAY_SHOW_TITLE);
         actionBar.setCustomView(customActionBarView);
         // END_INCLUDE (inflate_set_custom_view)
-       // setContentView(R.layout.activity_done_button);
+        // setContentView(R.layout.activity_done_button);
 
+    }
+
+    public String formatMyDate (long millisIn) {
+
+        DateTime dt = new DateTime(millisIn, DateTimeZone.getDefault());
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd-hh-mm-a");
+
+        return dtf.print(dt);
     }
 
     public void addButtonClicked(View view) {
 
         String EventTitle = hsEditText.getText().toString();
+        String EventInfo = optionalInfo.getText().toString();
         if(EventTitle.isEmpty()) {
             Toast mytoast = Toast.makeText(getApplicationContext(),"Please  title your event",Toast.LENGTH_SHORT);
             //        Toast.makeText(getApplicationContext(), "Please  title your event", Toast.LENGTH_SHORT).show();
@@ -281,7 +300,8 @@ public class EventEditor extends Activity
         }
 
         String givenDateString = dateButton.getText() + " " + timeButton.getText(); //e.g. 7 Jul 2014 15:30
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm");
+        //System.out.println("!!- "  + "date & time=" + givenDateString);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.US);
         try {
             Date mDate = sdf.parse(givenDateString);
             //long timeInMillis = mDate.getTime(); // Time entered in millis
@@ -311,25 +331,25 @@ public class EventEditor extends Activity
         //int rowsInDB = dbHandler.getRowCount()
         //System.out.println("!!- "  + dbHandler.getRowCount());
         if (tranType.equals("update")) {
-            Events event = new Events(rowID, EventTitle, idx_cd, timeInSeconds, "A",
-                                        //includeHrs.isChecked() ? 1 : 0,
-                                        0,
-                                        //includeMin.isChecked() ? 1 : 0,
-                                        0,
-                                        includeSec.isChecked() ? 1 : 0,
-                                        idx_dy);
+            Events event = new Events(rowID, EventTitle, EventInfo, idx_cd, timeInSeconds, "A",
+                    //includeHrs.isChecked() ? 1 : 0,
+                    0,
+                    //includeMin.isChecked() ? 1 : 0,
+                    0,
+                    includeSec.isChecked() ? 1 : 0,
+                    idx_dy);
             //System.out.println("!!- "  + "sending  " + (daysOnly.isChecked() ? 1 : 0));
 
             dbHandler.updateEvent(event);
             //Toast.makeText(getApplicationContext(), "Event updated", Toast.LENGTH_SHORT).show();
         } else {
-            Events event = new Events(EventTitle, idx_cd, timeInSeconds, "A",
-                                        //includeHrs.isChecked() ? 1 : 0,
-                                        0,
-                                        //includeMin.isChecked() ? 1 : 0,
-                                        0,
-                                        includeSec.isChecked() ? 1 : 0,
-                                        idx_dy);
+            Events event = new Events(EventTitle, EventInfo, idx_cd, timeInSeconds, "A",
+                    //includeHrs.isChecked() ? 1 : 0,
+                    0,
+                    //includeMin.isChecked() ? 1 : 0,
+                    0,
+                    includeSec.isChecked() ? 1 : 0,
+                    idx_dy);
             dbHandler.addEvent(event);
             //Toast.makeText(getApplicationContext(), "Your event has been created", Toast.LENGTH_SHORT).show();
         }
@@ -348,9 +368,9 @@ public class EventEditor extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-        //    case R.id.action_delete:
-        //        // deleteEvent();
-        //        return true;
+            //    case R.id.action_delete:
+            //        // deleteEvent();
+            //        return true;
             case R.id.action_settings:
                 //openSettings();
                 return true;
@@ -401,12 +421,11 @@ public class EventEditor extends Activity
     public String collateActivityInfo() {
 
         return hsEditText.getText().toString()
+                + optionalInfo.getText().toString()
                 + countUp.isChecked()
                 + dateButton.getText()
                 + timeButton.getText()
                 + daysOnly.isChecked()
-                //+ includeHrs.isChecked()
-                //+ includeMin.isChecked()
                 + includeSec.isChecked();
     }
 
@@ -426,6 +445,9 @@ public class EventEditor extends Activity
 
     private void showTimePicker() {
 
+        if (AMPM .equals("PM") ) {
+            mHour += 12;
+        }
         DatePickerFragment dialog = new DatePickerFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("dialog_id", 2); // 2=Time Picker
@@ -461,6 +483,15 @@ public class EventEditor extends Activity
                               int minute) {
             mHour = hourOfDay;
             mMinute = minute;
+            if (mHour < 12) {
+                AMPM = "AM";
+            } else if (mHour == 12) {
+                AMPM = "PM";
+            } else {
+                AMPM = "PM";
+                mHour -= 12;
+            }
+            //System.out.println("!!- " + mHour + " /" + mMinute);
     /*
             Toast.makeText(
                     EventEditor.this,

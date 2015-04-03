@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parentLayout"
+    android:id="@+id/linLayoutParentBG"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="5dp"
-    android:background="@color/BlueViolet"
-    android:minHeight="40dp">
+    android:minHeight="60dp">
 
 
     <TextView
+        style="@style/listText1"
         android:id="@+id/lblListHeader"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:textSize="17dp"
-        android:textColor="#f9f93d"
+        android:textSize="18sp"
         android:singleLine="true"
-        android:background="@color/BlueViolet"
         android:gravity="center|left" />
+
+    <TextView
+        android:id="@+id/lblListSubHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:textSize="12sp"
+        android:singleLine="true"
+        android:gravity="center|left"
+        android:text="This will be the sub text"
+        android:layout_marginLeft="10dp" />
 
 </LinearLayout>

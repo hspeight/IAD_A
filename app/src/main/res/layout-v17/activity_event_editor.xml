@@ -7,26 +7,15 @@
     tools:context="com.example.hector.myproj03.EventEditor"
     android:id="@+id/viewID">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="false"
-        android:id="@+id/linearLayoutA">
+    <EditText
+        android:id ="@+id/hsEditText"
+        android:layout_width ="match_parent"
+        android:layout_height ="wrap_content"
 
-        <EditText
-            android:id ="@+id/hsEditText"
-            android:layout_width ="match_parent"
-            android:layout_height ="0dp"
-            android:layout_weight ="1"
-            android:inputType="textCapSentences"
+        android:inputType="textCapSentences"
 
-            android:maxLength ="2000"
-            android:hint ="Event name"
-            />
-
-    </LinearLayout>
+        android:hint ="Event name"
+        android:layout_marginBottom="50dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -34,9 +23,10 @@
         android:layout_height="wrap_content"
 
         android:id="@+id/linearLayout4"
-        android:layout_below="@+id/linearLayoutA"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginTop="41dp"
+        android:layout_below="@+id/hsEditText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <RadioGroup
             android:id="@+id/radioDirection"
@@ -151,7 +141,6 @@
             android:checked="false"
             android:text="Show seconds" />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -208,15 +197,18 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/textView15"
-        android:layout_below="@+id/separator_3"
+        android:inputType="textMultiLine|textCapSentences"
+        android:ems="10"
+        android:id="@+id/editTextInfo"
+        android:layout_above="@+id/linearLayout4"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp" />
+        android:hint="Optional event info"
+        android:singleLine="true"
+        android:maxLines="2"
+        android:textAppearance="@android:style/TextAppearance.Small" />
 
 
 </RelativeLayout>

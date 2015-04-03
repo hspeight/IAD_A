@@ -5,3 +5,5 @@ sqlite3 /data/data/com.itsadate.iad_a/databases/events.db "select * from events"
 
 sqlite3 /data/data/com.itsadate.iad_a/databases/events.db "PRAGMA table_info(events);"
 
+cd /data/data/com.itsadate.iad_a/shared_prefs
+

@@ -22,11 +22,14 @@
 
     </style>
 
-    <style name="archtext1">
-        <item name="android:padding">4dip</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
-        <item name="android:textColor">#0000ff</item>
-        <item name="android:background">#C0C0C0</item>
+    <style name="listBG1">
+        <item name="android:background">@color/BlueViolet</item>
+    </style>
+
+    <style name="listText1">
+
+        <item name="android:textColor">#f9f93d</item>
+
     </style>
 
 </resources>

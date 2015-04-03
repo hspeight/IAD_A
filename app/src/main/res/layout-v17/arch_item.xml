@@ -2,38 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/Bisque"
-    android:id="@+id/relLayout">
+    android:layout_height="wrap_content"
+    android:id="@+id/relLayout"
+    android:minHeight="55dp"
+    android:gravity="center_vertical">
 
 
     <CheckBox android:id="@+id/CheckBox01"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" android:layout_marginRight="6sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="6sp"
         android:focusable="false"
-        android:gravity="center_horizontal"
         android:clickable="false">
     </CheckBox>
 
     <TextView
-        style="@style/archtext1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-
+        android:paddingLeft="10dp"
         android:layout_toLeftOf="@id/CheckBox01"
         android:maxLines="1"
-        android:id="@+id/rowTextView"
+        android:id="@+id/rowTextView1"
         android:gravity="left"
-         />
+        android:text="Text 1" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/rowTextView2"
-        android:layout_below="@+id/rowTextView"
+        android:layout_below="@+id/rowTextView1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
         android:paddingLeft="10dp" />

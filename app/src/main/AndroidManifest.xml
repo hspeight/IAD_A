@@ -48,6 +48,10 @@
             android:label="@string/title_activity_utility" >
         </activity>
         <activity
+            android:name=".BackupAndRestore"
+            android:label="@string/title_activity_backupandrestore" >
+        </activity>
+        <activity
             android:name=".DeletedItems"
             android:label="@string/title_activity_utility" >
         </activity>
@@ -56,6 +60,44 @@
             android:label="@string/title_activity_cdf" >
         </activity>
 
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.itsadate.iad_a.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ColorPickerPreference"
+            android:label="@string/action_settings"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity" >
+            <intent-filter>
+                <action
+                    android:name="android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS" />
+                <category
+                    android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.itsadate.iad_a.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ColorPickerPreference2"
+            android:label="@string/action_settings"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity" >
+            <intent-filter>
+                <action
+                    android:name="android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS2" />
+                <category
+                    android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.itsadate.iad_a.MainActivity" />
+        </activity>
 
     </application>
 

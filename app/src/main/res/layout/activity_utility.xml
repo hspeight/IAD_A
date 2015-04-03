@@ -4,26 +4,92 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.itsadate.iad_a.Utility">
+    tools:context="com.itsadate.iad_a.Utility"
+    android:id="@+id/relLayoutUtility">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Insert Rows"
+        android:text="Insert"
         android:id="@+id/buttonInsert"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="63dp"
-        android:onClick="loadEvents" />
+        android:onClick="loadEvents"
+        android:layout_below="@+id/textView16"
+        android:layout_toRightOf="@+id/buttonBackup"
+        android:layout_toEndOf="@+id/buttonBackup"
+        android:textAppearance="@android:style/TextAppearance.Small" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clear DB"
-        android:id="@+id/buttonClear"
+        android:text="Clear"
+        android:id="@+id/buttonBackup"
         android:onClick="clearEvents"
+        android:layout_alignTop="@+id/buttonInsert"
+        android:layout_toRightOf="@+id/textView16"
+        android:layout_toEndOf="@+id/textView16"
+        android:textAppearance="@android:style/TextAppearance.Small" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Database"
+        android:id="@+id/textView16"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Prefs"
+        android:id="@+id/textView19"
         android:layout_below="@+id/buttonInsert"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="53dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="48dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear Prefs"
+        android:id="@+id/buttonClearPrefs"
+        android:layout_alignTop="@+id/textView19"
+        android:layout_toRightOf="@+id/textView16"
+        android:layout_toEndOf="@+id/textView16"
+        android:onClick="clearPrefs" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Insert Random"
+        android:id="@+id/buttonRandom"
+        android:layout_above="@+id/buttonClearPrefs"
+        android:layout_alignLeft="@+id/buttonClearPrefs"
+        android:layout_alignStart="@+id/buttonClearPrefs"
+        android:onClick="insertRandom" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editTextNumber"
+        android:layout_alignBottom="@+id/buttonRandom"
+        android:layout_toRightOf="@+id/buttonRandom"
+        android:layout_toEndOf="@+id/buttonRandom"
+        android:numeric="integer" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set to &apos;I&apos;"
+        android:id="@+id/buttonInactive"
+        android:layout_alignBottom="@+id/buttonInsert"
+        android:layout_toRightOf="@+id/buttonInsert"
+        android:layout_toEndOf="@+id/buttonInsert"
+        android:onClick="setInactive" />
 
 </RelativeLayout>

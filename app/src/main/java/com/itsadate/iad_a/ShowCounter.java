@@ -2,6 +2,7 @@ package com.itsadate.iad_a;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.CountDownTimer;
 //import android.support.v7.app.ActionBarActivity;
@@ -11,34 +12,28 @@ import android.view.MenuItem;
 //import android.widget.Button;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class ShowCounter extends Activity {
 
     //DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-    Calendar c = Calendar.getInstance();
+    //DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+    public static final String MyPREFERENCES = "MyPreferences_002";
     int secs;
     long modSecs; //need to learn how to cast
     int modDays;
     long mins;
     int rowID;
     CountDownTimer cdt;
-    ProgressBar mProgressBar;
+    View relLayout;
+    int bgColor,counterColor,textColor;
 //    boolean mbActive;
 //    int progressMade = 300000; // in ms --> 10s
 
@@ -49,8 +44,16 @@ public class ShowCounter extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_counter);
 
-        //final TextView textView2 = (TextView)findViewById(R.id.textView2);
-        //Button myButton;
+        // Get instance to shared pref class
+        SharedPreferences pref = getSharedPreferences (MyPREFERENCES, MODE_PRIVATE);
+        bgColor = pref.getInt("timerBgColor", -16776961); // Get background color from pref file
+        counterColor = pref.getInt("timerCounterColor", -16776961); // Get background color from pref file
+        textColor = pref.getInt("timerTextColor", -1); // Get text color from pref file
+
+
+        relLayout = findViewById(R.id.relLayoutCounterBG);
+        relLayout.setBackgroundColor(bgColor);
+
         dbHandler = new MyDBHandler(this, null, null, 1);
 
         // There should always be an associated row ID in the extras
@@ -128,6 +131,11 @@ public class ShowCounter extends Activity {
         final TextView textHour = (TextView) findViewById(R.id.textHour);
         final TextView textDays = (TextView) findViewById(R.id.textDays);
         final TextView textYears = (TextView) findViewById(R.id.textYears);
+        textSecs.setTextColor(counterColor);
+        textMins.setTextColor(counterColor);
+        textHour.setTextColor(counterColor);
+        textDays.setTextColor(counterColor);
+        textYears.setTextColor(counterColor);
         //Typeface font = Typeface.createFromAsset(this.getAssets(), "fonts/digital-7.ttf");
         Typeface font = Typeface.createFromAsset(this.getAssets(), "fonts/courier-new-italic-1361512243.ttf");
         //Typeface font = Typeface.createFromAsset(this.getAssets(), "fonts/komika-title-tall-1361511394.ttf");
@@ -139,8 +147,10 @@ public class ShowCounter extends Activity {
         textMins.setTypeface(font);
         textSecs.setTypeface(font);
 
-        TextView textTit = (TextView) findViewById(R.id.textTitle);
-        TextView textStartDate = (TextView) findViewById(R.id.textStartDate);
+        TextView textTit = (TextView) findViewById(R.id.textEvTitle);
+        textTit.setTextColor(textColor);
+        TextView textInfo = (TextView) findViewById(R.id.textOptionalInfo);
+        textInfo.setTextColor(textColor);
         TextView textYearsLbl = (TextView) findViewById(R.id.textViewYearsLabel);
         LinearLayout lin1 = (LinearLayout) findViewById(R.id.linLayout1); // Contains linear layouts for yy,dd,hh,mm,ss
 
@@ -150,6 +160,7 @@ public class ShowCounter extends Activity {
         //final Events myEvent = dbHandler.getMyEvent(Integer.parseInt(rowID));
         final Events myEvent = dbHandler.getMyEvent(rowID);
         textTit.setText(myEvent.get_eventname());
+        textInfo.setText(myEvent.get_eventinfo());
         final int countDirection = myEvent.get_direction();
 
         if (myEvent.get_incsec() == 0)
@@ -168,11 +179,11 @@ public class ShowCounter extends Activity {
         //String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (millis*1000)); //test code
         //System.out.println("!!- millis=" + millis + "/" + date);
         millis *= 1000;
-        DateTime dt = new DateTime(millis, DateTimeZone.getDefault()); // needs to be a local date
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd MMM yyyy HH:mm");
-        String myDate = dtf.print(dt);
+        //DateTime dt = new DateTime(millis, DateTimeZone.getDefault()); // needs to be a local date
+        //DateTimeFormatter dtf = DateTimeFormat.forPattern("dd MMM yyyy HH:mm");
+        //String myDate = dtf.print(dt);
 
-        textStartDate.setText(myDate);
+        //textInfo.setText(myDate);
         long td = System.currentTimeMillis() / 1000;
 
         final int timeDiff = ((int) td) - myEvent.get_evtime() ;
