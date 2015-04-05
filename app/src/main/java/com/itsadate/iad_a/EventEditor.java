@@ -94,12 +94,7 @@ public class EventEditor extends Activity
         } else {
             dy.check(R.id.radioButtonYearsAndDays);
         }
-        //if (chk_hrs == 1) { includeHrs.setChecked(true); }
-        //if (chk_min == 1) { includeMin.setChecked(true); }
-        if (chk_sec == 1) { includeSec.setChecked(true); }
 
-        //pDisplayDate.setTextColor(Color.BLUE);
-//        textTime.setTextColor(Color.BLUE);
         final LocalDateTime dt = new LocalDateTime(pYear, pMonth + 1, pDay, 0, 0);
         String month = dt.monthOfYear().getAsShortText();
         //pDisplayDate.setText(pDay + " " + month  + " " + pYear);
@@ -169,8 +164,9 @@ public class EventEditor extends Activity
             optionalInfo.setText(myEvent.get_eventinfo());
             idx_cd = myEvent.get_direction();
             idx_dy = myEvent.get_dayyears();
-
-            chk_sec = myEvent.get_incsec();
+            //boolean secsCheckedBool = (myEvent.get_incsec() != 0);
+            includeSec.setChecked(myEvent.get_incsec() != 0);  // false if 0 otherwise true
+            //chk_sec = myEvent.get_incsec();
             //System.out.println("!!- "  + "days & years from db is " + myEvent.get_dayyears());
             long millis = myEvent.get_evtime();
             millis *= 1000;
@@ -207,7 +203,8 @@ public class EventEditor extends Activity
             //SimpleDateFormat mSDF = new SimpleDateFormat("hh:mm a");
             //String time = mSDF.format(cal);
             //System.out.println("!! " + time);
-            idx_cd = 1; chk_sec = 1;
+            idx_cd = 1;
+            //chk_sec = 1;
         }
 
         updateDisplay();
@@ -308,13 +305,13 @@ public class EventEditor extends Activity
             timeInSeconds = (int)(mDate.getTime() / 1000);
             int diffInSecs = validateInDate(timeInSeconds);
             //System.out.println("!!- "  + "diff in secs is " + diffInSecs);
-            if (idx_cd == 0 && diffInSecs < 0) { // Count up selected but date is in future
+            //if (idx_cd == 0 && diffInSecs < 0) { // Count up selected but date is in future
                 //pDisplayDate.setTextColor(Color.RED);
 //                textTime.setTextColor(Color.RED);
-                Toast.makeText(getApplicationContext(), "Counter will start " + givenDateString, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Counter will start " + givenDateString, Toast.LENGTH_LONG).show();
                 //addButton.setEnabled(false);
                 //return;
-            } else {
+            //} else {
                 if (idx_cd == 1 && diffInSecs > 0) { // Count down selected but date is not in future
                     //pDisplayDate.setTextColor(Color.RED);
 //                    textTime.setTextColor(Color.RED);
@@ -322,7 +319,7 @@ public class EventEditor extends Activity
                     //addButton.setEnabled(false);
                     return;
                 }
-            }
+            //}
         } catch (ParseException e) {
             //System.out.println("!!- " + pDisplayDate.getText() + dbTime + "bad!");
             e.printStackTrace();

@@ -13,12 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class ShowCounter extends Activity {
@@ -34,8 +30,9 @@ public class ShowCounter extends Activity {
     CountDownTimer cdt;
     View relLayout;
     int bgColor,counterColor,textColor;
-//    boolean mbActive;
-//    int progressMade = 300000; // in ms --> 10s
+    TextView textFuture;
+    TextView textSecs, textMins, textHour, textDays, textYears;
+    private boolean timerIsRunning;
 
     MyDBHandler dbHandler;
 
@@ -50,7 +47,6 @@ public class ShowCounter extends Activity {
         counterColor = pref.getInt("timerCounterColor", -16776961); // Get background color from pref file
         textColor = pref.getInt("timerTextColor", -1); // Get text color from pref file
 
-
         relLayout = findViewById(R.id.relLayoutCounterBG);
         relLayout.setBackgroundColor(bgColor);
 
@@ -59,78 +55,37 @@ public class ShowCounter extends Activity {
         // There should always be an associated row ID in the extras
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            rowID = bundle.getInt("ROW_ID");
+            rowID = bundle.getInt("ROW_ID"); // why not pass the event then you dont need to read db again ???
             //displayEventInfo(bundle);
         } else {
             System.out.println("!!- " + "error"); // need to do something better than this
             //textTit.setText("Error reading event row data");
         }
 
-
-/*
-        mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
-
-        final Thread timerThread = new Thread() {
-            @Override
-            public void run() {
-                mbActive = true;
-                try {
-                    int waited = 0;
-                    while(mbActive && (waited < progressMade)) {
-                        sleep(200);
-                        if(mbActive) {
-                            waited += 200;
-                            updateProgress(waited);
-                        }
-                    }
-                } catch(InterruptedException e) {
-                    // do nothing
-                } finally {
-                    // do nothing
-                }
-            }
-        };
-        timerThread.start();
-*/
     }
-/*
-    public void updateProgress(final int timePassed) {
 
-        if(null != mProgressBar) {
-
-            // Ignore rounding error here
-
-            final int progress = mProgressBar.getMax() * timePassed / progressMade;
-
-            mProgressBar.setProgress(progress);
-
-        }
-
-    }
-*/
     @Override
     protected void onResume() {
         super.onResume();
 
         displayEventInfo(rowID);
-       // System.out.println("!!- resumed with rowid " + rowID);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        cdt.cancel(); //stop the timer
+        //if (timerIsRunning)
+            cdt.cancel(); //stop the timer
     }
 
-    //String myDate = "2014-12-29 04:00:07 +0000";
-
-        // final long timeDiff = Math.abs(startDate.getTime() - System.currentTimeMillis());
     public void displayEventInfo(int rowID) {
-        final TextView textSecs = (TextView) findViewById(R.id.textSecs);
-        final TextView textMins = (TextView) findViewById(R.id.textMins);
-        final TextView textHour = (TextView) findViewById(R.id.textHour);
-        final TextView textDays = (TextView) findViewById(R.id.textDays);
-        final TextView textYears = (TextView) findViewById(R.id.textYears);
+        textSecs = (TextView) findViewById(R.id.textSecs);
+        textMins = (TextView) findViewById(R.id.textMins);
+        textHour = (TextView) findViewById(R.id.textHour);
+        textDays = (TextView) findViewById(R.id.textDays);
+        textYears = (TextView) findViewById(R.id.textYears);
+
         textSecs.setTextColor(counterColor);
         textMins.setTextColor(counterColor);
         textHour.setTextColor(counterColor);
@@ -146,6 +101,7 @@ public class ShowCounter extends Activity {
         textHour.setTypeface(font);
         textMins.setTypeface(font);
         textSecs.setTypeface(font);
+
 
         TextView textTit = (TextView) findViewById(R.id.textEvTitle);
         textTit.setTextColor(textColor);
@@ -165,15 +121,43 @@ public class ShowCounter extends Activity {
 
         if (myEvent.get_incsec() == 0)
             textSecs.setVisibility(View.GONE); // completely remove the secs view
+        else
+            textSecs.setVisibility(View.VISIBLE);
 
         if (myEvent.get_dayyears() == 0) { // 0 = days only
-            //System.out.println("!!- in");
             textYears.setVisibility(View.GONE);
             textYearsLbl.setVisibility(View.GONE);
             textDays.setTextScaleX(0.8f); // Should stop it overflowing if more than 3 digits
             lin1.setWeightSum(5); // Not exactly certain why this works but it does.
+        } else {
+            textYears.setVisibility(View.VISIBLE);
+            textYearsLbl.setVisibility(View.VISIBLE);
         }
 
+        //long td = System.currentTimeMillis() / 1000;
+        final long timeDiff = (System.currentTimeMillis() / 1000) - myEvent.get_evtime() ;
+
+        textFuture = (TextView) findViewById(R.id.textViewFuture);
+        if (timeDiff < 0 && myEvent.get_direction() == 0) { // future count up
+            //textFuture.setTypeface(font);
+            textYears.setText("0");
+            textDays.setText("0");
+            textHour.setText("0");
+            textMins.setText("0"); textSecs.setText("0");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.US);
+            textFuture.setText("Scheduled start: " + sdf.format((long)myEvent.get_evtime() * 1000));
+            textFuture.setTextColor(textColor);
+            textFuture.setVisibility(View.VISIBLE);
+            //timerIsRunning = false;
+        } else {
+            textFuture.setVisibility(View.INVISIBLE);
+            //timerIsRunning = true;
+
+        }
+        startTimer(myEvent);
+    }
+
+    public void startTimer(final Events myEvent) {
         //System.out.println("!!- " + rowID);
         long millis = myEvent.get_evtime();
         //String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (millis*1000)); //test code
@@ -194,37 +178,42 @@ public class ShowCounter extends Activity {
             public void onTick(long millisUntilFinished) {
                 //progressMade = (int) millisUntilFinished;
                 secs = timeDiff + ((millisToStart / 1000) - ((int) (millisUntilFinished / 1000)));
-                if (countDirection == 1) // 1 = countdown
-                    secs *= -1;
-                //System.out.println("!!- secs=" + secs);
-                modSecs = secs % 60;
-                mins = (secs / 60) % 60;
-               // System.out.println("!!- secs =" + secs + "/modsecs=" + modSecs + "/mins=" +mins);
-                long hours = TimeUnit.SECONDS.toHours(secs) % 24;
-                int days = (int) TimeUnit.SECONDS.toDays(secs);
-                double years = days / 365.25;
-                if(myEvent.get_dayyears() == 0)
-                    modDays = days;
-                else
-                    modDays = (int) Math.floor(days % 365.25);
-                //System.out.println("!-" + hours);
-                //textSecs.setText(String.valueOf((timeDiff - (millisUntilFinished / 1000)) + 20000));
-                textSecs.setText(String.valueOf(modSecs));
-                textMins.setText(String.valueOf(mins));
-                textHour.setText(String.valueOf(hours));
-                textDays.setText(String.valueOf(modDays));
-                textYears.setText(String.valueOf((int)Math.floor(years)));
+                int millisUntilStart = myEvent.get_evtime();
+                //System.out.println("!!- " + "timediff=" + timeDiff + " secs=" + secs + " until start=" + millisUntilStart);
+                if (!(secs < 0 && myEvent.get_direction() == 0)) { // future count up but not there yet
+                    timerIsRunning = true; // doing this every second until a better way is found
+                    // so dont display ANYTHING
+                    if (myEvent.get_direction() == 1) // 1 = countdown
+                        secs *= -1;
+                    //System.out.println("!!- secs=" + secs);
+                    modSecs = secs % 60;
+                    mins = (secs / 60) % 60;
+                    // System.out.println("!!- secs =" + secs + "/modsecs=" + modSecs + "/mins=" +mins);
+                    long hours = TimeUnit.SECONDS.toHours(secs) % 24;
+                    int days = (int) TimeUnit.SECONDS.toDays(secs);
+                    double years = days / 365.25;
+                    if (myEvent.get_dayyears() == 0)
+                        modDays = days;
+                    else
+                        modDays = (int) Math.floor(days % 365.25);
+                    //System.out.println("!-" + hours);
+                    //textSecs.setText(String.valueOf((timeDiff - (millisUntilFinished / 1000)) + 20000));
+                    textSecs.setText(String.valueOf(modSecs));
+                    textMins.setText(String.valueOf(mins));
+                    textHour.setText(String.valueOf(hours));
+                    textDays.setText(String.valueOf(modDays));
+                    textYears.setText(String.valueOf((int) Math.floor(years)));
 
-                if (secs < 0) {
-                    // go to a new new activity?
-                    //cdt.cancel();
-                    //textSecs.setText("Yippee!");
-                    Intent cdf = new Intent(getBaseContext(), CountdownFinished.class);
-                    startActivity(cdf);
-                    finish();
-                   // return;
+                    if (secs < 0) {
+                        // go to a new new activity?
+                        //cdt.cancel();
+                        //textSecs.setText("Yippee!");
+                        Intent cdf = new Intent(getBaseContext(), CountdownFinished.class);
+                        startActivity(cdf);
+                        finish();
+                        // return;
+                    }
                 }
-
             }
             public void onFinish(){
                 textSecs.setText("done!");
@@ -235,7 +224,7 @@ public class ShowCounter extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_counter, menu);
         return true;
     }
 
@@ -247,21 +236,12 @@ public class ShowCounter extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_edit) {
 
-            //    return true;
-            //}
-            //else if (id == R.id.action_add) {
-            /** Called when the user clicks the add button */
-            Intent intent = new Intent(this, ShowCounter.class);
+            Intent intent = new Intent(this, EventEditor.class);
+            intent.putExtra("ROW_ID",rowID);
             startActivity(intent);
 
-            /* Context context = getApplicationContext();
-            CharSequence text = "Add action pressed!";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show(); */
             return true;
 
         }

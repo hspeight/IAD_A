@@ -5,23 +5,25 @@ Permanent delete confirmation alertdialog in delete activity - done
 Implement restore function - done
 add count up/down info to archived items - done
 checkboxes for show secs, show mins, show hours - done (only secs now)
-Apply theme (supply different combinations of background color,row color,text color) -
+Apply theme (supply different combinations of background color,row color,text color) - done
 Allow countups that start on a future date (toast start date for confirmation) - done
 Implement statesave on rotation
 Add a progress bar for countdown's - nah dont do this
 display number of live events in action bar?
 speech entry for event title
 move child info up to parent - done
-put a small text countdown in child
-typing time in manually does not work
-crash report ? (would be set as a preference)
-Archiver needs a select all checkbox
+put a small text countdown in child - future release
+crash report ? (would be set as a preference) - investigation required
+Archiver needs a select all checkbox - done
 create landscape version of show counter
 create string resources
-allow event edit from within show counter activity (maybe)
+allow event edit from within show counter activity (maybe) - done
 add search function to main list screen
 allow 1 backup in free & unlimited in paid (need to check free disk space in paid) http://www.techrepublic.com/blog/software-engineer/export-sqlite-data-from-your-android-device/
     - oh bum! need a way of upgrading backups already take to latest version. maybe put version number in table?
+Import events from calendar
+milestones
+sorting lists
 
 need to backup & restore entries before upgrading sqlite db
 create app icon

@@ -16,23 +16,5 @@ public class NoEventsExist extends Activity {
         setContentView(R.layout.no_events_activity);
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                Intent addAct = new Intent(NoEventsExist.this, EventEditor.class);
-                startActivity(addAct);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }

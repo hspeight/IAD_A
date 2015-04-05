@@ -18,22 +18,6 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.List;
 
-//import java.util.HashMap;
-//import java.util.List;
-
-//import android.app.AlertDialog;
-//import android.content.Context;
-//import android.content.DialogInterface;
-//import android.graphics.Typeface;
-//import android.media.Image;
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.BaseExpandableListAdapter;
-//import android.widget.ImageView;
-//import android.widget.TextView;
-//import android.widget.Toast;
-
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     MyDBHandler dbHandler;
