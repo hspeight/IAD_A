@@ -76,7 +76,7 @@ public class ShowCounter extends Activity {
     protected void onPause() {
         super.onPause();
         //if (timerIsRunning)
-            cdt.cancel(); //stop the timer
+        cdt.cancel(); //stop the timer
     }
 
     public void displayEventInfo(int rowID) {

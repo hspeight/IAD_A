@@ -2,8 +2,10 @@ package com.itsadate.iad_a;
 
 import android.app.Activity;
 //import android.content.Intent;
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 //import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -12,6 +14,7 @@ import android.view.View;
 //import android.widget.Button;
 //import android.widget.TextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.joda.time.DateTime;
@@ -19,11 +22,14 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.io.IOException;
+
 public class Utility extends Activity {
 
     EditText randnumber;
     public Events[] eventArray;
     MyDBHandler dbHandler;
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,22 @@ public class Utility extends Activity {
         setContentView(R.layout.activity_utility);
         randnumber = (EditText) findViewById(R.id.editTextNumber);
         dbHandler = new MyDBHandler(this, null, null, 1);
+
+        ImageView imagePreview = (ImageView)findViewById(R.id.preview);
+        imagePreview.setAlpha(.33f);
+
+        //imagePreview.setImageResource(R.drawable.wallpaper);
+
+        // ---------------------------------------------------------------------
+        //WallpaperManager myWallpaperManager
+          //      = WallpaperManager.getInstance(getApplicationContext());
+        //try {
+            imagePreview.setImageResource(R.drawable.wallpaper);
+        //} catch (IOException e) {
+            // TODO Auto-generated catch block
+           // e.printStackTrace();
+       // }
+        //--------------------------------------------------------
 
     }
 

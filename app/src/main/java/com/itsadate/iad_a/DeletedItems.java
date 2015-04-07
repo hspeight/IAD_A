@@ -149,14 +149,13 @@ public class DeletedItems extends Activity
                     }
                 });
 
-
         chkAll.setOnClickListener(new View.OnClickListener() {
                 @Override
             public void onClick(View v) {
                 //is chkAll checked?
                     //System.out.println("!!- " + " items=" + listAdapter.getCount());
                     //SelectViewHolder viewHolder = new SelectViewHolder;
-                if (((CheckBox) v).isChecked()) {
+                if (((CheckBox) v).isChecked() && listAdapter.getCount() > 0) {
                     for (int i = 0; i < listAdapter.getCount(); i++) {
                         View v2 = mainListView.getAdapter().getView(i, null, null);
                         listitemClicked(i, v2, true);

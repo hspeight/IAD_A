@@ -2,7 +2,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.itsadate.iad_a">
-
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_blah2"
@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".ShowCounter"
-            android:label="@string/title_activity_event_editor"
+            android:label="@string/title_activity_event_status"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

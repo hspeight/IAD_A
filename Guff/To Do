@@ -1,3 +1,9 @@
+Pro Version
+-----------
+Slide show of up to x counters
+Unlimited activities
+
+
 Next
 ----
 Check remaining fields for changes on back button - done
@@ -24,6 +30,8 @@ allow 1 backup in free & unlimited in paid (need to check free disk space in pai
 Import events from calendar
 milestones
 sorting lists
+swipe left & right in show counter
+Employ 'Lean back' full screen for counter
 
 need to backup & restore entries before upgrading sqlite db
 create app icon

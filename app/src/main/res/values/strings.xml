@@ -17,6 +17,7 @@
     <string name="dialog_Sure">Sure you want to do this?</string>
     <string name="title_activity_event_manager">Event Manager</string>
     <string name="title_activity_event_editor">Event Editor</string>
+    <string name="title_activity_event_status">Event Status</string>
     <string name="title_activity_utility">Utility</string>
     <string name="title_activity_backupandrestore">Backup &amp; Restore</string>
     <string name="title_activity_cdf">Finished</string>

@@ -4,34 +4,33 @@
 
     <item android:id="@+id/action_search"
         android:title="@string/action_search"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         android:icon="@drawable/ic_action_search"
         android:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_add"
         android:title="@string/action_add"
-        android:orderInCategory="101"
+        android:orderInCategory="102"
         android:icon="@drawable/ic_action_new"
         android:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_utility"
-          android:title="Utility"
-          android:orderInCategory="109"
-          />
-
     <item android:id="@+id/action_deleted"
         android:title="Archived"
-        android:orderInCategory="102"
+        android:orderInCategory="103"
         />
 
     <item android:id="@+id/action_backrest"
         android:title="Backup &amp; Restore"
-        android:orderInCategory="103"
+        android:orderInCategory="104"
         />
 
     <item android:id="@+id/action_settings"
         android:title="Settings"
-        android:orderInCategory="108"
+        android:orderInCategory="105"
         />
 
+    <item android:id="@+id/action_utility"
+          android:title="Utility"
+          android:orderInCategory="106"
+          />
 </menu>
