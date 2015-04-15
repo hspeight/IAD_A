@@ -33,11 +33,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.itsadate.iad_a.MainActivity" />
         </activity>
+        <activity
+            android:name=".ScreenSlidePageractivity"
+            android:label="@string/title_activity_event_status"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.itsadate.iad_a.MainActivity" />
+        </activity>
         <!-- label="No Events" prevents the activity remaining on the stack -->
         <activity
-            android:name=".NoEventsExist"
+            android:name=".FirstTime"
             android:label="No Events"
             android:noHistory="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

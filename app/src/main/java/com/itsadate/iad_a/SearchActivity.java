@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.widget.TextView;
 
 public class SearchActivity extends Activity {

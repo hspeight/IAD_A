@@ -3,8 +3,10 @@ package com.itsadate.iad_a;
 /** Holds planet data. */
 public class ArchItem {
     private String name = "";
+    private String subh = "";
     private String time = "";
     private boolean checked = false;
+    private int Id;
 
     //public mItems() {
     //}
@@ -16,15 +18,26 @@ public class ArchItem {
     //    this.name = name;
     //    this.time = time;
     //}
-
+    public ArchItem(String name, String subh) {
+        this.name = name;
+        this.subh = subh;
+    }
     public ArchItem(String name, String time, boolean checked) {
         this.name = name;
         this.time = time;
         this.checked = checked;
     }
-
+    public ArchItem(int Id) {
+        this.Id = Id;
+    }
+    public int getId() {
+        return Id;
+    }
     public String getName() {
         return name;
+    }
+    public String getSubh() {
+        return subh;
     }
     public String getTime() {
         return time;

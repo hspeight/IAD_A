@@ -92,10 +92,15 @@
         android:layout_toEndOf="@+id/buttonInsert"
         android:onClick="setInactive" />
 
-    <ImageView
-        android:id="@+id/preview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        />
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dump DB"
+        android:id="@+id/buttonDump"
+        android:layout_below="@+id/buttonClearPrefs"
+        android:layout_alignRight="@+id/buttonClearPrefs"
+        android:layout_alignEnd="@+id/buttonClearPrefs"
+        android:onClick="dumpData" />
 
 </RelativeLayout>

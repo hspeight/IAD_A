@@ -200,4 +200,6 @@
         android:hint="Optional event info"
         android:singleLine="true" />
 
+
+
 </RelativeLayout>

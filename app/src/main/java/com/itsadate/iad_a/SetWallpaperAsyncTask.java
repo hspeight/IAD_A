@@ -1,7 +1,6 @@
 package com.itsadate.iad_a;
 
-import android.app.WallpaperManager;
-import android.content.Context;
+
 import android.os.AsyncTask;
 
 import java.io.InputStream;

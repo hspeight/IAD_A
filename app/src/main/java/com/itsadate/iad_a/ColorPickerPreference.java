@@ -1,33 +1,23 @@
 package com.itsadate.iad_a;
 
-//import android.content.Context;
-//import android.content.DialogInterface;
-//import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
-//import android.preference.DialogPreference;
-//import android.util.AttributeSet;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
+//import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+//import android.widget.Toast;
 
-//import java.util.ArrayList;
-//import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
-//import android.os.Bundle;
-//import android.view.View;
-import android.view.View.OnClickListener;
-//import android.widget.Button;
+
 import android.widget.TextView;
 //import android.widget.Toast;
 
@@ -196,37 +186,6 @@ public class ColorPickerPreference extends Activity  {
         //applySavedPreferences(backColor, -256, textColor); // Background, row & text
     }
 
-
-
-    public void applySavedPreferences(int backColor, int rowCol, int textCol) {
-        // extract the  pairs, use default param for missing data
-        //int backColor = mySharedPreferences.getInt("listBgColor",Color.BLACK);
-        //int rowColor = mySharedPreferences.getInt("listRowColor",Color.BLACK);
-        //int textColor = mySharedPreferences.getInt("listTextColor",Color.WHITE);
-        //int textSize = mySharedPreferences.getInt("textSize", 12);
-        //String textStyle = mySharedPreferences.getString("textStyle", "normal");
-        //int layoutColor = mySharedPreferences.getInt("layoutColor", Color.DKGRAY);
-        //String msg = "color " + backColor + "\n" + "size " + textSize
-        //        + "\n" + "style " + textStyle;
-
-        // Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-        //System.out.println("!!- " + "here");
-        //loremlist.setBackgroundColor(backColor);
-        //linLayout.setBackgroundColor(backColor);
-        //listViewText.setTextColor(Color.YELLOW);
-        //loremlist.text
-        //txtCaption1.setBackgroundColor(backColor);
-        //txtCaption1.setBackgroundColor(rowColor);
-        //txtCaption1.setTextSize(textSize);
-        //txtCaption1.setTextColor(textColor);
-        //if (textStyle.compareTo("normal")==0) {
-        //    txtCaption1.setTypeface(Typeface.SERIF,Typeface.NORMAL);
-        //}
-        //else {
-        //    txtCaption1.setTypeface(Typeface.SERIF,Typeface.BOLD);
-        //}
-        //relLayout.setBackgroundColor(backColor);
-    }// applySavedPreferences
 
     public void refreshList(final int backColor, final int rowColor, final int textColor) {
 

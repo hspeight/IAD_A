@@ -14,7 +14,7 @@ import android.view.View;
 //import android.widget.Button;
 //import android.widget.TextView;
 import android.widget.EditText;
-import android.widget.ImageView;
+
 import android.widget.Toast;
 
 import org.joda.time.DateTime;
@@ -22,14 +22,14 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.io.IOException;
+
 
 public class Utility extends Activity {
 
     EditText randnumber;
     public Events[] eventArray;
     MyDBHandler dbHandler;
-    Bitmap bitmap;
+    //Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +38,8 @@ public class Utility extends Activity {
         randnumber = (EditText) findViewById(R.id.editTextNumber);
         dbHandler = new MyDBHandler(this, null, null, 1);
 
-        ImageView imagePreview = (ImageView)findViewById(R.id.preview);
-        imagePreview.setAlpha(.33f);
+        //ImageView imagePreview = (ImageView)findViewById(R.id.preview);
+        //imagePreview.setAlpha(.33f);
 
         //imagePreview.setImageResource(R.drawable.wallpaper);
 
@@ -47,7 +47,7 @@ public class Utility extends Activity {
         //WallpaperManager myWallpaperManager
           //      = WallpaperManager.getInstance(getApplicationContext());
         //try {
-            imagePreview.setImageResource(R.drawable.wallpaper);
+            //imagePreview.setImageResource(R.drawable.wallpaper);
         //} catch (IOException e) {
             // TODO Auto-generated catch block
            // e.printStackTrace();
@@ -103,7 +103,7 @@ public class Utility extends Activity {
 
             //System.out.println("!!- " + i + " done");
             Events event = new Events(parts[0], parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), parts[4],
-                    Integer.parseInt(parts[5]),Integer.parseInt(parts[6]),Integer.parseInt(parts[7]),Integer.parseInt(parts[8]));
+                    Integer.parseInt(parts[5]),Integer.parseInt(parts[6]),Integer.parseInt(parts[7]),Integer.parseInt(parts[8]),null);
             dbHandler.addEvent(event);
 
         }
@@ -122,7 +122,12 @@ public class Utility extends Activity {
     public void clearPrefs(View view) {
 
         SharedPreferences settings = getSharedPreferences("MyPreferences_001", Context.MODE_PRIVATE);
-        settings.edit().clear().commit();
+        settings.edit().clear().apply();
+        settings = getSharedPreferences("MyPreferences_002", Context.MODE_PRIVATE);
+        settings.edit().clear().apply();
+        settings = getSharedPreferences("MyPreferences_ftp", Context.MODE_PRIVATE);
+        settings.edit().clear().apply();
+        Toast.makeText(getApplicationContext(), "All events prefs", Toast.LENGTH_SHORT).show();
     }
 
     public void insertRandom (View view) {
@@ -133,9 +138,27 @@ public class Utility extends Activity {
                                         0,
                                         1419825600,
                                         "A",
-                                        0,0,1,0);
+                                        0,0,1,0,null
+            );
             dbHandler.addEvent(event);
         }
+    }
+    public void dumpData(View view) {
+
+        String evstring = dbHandler.getActiveEventIDs("A"); // Fetch Id's of active events
+        String[] foods = evstring.split(":");
+        //System.out.println("!!- " + "foods=" + evstring);
+        //String[] newfoods = rebuildArray(foods,initialId);
+        //System.out.println("!!- " + "new foods=" + Arrays.toString(newfoods));
+
+        //for (int i = 0; i < foods.length; i++) {
+            //Events myEvent = dbHandler.getMyEvent(Integer.parseInt(foods[i]));
+           // System.out.println("!!- " + myEvent.get_id() + "/" +
+           //         myEvent.get_eventname() + "/" +
+           //         myEvent.get_bgimage()
+            //);}
+        //Toast.makeText(getApplicationContext(), "dumping", Toast.LENGTH_SHORT).show();
+        //System.out.println("!!- " + "have a dump");
     }
 
     public void setInactive(View view) {

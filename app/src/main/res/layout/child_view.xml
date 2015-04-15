@@ -3,24 +3,30 @@
     android:layout_width="wrap_content"
     android:layout_height="55dip"
     android:orientation="vertical"
-    android:id="@+id/relLayoutChildBG">
+    android:id="@+id/relLayoutChildBG"
+    android:paddingStart="40dp">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:id="@+id/linearLayoutA"
         android:layout_toLeftOf="@+id/imageViewPlay"
-        android:layout_toStartOf="@+id/imageViewPlay"
-        android:gravity="center_horizontal">
-    <TextView
-        android:id="@+id/lblListItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp" />
+        android:gravity="center_horizontal"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageViewDelete"
+        android:layout_toEndOf="@+id/imageViewDelete">
 
+        <TextView
+            android:id="@+id/lblListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="Blah"
+            android:maxLines = "2"
+            android:ellipsize="end"
+            />
     </LinearLayout>
 
 
@@ -30,15 +36,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageViewPlay"
 
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="false"
         android:src="@drawable/ic_action_play_disabled"
         android:onClick="playIconClicked"
         android:minHeight="40dp"
         android:minWidth="40dp"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentEnd="false"
-        android:layout_toLeftOf="@+id/imageViewEdit" />
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -49,7 +53,9 @@
         android:src="@drawable/ic_action_discard"
         android:onClick="deleteIconClicked"
 
-        android:layout_alignParentRight="true"/>
+        android:layout_alignTop="@+id/imageViewEdit"
+        android:layout_toRightOf="@+id/imageViewEdit"
+        android:layout_toEndOf="@+id/imageViewEdit" />
 
 
     <ImageButton
@@ -59,10 +65,12 @@
 
         android:onClick="editIconClicked"
         android:src="@drawable/ic_action_edit"
-        android:layout_toLeftOf="@id/imageViewDelete"
 
         android:minHeight="40dp"
-        android:minWidth="40dp" />
+        android:minWidth="40dp"
+        android:layout_alignTop="@+id/imageViewPlay"
+        android:layout_toRightOf="@+id/imageViewPlay"
+        android:layout_toEndOf="@+id/imageViewPlay" />
 
 
 </RelativeLayout>

@@ -1,11 +1,10 @@
 package com.itsadate.iad_a;
 
-import android.app.AlertDialog;
+
 import android.content.Context;
-import android.content.DialogInterface;
+
 import android.content.SharedPreferences;
-//import android.graphics.Color;
-import android.graphics.Color;
+
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +12,13 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
-    MyDBHandler dbHandler;
+    //MyDBHandler dbHandler;
     public static final String MyPREFERENCES = "MyPreferences_001";
 
     private Context _context;
@@ -29,7 +27,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
     SharedPreferences pref;
-    int rowColor, textColor;
+    int bgColor, rowColor, textColor;
     View linLayout;
     View relLayout;
 
@@ -77,13 +75,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         ImageView imgChildDelete = (ImageView) convertView.findViewById(R.id.imageViewDelete);
         imgChildDelete.setTag(groupPosition);
+        //imgChildDelete.getBackground().setColorFilter(rowColor, PorterDuff.Mode.ADD);
+        //imgChildDelete.setColorFilter(Color.WHITE); //
         ImageView imgChildEdit = (ImageView) convertView.findViewById(R.id.imageViewEdit);
         imgChildEdit.setTag(groupPosition);
+        //imgChildEdit.getBackground().setColorFilter(rowColor, PorterDuff.Mode.ADD);
+        //imgChildEdit.setColorFilter(Color.WHITE); //
         ImageView imgChildPlay = (ImageView) convertView.findViewById(R.id.imageViewPlay);
         imgChildPlay.setTag(groupPosition);
+        //imgChildPlay.getBackground().setColorFilter(rowColor, PorterDuff.Mode.ADD);
+        //imgChildPlay.setColorFilter(Color.WHITE); //
 
         relLayout = convertView.findViewById(R.id.relLayoutChildBG); // Background of row's child view
-        relLayout.setBackgroundColor(Color.WHITE); // hard code to always be this color
+        //relLayout.setBackgroundColor(rowColor); // hard code to always be this color
 
         //System.out.println("!!-  " + " here1");
    /*     imgListChild.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +139,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.parent_view, null);
             //SharedPreferences pref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
             pref = _context.getSharedPreferences(MyPREFERENCES, 0);
-            rowColor = pref.getInt("listRowColor", -16776961); // Get background color from pref file
+            rowColor = pref.getInt("listRowColor", -16776961); // Get row color from pref file
+            bgColor = pref.getInt("listBgColor", -16776961); // Get background color from pref file
             textColor = pref.getInt("listTextColor", -1); // Get text color from pref file
         }
 
@@ -167,7 +172,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
+/*
     public boolean delEvent(final View v, final String rowID){
         dbHandler = new MyDBHandler(v.getContext(), null, null, 1);
         System.out.println("!!- " + rowID);
@@ -199,4 +204,5 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         return true;
     }
+*/
 }

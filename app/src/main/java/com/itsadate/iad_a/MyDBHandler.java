@@ -13,7 +13,7 @@ import java.sql.SQLDataException;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 19;
     private static final String DATABASE_NAME = "events.db";
     public static final  String TABLE_EVENTS = "events";
     public static final  String COLUMN_ID = "_id";
@@ -26,6 +26,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final  String COLUMN_EVENT_INC_MIN = "incmin";
     public static final  String COLUMN_EVENT_INC_SEC = "incsec";
     public static final  String COLUMN_EVENT_DAYSONLY = "daysonly";
+    public static final  String COLUMN_EVENT_BGIMAGE = "bgimage";
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -44,7 +45,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_EVENT_INC_HRS + " INTEGER, " +
                 COLUMN_EVENT_INC_MIN + " INTEGER, " +
                 COLUMN_EVENT_INC_SEC + " INTEGER, " +
-                COLUMN_EVENT_DAYSONLY + " INTEGER " +
+                COLUMN_EVENT_DAYSONLY + " INTEGER, " +
+                COLUMN_EVENT_BGIMAGE + " TEXT " +
                 ");";
         try{
             db.execSQL(query);
@@ -74,6 +76,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_EVENT_INC_MIN, event.get_incmin());
         values.put(COLUMN_EVENT_INC_SEC, event.get_incsec());
         values.put(COLUMN_EVENT_DAYSONLY, event.get_dayyears());
+        values.put(COLUMN_EVENT_BGIMAGE, event.get_bgimage());
         // add code here for new fields
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_EVENTS, null, values);
@@ -112,7 +115,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_EVENTS, new String[] { COLUMN_ID,
                         COLUMN_EVENT_NAME,COLUMN_EVENT_INFO,COLUMN_EVENT_DIR,COLUMN_EVENT_TIME,
                         COLUMN_EVENT_STATUS,COLUMN_EVENT_INC_HRS,COLUMN_EVENT_INC_MIN,COLUMN_EVENT_INC_SEC,
-                        COLUMN_EVENT_DAYSONLY }, COLUMN_ID + "=?",
+                        COLUMN_EVENT_DAYSONLY,COLUMN_EVENT_BGIMAGE }, COLUMN_ID + "=?",
                 new String[] { String.valueOf(rowid) }, null, null, null, null);
 
         if (cursor != null)
@@ -128,7 +131,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 Integer.parseInt(cursor.getString(6)),
                 Integer.parseInt(cursor.getString(7)),
                 Integer.parseInt(cursor.getString(8)),
-                Integer.parseInt(cursor.getString(9))
+                Integer.parseInt(cursor.getString(9)),
+                cursor.getString(10)
          );
     }
 
@@ -146,6 +150,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         cv.put(COLUMN_EVENT_INC_MIN, myEvent.get_incmin());
         cv.put(COLUMN_EVENT_INC_SEC, myEvent.get_incsec());
         cv.put(COLUMN_EVENT_DAYSONLY, myEvent.get_dayyears());
+        cv.put(COLUMN_EVENT_BGIMAGE, myEvent.get_bgimage());
         //System.out.println("!!- " + " days only is " + myEvent.get_dayyears());
         db.update(TABLE_EVENTS, cv, "_id = " + myEvent.get_id(), null);
         db.close();

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Aquamarine">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_weight="0.3"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Welcome to"
+            android:id="@+id/textViewNoEvents1"
+
+            android:textColor="@color/DarkBlue"
+            android:textSize="40sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView3"
+
+            android:textColor="@color/DarkBlue"
+            android:text="It&apos;s a Date"
+            android:textStyle="italic"
+            android:textSize="40sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_weight="0.4"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/roses"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView4"
+            android:textColor="@color/DarkBlue"
+            android:text="Create reminders for the"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView5"
+            android:textColor="@color/DarkBlue"
+            android:text="things you care about"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_weight="0.3"
+        >
+
+        <Button
+            android:id="@+id/button_cretae_samples"
+            android:text="Create Sample Events"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:background="@drawable/create_sample"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+
+            android:onClick="createSamples"
+            android:layout_marginBottom="15dp" />
+
+        <Button
+            android:id="@+id/button_no_thanks"
+            android:text="No thanks"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:background="@drawable/no_thanks"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:onClick="dontCreateSamples" />
+    </LinearLayout>
+
+</LinearLayout>

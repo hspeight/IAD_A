@@ -2,6 +2,7 @@ Pro Version
 -----------
 Slide show of up to x counters
 Unlimited activities
+Backup events
 
 
 Next
@@ -30,8 +31,13 @@ allow 1 backup in free & unlimited in paid (need to check free disk space in pai
 Import events from calendar
 milestones
 sorting lists
-swipe left & right in show counter
+swipe left & right in show counter - done
 Employ 'Lean back' full screen for counter
+move play/edit/delete buttons to left in line with parent text - done
+change background color of child row to theme background
+highlight parent row selected (swap background & text colors?)
+allow user to import 5 sample events (display instructions if no events exist)
+add a background image to timer - tried but no success (revisit)
 
 need to backup & restore entries before upgrading sqlite db
 create app icon

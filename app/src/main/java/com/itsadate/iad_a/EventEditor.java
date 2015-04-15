@@ -5,8 +5,11 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.graphics.Bitmap;
+
 import android.os.Build;
 import android.os.Bundle;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -25,12 +29,12 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-//import java.util.Calendar;
+
 import java.util.Date;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
-//import org.joda.time.DateTimeComparator;
+
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -43,6 +47,7 @@ public class EventEditor extends Activity
     private TextView textUpDown;
     private Button dateButton;
     private Button timeButton;
+    //private Button bgimagebutton;
     private int pYear;
     private int pMonth;
     private int pDay;
@@ -50,7 +55,7 @@ public class EventEditor extends Activity
     private int mMinute;
     private int idx_cd;
     private int idx_dy;
-    private int chk_sec;
+    //private int chk_sec;
     private int timeInSeconds;
     private String tranType;
     private int rowID;
@@ -66,13 +71,20 @@ public class EventEditor extends Activity
 
     private RadioGroup cd;
     private RadioGroup dy;
+    ImageView imgView;
 
-    /** This integer will uniquely define the dialog to be used for displaying date picker.*/
-    static final int DATE_DIALOG_ID = 0;
+    // These two vars are used for BG image select
+    private static int RESULT_LOAD_IMG = 1;
+    String imgDecodableString;
+    private static Bitmap Image = null;
 
     EditText hsEditText;
     EditText optionalInfo;
     MyDBHandler dbHandler;
+
+    int imageHeight;
+    int imageWidth;
+    String imageType;
 
     /** Updates the date in the TextView */
     private void updateDisplay() {
@@ -98,17 +110,15 @@ public class EventEditor extends Activity
         final LocalDateTime dt = new LocalDateTime(pYear, pMonth + 1, pDay, 0, 0);
         String month = dt.monthOfYear().getAsShortText();
         //pDisplayDate.setText(pDay + " " + month  + " " + pYear);
-        dateButton.setText(pDay + " " + month  + " " + pYear);
+        dateButton.setText(pDay + " " + month + " " + pYear);
         timeButton.setText(mHour + ":" + pad(mMinute) + " " + AMPM);
         //timeButton.setText(mHour + ":" + (mHour < 12 ? mHour + " AM" : mHour -12 + " PM"));
 
     }
 
     private static String pad(int c) {
-        if (c >= 10)
-            return String.valueOf(c);
-        else
-            return "0" + String.valueOf(c);
+        if (c >= 10) return String.valueOf(c);
+        else return "0" + String.valueOf(c);
     }
 
     //private int validateInDate(String inDate) {
@@ -123,8 +133,7 @@ public class EventEditor extends Activity
         return epoch - timeInSecs;
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    @Override
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)@Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -137,6 +146,7 @@ public class EventEditor extends Activity
 
         dateButton = (Button) findViewById(R.id.buttonCounterDate);
         timeButton = (Button) findViewById(R.id.buttonCounterTime);
+        //bgimagebutton = (Button) findViewById(R.id.buttonTimerBGImage);
 
         cd = (RadioGroup) findViewById(R.id.radioDirection); // Count up/down
         dy = (RadioGroup) findViewById(R.id.radioYearsDays); // Days/Days+years
@@ -156,7 +166,7 @@ public class EventEditor extends Activity
 
         // If this is an edit there will be an associated row ID in the extras
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null) {
+        if (bundle != null) {
             tranType = "update";
             rowID = bundle.getInt("ROW_ID");
             Events myEvent = dbHandler.getMyEvent(rowID);
@@ -165,7 +175,7 @@ public class EventEditor extends Activity
             idx_cd = myEvent.get_direction();
             idx_dy = myEvent.get_dayyears();
             //boolean secsCheckedBool = (myEvent.get_incsec() != 0);
-            includeSec.setChecked(myEvent.get_incsec() != 0);  // false if 0 otherwise true
+            includeSec.setChecked(myEvent.get_incsec() != 0); // false if 0 otherwise true
             //chk_sec = myEvent.get_incsec();
             //System.out.println("!!- "  + "days & years from db is " + myEvent.get_dayyears());
             long millis = myEvent.get_evtime();
@@ -181,7 +191,7 @@ public class EventEditor extends Activity
             mHour = Integer.parseInt(formattedDate.split("-")[3]);
             mMinute = Integer.parseInt(formattedDate.split("-")[4]);
             AMPM = formattedDate.split("-")[5];
-            //System.out.println("!!- " + AMPM);
+            imgDecodableString = myEvent.get_bgimage();
         } else {
             //long millis =
             formattedDate = formatMyDate(System.currentTimeMillis());
@@ -192,19 +202,8 @@ public class EventEditor extends Activity
             mHour = Integer.parseInt(formattedDate.split("-")[3]);
             mMinute = Integer.parseInt(formattedDate.split("-")[4]);
             AMPM = formattedDate.split("-")[5];
-/*
-            final Calendar cal = Calendar.getInstance();
-            pYear = cal.get(Calendar.YEAR);
-            pMonth = cal.get(Calendar.MONTH);
-            pDay = cal.get(Calendar.DAY_OF_MONTH);
-            mHour = cal.get(Calendar.HOUR_OF_DAY);
-            mMinute = cal.get(Calendar.MINUTE);
-*/
-            //SimpleDateFormat mSDF = new SimpleDateFormat("hh:mm a");
-            //String time = mSDF.format(cal);
-            //System.out.println("!! " + time);
+
             idx_cd = 1;
-            //chk_sec = 1;
         }
 
         updateDisplay();
@@ -228,8 +227,7 @@ public class EventEditor extends Activity
         });
 
         //final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioDirection);
-        cd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        cd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 idx_cd = countDown.isChecked() ? 1 : 0; // convert direction button to int
                 //Toast.makeText(getApplicationContext(), "button is "  + countUp.isChecked(), Toast.LENGTH_SHORT).show();
@@ -250,33 +248,35 @@ public class EventEditor extends Activity
                 R.layout.actionbar_cust_event_editor, null);
 
         customActionBarView.findViewById(R.id.actionbar_cancel).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
-                    }
+                new View.OnClickListener() {@Override
+                                            public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
+                }
                 });
         customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addButtonClicked(v);
-                    }
+                new View.OnClickListener() {@Override
+                                            public void onClick(View v) {
+                    addButtonClicked(v);
+                }
                 });
 
         // Show the custom action bar view and hide the normal Home icon and title.
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayOptions(
                 ActionBar.DISPLAY_SHOW_CUSTOM,
-                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
-                        | ActionBar.DISPLAY_SHOW_TITLE);
+                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
         actionBar.setCustomView(customActionBarView);
-        // END_INCLUDE (inflate_set_custom_view)
-        // setContentView(R.layout.activity_done_button);
 
+        //imgView = (ImageView) findViewById(R.id.imgView);
+        //if(event has a background image) {
+            //imgView.setImageBitmap(
+                    //decodeSampledBitmapFromFile(imgDecodableString, 100, 100));
+        //}
+
+        activityDataIn = collateActivityInfo();
     }
 
-    public String formatMyDate (long millisIn) {
+    public String formatMyDate(long millisIn) {
 
         DateTime dt = new DateTime(millisIn, DateTimeZone.getDefault());
         DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd-hh-mm-a");
@@ -288,8 +288,8 @@ public class EventEditor extends Activity
 
         String EventTitle = hsEditText.getText().toString();
         String EventInfo = optionalInfo.getText().toString();
-        if(EventTitle.isEmpty()) {
-            Toast mytoast = Toast.makeText(getApplicationContext(),"Please  title your event",Toast.LENGTH_SHORT);
+        if (EventTitle.isEmpty()) {
+            Toast mytoast = Toast.makeText(getApplicationContext(), "Please  title your event", Toast.LENGTH_SHORT);
             //        Toast.makeText(getApplicationContext(), "Please  title your event", Toast.LENGTH_SHORT).show();
             mytoast.setGravity(Gravity.CENTER, 0, 0);
             mytoast.show();
@@ -306,19 +306,19 @@ public class EventEditor extends Activity
             int diffInSecs = validateInDate(timeInSeconds);
             //System.out.println("!!- "  + "diff in secs is " + diffInSecs);
             //if (idx_cd == 0 && diffInSecs < 0) { // Count up selected but date is in future
-                //pDisplayDate.setTextColor(Color.RED);
-//                textTime.setTextColor(Color.RED);
-                //Toast.makeText(getApplicationContext(), "Counter will start " + givenDateString, Toast.LENGTH_LONG).show();
-                //addButton.setEnabled(false);
-                //return;
+            //pDisplayDate.setTextColor(Color.RED);
+            //                textTime.setTextColor(Color.RED);
+            //Toast.makeText(getApplicationContext(), "Counter will start " + givenDateString, Toast.LENGTH_LONG).show();
+            //addButton.setEnabled(false);
+            //return;
             //} else {
-                if (idx_cd == 1 && diffInSecs > 0) { // Count down selected but date is not in future
-                    //pDisplayDate.setTextColor(Color.RED);
-//                    textTime.setTextColor(Color.RED);
-                    Toast.makeText(getApplicationContext(), "This must be a future date", Toast.LENGTH_SHORT).show();
-                    //addButton.setEnabled(false);
-                    return;
-                }
+            if (idx_cd == 1 && diffInSecs > 0) { // Count down selected but date is not in future
+                //pDisplayDate.setTextColor(Color.RED);
+                //                    textTime.setTextColor(Color.RED);
+                Toast.makeText(getApplicationContext(), "This must be a future date", Toast.LENGTH_SHORT).show();
+                //addButton.setEnabled(false);
+                return;
+            }
             //}
         } catch (ParseException e) {
             //System.out.println("!!- " + pDisplayDate.getText() + dbTime + "bad!");
@@ -334,7 +334,9 @@ public class EventEditor extends Activity
                     //includeMin.isChecked() ? 1 : 0,
                     0,
                     includeSec.isChecked() ? 1 : 0,
-                    idx_dy);
+                    idx_dy,
+                    imgDecodableString // path to background image if one is selected
+            );
             //System.out.println("!!- "  + "sending  " + (daysOnly.isChecked() ? 1 : 0));
 
             dbHandler.updateEvent(event);
@@ -346,7 +348,9 @@ public class EventEditor extends Activity
                     //includeMin.isChecked() ? 1 : 0,
                     0,
                     includeSec.isChecked() ? 1 : 0,
-                    idx_dy);
+                    idx_dy,
+                    imgDecodableString // path to background image if one is selected
+            );
             dbHandler.addEvent(event);
             //Toast.makeText(getApplicationContext(), "Your event has been created", Toast.LENGTH_SHORT).show();
         }
@@ -380,7 +384,7 @@ public class EventEditor extends Activity
     protected void onResume() {
         super.onResume();
 
-        activityDataIn = collateActivityInfo();
+        //activityDataIn = collateActivityInfo();
     }
 
     @Override
@@ -388,7 +392,7 @@ public class EventEditor extends Activity
 
         activityDataOut = collateActivityInfo();
 
-        if (! activityDataIn .equals(activityDataOut) ) {
+        if (!activityDataIn.equals(activityDataOut)) {
             // Create the fragment and show it as a dialog.
             EventDialog eventDialog = new EventDialog();
             Bundle bundle = new Bundle();
@@ -405,7 +409,7 @@ public class EventEditor extends Activity
     @Override
     public void onDataPass(String data) {
 
-        if (data .equals("Yes")) {
+        if (data.equals("Yes")) {
             addButtonClicked(myView);
         } else {
             finish();
@@ -416,18 +420,14 @@ public class EventEditor extends Activity
 
     // Concatenate values into a string for comparison
     public String collateActivityInfo() {
-
-        return hsEditText.getText().toString()
-                + optionalInfo.getText().toString()
-                + countUp.isChecked()
-                + dateButton.getText()
-                + timeButton.getText()
-                + daysOnly.isChecked()
-                + includeSec.isChecked();
+       // System.out.println("!!- " + imgDecodableString);
+        return hsEditText.getText().toString() + optionalInfo.getText().toString() +
+                countUp.isChecked() + dateButton.getText() + timeButton.getText() +
+                daysOnly.isChecked() + includeSec.isChecked() + imgDecodableString;
     }
 
     private void showDatePicker() {
-// needs to set correct date. new=current. update=db value
+        // needs to set correct date. new=current. update=db value
         DatePickerFragment dialog = new DatePickerFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("dialog_id", 1); // 1=Date Picker
@@ -442,7 +442,7 @@ public class EventEditor extends Activity
 
     private void showTimePicker() {
 
-        if (AMPM .equals("PM") ) {
+        if (AMPM.equals("PM")) {
             mHour += 12;
         }
         DatePickerFragment dialog = new DatePickerFragment();
@@ -455,48 +455,138 @@ public class EventEditor extends Activity
         dialog.show(getFragmentManager(), "dialog");
     }
 
-    OnDateSetListener ondate = new OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-    /*
+    OnDateSetListener ondate = new OnDateSetListener() {@Override
+                                                        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                                                              int dayOfMonth) {
+			/*
             Toast.makeText(
                     EventEditor.this,
                     String.valueOf(year) + "-" + String.valueOf(monthOfYear)
                             + "-" + String.valueOf(dayOfMonth),
                     Toast.LENGTH_SHORT).show();
     */
-            pYear = year;
-            pMonth = monthOfYear;
-            pDay = dayOfMonth;
-            //System.out.println("!!- " + "here2");
-            updateDisplay();
+        pYear = year;
+        pMonth = monthOfYear;
+        pDay = dayOfMonth;
+        //System.out.println("!!- " + "here2");
+        updateDisplay();
         }
     };
 
     OnTimeSetListener ontime = new OnTimeSetListener() {
         @Override
-        public void onTimeSet(TimePicker view, int hourOfDay,
-                              int minute) {
-            mHour = hourOfDay;
-            mMinute = minute;
-            if (mHour < 12) {
-                AMPM = "AM";
-            } else if (mHour == 12) {
-                AMPM = "PM";
-            } else {
-                AMPM = "PM";
-                mHour -= 12;
-            }
-            //System.out.println("!!- " + mHour + " /" + mMinute);
-    /*
-            Toast.makeText(
-                    EventEditor.this,
-                    String.valueOf(mHour) + ":" + String.valueOf(mMinute),
-                    Toast.LENGTH_SHORT).show();
-    */
-            updateDisplay();
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        mHour = hourOfDay;
+        mMinute = minute;
+        if (mHour < 12) {
+            AMPM = "AM";
+        } else if (mHour == 12) {
+            AMPM = "PM";
+        } else {
+            AMPM = "PM";
+            mHour -= 12;
+        }
+
+        updateDisplay();
         }
     };
+/*
+    public void loadImagefromGallery(View view) {
 
+        // Create intent to Open Image applications like Gallery, Google Photos
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+         //Start the Intent
+        startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), RESULT_LOAD_IMG);
+
+    }
+
+    //@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            // When an Image is picked
+            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
+                // Get the Image from data
+
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {
+                        MediaStore.Images.Media.DATA
+                };
+
+                // Get the cursor
+                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                // Move to first row
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                imgDecodableString = cursor.getString(columnIndex);
+                cursor.close();
+                getHeightWidth(imgDecodableString); // calc h & w of selected image
+                //System.out.println("!!- " + imageHeight + "/" + imageWidth);
+
+                //ImageView imgView = (ImageView) findViewById(R.id.imgView);
+                // Set the Image in ImageView after decoding the String
+                //imgView.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
+                imgView.setImageBitmap(
+                        decodeSampledBitmapFromFile(imgDecodableString, 100, 100));
+
+            } else {
+                imgDecodableString = null;
+                //Toast.makeText(this, "You haven't picked Image",
+                //        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong " + requestCode + " , " + resultCode, Toast.LENGTH_LONG)
+                    .show();
+        }
+    }
+
+    public void getHeightWidth(String imgDecodableString) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imgDecodableString, options);
+        imageHeight = options.outHeight;
+        imageWidth = options.outWidth;
+        imageType = options.outMimeType;
+    }
+
+    public static Bitmap decodeSampledBitmapFromFile(String imgDecodableString,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imgDecodableString , options);
+
+        //System.out.println("!!- " + imgDecodableString);
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(imgDecodableString , options);
+    }
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
+*/
 }

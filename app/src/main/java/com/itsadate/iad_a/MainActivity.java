@@ -9,15 +9,11 @@ import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
-//import android.app.AlertDialog;
 
-//import android.content.DialogInterface;
 import android.content.Intent;
 
-//import android.graphics.Color;
-//import android.graphics.drawable.Drawable;
 import android.content.SharedPreferences;
-import android.graphics.Color;
+
 import android.os.Bundle;
 
 
@@ -48,16 +44,24 @@ public class MainActivity extends Activity
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     View linLayout;
-    View linLayoutParent;
+    //View linLayoutParent;
     List<String> listDataHeader;
     List<String> listDataSubHeader;
     HashMap<String, List<String>> listDataChild;
     public Events[] eventArray;
     public static final String MyPREFERENCES = "MyPreferences_001";
+    public static final String FirstTimePref = "MyPreferences_ftp";
+    public int firstTime = 0;
+    //private ArrayList<Events> eventitem = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Get instance to shared pref for first time check
+        //SharedPreferences pref = getSharedPreferences (FirstTimePref, MODE_PRIVATE);
+        //checkIfFirstTime(pref);
+
         dbHandler = new MyDBHandler(this, null, null, 1);
         setContentView(R.layout.main_activity);
 
@@ -77,22 +81,24 @@ public class MainActivity extends Activity
             @Override   // collapse list
             public void onGroupExpand(int groupPosition) {
                 //setImageRowPosition(groupPosition);
-                if(groupPosition != previousItem )
-                    expListView.collapseGroup(previousItem );
+                if(groupPosition != previousItem ) {
+                    expListView.collapseGroup(previousItem);
+                    //expListView.setAlpha(0.75f);
+                }
                 previousItem = groupPosition;
-                //Duration duration = new Duration(rowTime[groupPosition],currentTime)
-                //if (rowTime[groupPosition] <
-                //System.out.println("!!- " + "groupPosition is  " + groupPosition + "/" + rowTime[groupPosition]);
-                //System.out.println("!!- " + (rowTime[groupPosition] - System.currentTimeMillis() / 1000));
 
             }
         });
 
         linLayout = findViewById(R.id.linLayoutMainBG);
-        //linLayout.setBackgroundColor(bgColor);
 
-        //linLayoutParent = findViewById(R.id.linLayoutParentBG);
-        //linLayoutParent.setBackgroundColor(rowColor);
+        // If this is the fo
+        //if( getSharedPreferences("FirstTime", 0).getBoolean("check", true))
+        //{
+        //    getSharedPreferences("FirstTime", 0) .edit().putBoolean("check", false);
+        //    boolean result = AWarmWelcome();
+        //}
+
     }
 
     public void deleteIconClicked (View v){
@@ -124,8 +130,10 @@ public class MainActivity extends Activity
         //Drawable playButton = v.getResources().getDrawable(R.drawable.ic_action_play_disabled);
         //playButton.setAlpha(Color.RED);
         int eyd = eventArray[(int)v.getTag()].get_id();
-        Intent intent = new Intent(getBaseContext(), ShowCounter.class);
-        intent.putExtra("ROW_ID",eyd);
+        //Intent intent = new Intent(getBaseContext(), ShowCounter.class);
+        Intent intent = new Intent(getBaseContext(), ScreenSlidePageractivity.class);
+        //intent.putExtra("ROW_ID",eyd);
+        intent.putExtra("ROW_ID", (int)v.getTag());
         startActivity(intent);
 
     }
@@ -159,7 +167,7 @@ public class MainActivity extends Activity
                 listDataSubHeader.add(generateInfo(eventArray[i].get_direction(), eventArray[i].get_evtime()));
                 List<String> child = new ArrayList<>();
                 //child.add(formatDateTime(eventArray[i].get_evtime(), eventArray[i].get_direction()));
-                child.add(""); // No text to display but required so that child will expand
+                child.add(eventArray[i].get_eventinfo()); // No text to display but required so that child will expand
                 listDataChild.put(listDataHeader.get(i), child);
                 //rowID[i] = foods[i]; // store _id from database
                 //rowTime[i] = iadevent[i].get_evtime();
@@ -187,7 +195,7 @@ public class MainActivity extends Activity
         //return indicator + dtf.print(dt);
 
     }
-
+/*
     public String formatDateTime(int eventTime,int direction){
         String[] d = new String[] {"up from\n","down to\n"};
         long millis = eventTime;
@@ -197,7 +205,7 @@ public class MainActivity extends Activity
 
         return "Count " + d[direction] + " " + dtf.print(dt);
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
@@ -245,6 +253,13 @@ public class MainActivity extends Activity
         }
     }
 
+    public void AWarmWelcome() {
+        //Toast.makeText(getApplicationContext(), "Welcome my friend" , Toast.LENGTH_SHORT).show();
+        Intent firsttime = new Intent(MainActivity.this, FirstTime.class);
+        startActivity(firsttime);
+        //return true;
+    }
+
     public boolean setupDialog(String message) {
         //
         EventDialog eventDialog = new EventDialog();
@@ -278,8 +293,23 @@ public class MainActivity extends Activity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        // Get instance to shared pref for first time check
+        SharedPreferences pref = getSharedPreferences (FirstTimePref, MODE_PRIVATE);
+        if(pref.getInt("FirstTime", 0) == 0) {
+            AWarmWelcome();
+            //if(firstTime == 0)
+            //finish();
+        }
+        //System.out.println("!!- " + "starting main activity");
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+
+
 
         setGroupParents();
 
@@ -290,11 +320,22 @@ public class MainActivity extends Activity
 
         // Get instance to shared pref class
         SharedPreferences pref = getSharedPreferences (MyPREFERENCES, MODE_PRIVATE);
+
         int bgColor = pref.getInt("listBgColor", -16776961); // Get background color from pref file
         linLayout.setBackgroundColor(bgColor);
 
         //setTitle(getTitle() + " (" + dbHandler.getRowCount("A") + ")"); // put number of active events in title bar
         setTitle(getString(R.string.app_name) + " (" + dbHandler.getRowCount("A") + ")"); // put number of active events in title bar
 
+    }
+
+    public void checkIfFirstTime(SharedPreferences pref) {
+       // System.out.println("!!- " + "ftp pref=" + pref.getInt("FirstTime", 0));
+        //if(pref.getInt("FirstTime", 0) == 0) {
+            //SharedPreferences.Editor myEditor = pref.edit();
+            //myEditor.putInt("FirstTime", 1); // Set firsttime to true so we hopefully dont come here again
+            //myEditor.apply();
+            //AWarmWelcome();
+        //}
     }
 }

@@ -1,9 +1,5 @@
 package com.itsadate.iad_a;
 
-//import android.content.Context;
-//import android.content.DialogInterface;
-//import android.graphics.drawable.PaintDrawable;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -20,15 +16,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.List;
-
-//import android.preference.DialogPreference;
-//import android.util.AttributeSet;
-//import java.util.ArrayList;
-//import java.util.Date;
-//import android.os.Bundle;
-//import android.view.View;
-//import android.widget.Button;
-//import android.widget.Toast;
 
 public class ColorPickerPreference2 extends Activity  {
 

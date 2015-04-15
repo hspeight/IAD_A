@@ -12,6 +12,7 @@ public class Events {
     private int _incmin;
     private int _incsec;
     private int _dayyears;
+    private String _bgimage;
 
     // empty constructor
     public Events() {
@@ -24,7 +25,7 @@ public class Events {
     }
     // constructor
     public Events(int id, String eventname, String eventinfo, int direction, int evtime, String evstatus,
-                  int inchrs, int incmin, int incsec, int dayyears) {
+                  int inchrs, int incmin, int incsec, int dayyears, String bgimage) {
         this._id = id;
         this._eventname = eventname;
         this._eventinfo = eventinfo;
@@ -35,10 +36,11 @@ public class Events {
         this._incmin = incmin;
         this._incsec = incsec;
         this._dayyears = dayyears;
+        this._bgimage = bgimage;
     }
     // constructor
     public Events(String eventname, String eventinfo, int direction, int evtime, String evstatus,
-                  int inchrs, int incmin, int incsec, int dayyears) {
+                  int inchrs, int incmin, int incsec, int dayyears, String bgimage) {
         this._eventname = eventname;
         this._eventinfo = eventinfo;
         this._direction = direction;
@@ -48,6 +50,7 @@ public class Events {
         this._incmin = incmin;
         this._incsec = incsec;
         this._dayyears = dayyears;
+        this._bgimage = bgimage;
     }
 
     public int get_id() {
@@ -79,5 +82,11 @@ public class Events {
     }
     public int get_incsec() {
         return _incsec;
+    }
+    public String get_bgimage() {
+        return _bgimage;
+    }
+    public void set_eventname(String _eventinfo) {
+        this._eventinfo = _eventinfo;
     }
 }
