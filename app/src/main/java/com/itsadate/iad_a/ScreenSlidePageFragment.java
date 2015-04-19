@@ -162,24 +162,47 @@ public class ScreenSlidePageFragment extends Fragment {
         textDays.setTextColor(mDigitcolor);
         textYears.setTextColor(mDigitcolor);
 
+        final LinearLayout linYears = (LinearLayout) rootView.findViewById(R.id.linearLayoutYears);
+        final LinearLayout linDays = (LinearLayout) rootView.findViewById(R.id.linearLayoutdays);
+        final LinearLayout linHours = (LinearLayout) rootView.findViewById(R.id.linearLayouthrs);
+        final LinearLayout linMins = (LinearLayout) rootView.findViewById(R.id.linearLayoutmins);
+        final LinearLayout linSecs = (LinearLayout) rootView.findViewById(R.id.linearLayoutsecs);
+
         if (mIncsec == 0)
-            textSecs.setVisibility(View.GONE); // completely remove the secs view
+            linSecs.setVisibility(View.GONE); // completely remove the secs view
         else
-            textSecs.setVisibility(View.VISIBLE);
+            linSecs.setVisibility(View.VISIBLE);
 
         if (mUsedayyear == 0) { // 0 = days only
-            textYears.setVisibility(View.GONE);
-            textYearsLbl.setVisibility(View.GONE);
-            textDays.setTextScaleX(0.8f); // Should stop it overflowing if more than 3 digits
-            lin1.setWeightSum(5); // Not exactly certain why this works but it does.
+
+            //System.out.println("!!- " + "years lin layout width " + linYears.getWidth());
+            linYears.setVisibility(View.GONE);
+            // Gets the layout params that will allow you to resize the layout
+
+            //ViewGroup.LayoutParams params = linDays.getLayoutParams();
+            //params.width = 30; // doesn't matter what value this is as long as all 3 are the same
+            //params = linHours.getLayoutParams();
+            //params.width = 10;
+            //params = linMins.getLayoutParams();
+            //params.width = 10;
+            //params = linSecs.getLayoutParams();
+            //params.width = 1;
+            //textYears.setVisibility(View.GONE);
+            //textYearsLbl.setVisibility(View.GONE);
+            //textDays.setTextScaleX(0.8f); // Should stop it overflowing if more than 3 digits
+            //textDays.measure(0, 0);       //must call measure!
+            //System.out.println("!!- " + textDays.getMeasuredWidth());
+            //textDays.getMeasuredWidth(); //get width
+            //textDays.setWidth(textDays.getMeasuredWidth() * 2);
+            //lin1.setWeightSum(3); // Not exactly certain why this works but it does.
         } else {
-            textYears.setVisibility(View.VISIBLE);
-            textYearsLbl.setVisibility(View.VISIBLE);
+            linYears.setVisibility(View.VISIBLE);
+            //textYearsLbl.setVisibility(View.VISIBLE);
         }
 
         //long td = System.currentTimeMillis() / 1000;
         final long timeDiff = (System.currentTimeMillis() / 1000) - mTime;
-
+        //System.out.println("!!- " + "timediff=" + timeDiff);
         //textFuture = (TextView) findViewById(R.id.textViewFuture);
         if (timeDiff < 0 && mDirection == 0) { // future count up
             //textFuture.setTypeface(font);
@@ -235,15 +258,20 @@ public class ScreenSlidePageFragment extends Fragment {
         //textInfo.setText(myDate);
         long td = System.currentTimeMillis() / 1000;
 
-        final int timeDiff = ((int) td) - mTime ;
+        //final int timeDiff = ((int) td) - mTime ;
+        final long timeDiff = td - mTime ;
 
-        final int millisToStart = 86500000; //86400000 = milliseconds in 1 day
+        //final int millisToStart = 86500000; //86400000 = milliseconds in 1 day
+        final long millisToStart = 86500000; //86400000 = milliseconds in 1 day
 
         cdt = new CountDownTimer(millisToStart, 1000) {
             public void onTick(long millisUntilFinished) {
-                int modDays, secs;
+                //int modDays, secs;
+                long  secs;
+                int modDays;
                 long modSecs, mins;
                 //progressMade = (int) millisUntilFinished;
+                //secs = timeDiff + ((millisToStart / 1000) - ((int) (millisUntilFinished / 1000)));
                 secs = timeDiff + ((millisToStart / 1000) - ((int) (millisUntilFinished / 1000)));
                 //int millisUntilStart = myEvent.get_evtime();
                 //System.out.println("!!- " + "timediff=" + timeDiff + " secs=" + secs + " until start=" + millisUntilStart);
@@ -268,6 +296,7 @@ public class ScreenSlidePageFragment extends Fragment {
                     textSecs.setText(String.valueOf(modSecs));
                     textMins.setText(String.valueOf(mins));
                     textHour.setText(String.valueOf(hours));
+                    //textDays.setText(String.valueOf(modDays));
                     textDays.setText(String.valueOf(modDays));
                     textYears.setText(String.valueOf((int) Math.floor(years)));
 /*

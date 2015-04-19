@@ -125,7 +125,9 @@
 
             android:baselineAligned="false"
             android:layout_marginTop="35dp"
-            android:id="@+id/linLayoutCounters">
+            android:id="@+id/linLayoutCounters"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <LinearLayout
                 android:orientation="vertical"

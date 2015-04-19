@@ -32,12 +32,12 @@ import android.widget.Toast;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 //import org.joda.time.Duration;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+//import org.joda.time.format.DateTimeFormat;
+//import org.joda.time.format.DateTimeFormatter;
 
 public class MainActivity extends Activity
     implements EventDialog.OnDataPass {
-    int maxAllowableEvents = 20; // not yet in use. Wil be 9999 in paid version
+    int maxAllowableEvents = 2; // not yet in use. Wil be 9999 in paid version
 
     MyDBHandler dbHandler;
 
@@ -51,8 +51,9 @@ public class MainActivity extends Activity
     public Events[] eventArray;
     public static final String MyPREFERENCES = "MyPreferences_001";
     public static final String FirstTimePref = "MyPreferences_ftp";
-    public int firstTime = 0;
+    //public int firstTime = 0;
     //private ArrayList<Events> eventitem = new ArrayList<>();
+    public String menuAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,12 +219,14 @@ public class MainActivity extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
+        //System.out.println("!!- " + " Add ID is " + R.id.action_add + " and samples id is " + R.id.action_samples);
+        menuAction = "";
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent addAct = new Intent(MainActivity.this, EventEditor.class);
                 int eventsInPlay = dbHandler.getRowCount("ALL"); //get number of active rows
                 if (eventsInPlay >= maxAllowableEvents) {
-                    boolean response = setupDialog("Upgrade to Pro?");
+                    boolean response = setupDialog("Upgrade to Pro?","Yes","No");
 
                         //Toast.makeText(getApplicationContext(), "OK, Your loss pal" , Toast.LENGTH_SHORT).show();
 
@@ -238,6 +241,10 @@ public class MainActivity extends Activity
             case R.id.action_deleted:
                 Intent deleted = new Intent(MainActivity.this, DeletedItems.class);
                 startActivity(deleted);
+                return true;
+            case R.id.action_samples:
+                menuAction = "Sample";
+                boolean response = setupDialog("Manage Sample Events","Insert","Remove");
                 return true;
             case R.id.action_settings:
                 Intent settings = new Intent(MainActivity.this, SettingsActivity.class); //will change to Settings.class when created
@@ -260,7 +267,7 @@ public class MainActivity extends Activity
         //return true;
     }
 
-    public boolean setupDialog(String message) {
+    public boolean setupDialog(String message, String btnPos, String btnNeg) {
         //
         EventDialog eventDialog = new EventDialog();
 
@@ -268,6 +275,8 @@ public class MainActivity extends Activity
         //System.out.println("!!- " + " rows selected=" + rowidsSelected);
 
         bundle.putString("dialogMessage", message);
+        bundle.putString("buttonPos", btnPos);
+        bundle.putString("buttonNeg", btnNeg);
         eventDialog.setArguments(bundle);
         //eventDialog.show(fm, "fragment_edit_name");
         eventDialog.show(getFragmentManager(), "dialog");
@@ -278,18 +287,20 @@ public class MainActivity extends Activity
     @Override
     public void onDataPass(String data) {
 
-        if (data .equals("Yes")) { // Yes button was clicked in Alertdialog
-            Toast.makeText(getApplicationContext(), "Good decision", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "OK, Your loss pal" , Toast.LENGTH_SHORT).show();
+        //if (data .equals("Yes")) { // Yes button was clicked in Alertdialog
+        //    Toast.makeText(getApplicationContext(), "Good decision", Toast.LENGTH_SHORT).show();
+        //} else {
+        //    Toast.makeText(getApplicationContext(), "OK, Your loss pal" , Toast.LENGTH_SHORT).show();
+        //}
+        if(menuAction .equals("Sample")) {
+            if (data .equals("No")) { // Sample menu item was selected and clear selected from dialog
+                //Toast.makeText(getApplicationContext(), "Sample " + data, Toast.LENGTH_SHORT).show();
+                dbHandler.clearSampleEvents();
+                onPause(); // call onpause so that on onresume can be called to refresh list
+                onResume();
+
+            }
         }
-            //if (opType .equals("D")) {
-            //    dbHandler.deleteSpecificEvents(rowidsSelected);
-            //} else {
-                //Toast.makeText(getApplicationContext(), "will restore " + rowidsSelected, Toast.LENGTH_SHORT).show();
-            //    dbHandler.restoreSpecificEvents(rowidsSelected);
-            //}
-            //finish();
     }
 
     @Override
@@ -309,8 +320,6 @@ public class MainActivity extends Activity
     protected void onResume() {
         super.onResume();
 
-
-
         setGroupParents();
 
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataSubHeader, listDataChild);
@@ -329,13 +338,7 @@ public class MainActivity extends Activity
 
     }
 
-    public void checkIfFirstTime(SharedPreferences pref) {
-       // System.out.println("!!- " + "ftp pref=" + pref.getInt("FirstTime", 0));
-        //if(pref.getInt("FirstTime", 0) == 0) {
-            //SharedPreferences.Editor myEditor = pref.edit();
-            //myEditor.putInt("FirstTime", 1); // Set firsttime to true so we hopefully dont come here again
-            //myEditor.apply();
-            //AWarmWelcome();
-        //}
+    public void clearSampleEvents() {
+
     }
 }

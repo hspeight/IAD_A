@@ -224,7 +224,7 @@ public class DeletedItems extends Activity
     public void restoreButtonClicked() {
 
         opType = "R"; //this is a delete operation
-        boolean response = setupDialog("Restore ");
+        boolean response = setupDialog("Restore ","Yes","No");
 
         //Toast.makeText(getApplicationContext(), "Restore clicked ", Toast.LENGTH_SHORT).show();
     }
@@ -232,12 +232,12 @@ public class DeletedItems extends Activity
     public void deleteButtonClicked() {
 
         opType = "D"; //this is a delete operation
-        boolean response = setupDialog("Permanently delete? ");
+        boolean response = setupDialog("Permanently delete? ","Yes", "No");
         //Toast.makeText(getApplicationContext(), "Delete clicked ", Toast.LENGTH_SHORT).show();
 
     }
 
-    public boolean setupDialog(String message) {
+    public boolean setupDialog(String message, String btnPos, String btnNeg) {
         //
         EventDialog eventDialog = new EventDialog();
 
@@ -245,6 +245,8 @@ public class DeletedItems extends Activity
         //System.out.println("!!- " + " rows selected=" + rowidsSelected);
         String[] dIDs = rowidsSelected.split(",");
         bundle.putString("dialogMessage", message + dIDs.length + " events?");
+        bundle.putString("buttonPos", btnPos);
+        bundle.putString("buttonNeg", btnNeg);
         eventDialog.setArguments(bundle);
         //eventDialog.show(fm, "fragment_edit_name");
         eventDialog.show(getFragmentManager(), "dialog");

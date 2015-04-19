@@ -10,6 +10,8 @@ import android.os.Bundle;
 public class EventDialog extends DialogFragment {
     OnDataPass dataPasser;
     String alertMessage;
+    String buttonPos;
+    String buttonNeg;
     //private String whichAct = "EventEditor";
 
     //public EventDialog() {
@@ -24,6 +26,8 @@ public class EventDialog extends DialogFragment {
 
         Bundle bundle = this.getArguments();
         alertMessage = bundle.getString("dialogMessage");
+        buttonPos = bundle.getString("buttonPos");
+        buttonNeg = bundle.getString("buttonNeg");
     }
 
     @Override
@@ -32,14 +36,15 @@ public class EventDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(alertMessage)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                //.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(buttonPos, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         passData("Yes");
                         //Toast.makeText(getActivity(), "Yes clicked", Toast.LENGTH_SHORT).show();
                         //((EventEditor)getActivity()).doPositiveClick(getView());
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(buttonNeg, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         passData("No");
                         //Toast.makeText(getActivity(), "No clicked - " + getActivity().getCallingActivity(), Toast.LENGTH_SHORT).show();

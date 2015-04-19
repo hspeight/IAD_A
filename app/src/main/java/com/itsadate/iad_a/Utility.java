@@ -103,7 +103,7 @@ public class Utility extends Activity {
 
             //System.out.println("!!- " + i + " done");
             Events event = new Events(parts[0], parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), parts[4],
-                    Integer.parseInt(parts[5]),Integer.parseInt(parts[6]),Integer.parseInt(parts[7]),Integer.parseInt(parts[8]),null);
+                    parts[5],Integer.parseInt(parts[6]),Integer.parseInt(parts[7]),Integer.parseInt(parts[8]),null);
             dbHandler.addEvent(event);
 
         }
@@ -128,6 +128,7 @@ public class Utility extends Activity {
         settings = getSharedPreferences("MyPreferences_ftp", Context.MODE_PRIVATE);
         settings.edit().clear().apply();
         Toast.makeText(getApplicationContext(), "All events prefs", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     public void insertRandom (View view) {
@@ -138,7 +139,7 @@ public class Utility extends Activity {
                                         0,
                                         1419825600,
                                         "A",
-                                        0,0,1,0,null
+                                        "R",0,1,0,null
             );
             dbHandler.addEvent(event);
         }

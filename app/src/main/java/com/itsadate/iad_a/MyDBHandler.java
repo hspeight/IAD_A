@@ -8,12 +8,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-
-import java.sql.SQLDataException;
-
 public class MyDBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 19;
+    private static final int DATABASE_VERSION = 21;
     private static final String DATABASE_NAME = "events.db";
     public static final  String TABLE_EVENTS = "events";
     public static final  String COLUMN_ID = "_id";
@@ -22,7 +19,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final  String COLUMN_EVENT_DIR = "direction";
     public static final  String COLUMN_EVENT_TIME = "evtime";
     public static final  String COLUMN_EVENT_STATUS = "evstatus"; // (A)ctive/(I)nactive
-    public static final  String COLUMN_EVENT_INC_HRS = "inchrs";
+    public static final  String COLUMN_EVENT_TYPE = "evtype"; // Sample
     public static final  String COLUMN_EVENT_INC_MIN = "incmin";
     public static final  String COLUMN_EVENT_INC_SEC = "incsec";
     public static final  String COLUMN_EVENT_DAYSONLY = "daysonly";
@@ -42,7 +39,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_EVENT_DIR + " INTEGER, " +
                 COLUMN_EVENT_TIME + " INTEGER, " +
                 COLUMN_EVENT_STATUS + " TEXT, " +
-                COLUMN_EVENT_INC_HRS + " INTEGER, " +
+                COLUMN_EVENT_TYPE + " TEXT, " +
                 COLUMN_EVENT_INC_MIN + " INTEGER, " +
                 COLUMN_EVENT_INC_SEC + " INTEGER, " +
                 COLUMN_EVENT_DAYSONLY + " INTEGER, " +
@@ -71,8 +68,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_EVENT_INFO, event.get_eventinfo());
         values.put(COLUMN_EVENT_DIR, event.get_direction());
         values.put(COLUMN_EVENT_TIME, event.get_evtime());
-        values.put(COLUMN_EVENT_STATUS, event.get_evstatus());
-        values.put(COLUMN_EVENT_INC_HRS, event.get_inchrs());
+        values.put(COLUMN_EVENT_STATUS, event.get_evstatus()); // (A)ctive/(I)nactive
+        values.put(COLUMN_EVENT_TYPE, event.get_type()); // (R)eal/(S)ample
         values.put(COLUMN_EVENT_INC_MIN, event.get_incmin());
         values.put(COLUMN_EVENT_INC_SEC, event.get_incsec());
         values.put(COLUMN_EVENT_DAYSONLY, event.get_dayyears());
@@ -114,7 +111,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(TABLE_EVENTS, new String[] { COLUMN_ID,
                         COLUMN_EVENT_NAME,COLUMN_EVENT_INFO,COLUMN_EVENT_DIR,COLUMN_EVENT_TIME,
-                        COLUMN_EVENT_STATUS,COLUMN_EVENT_INC_HRS,COLUMN_EVENT_INC_MIN,COLUMN_EVENT_INC_SEC,
+                        COLUMN_EVENT_STATUS, COLUMN_EVENT_TYPE,COLUMN_EVENT_INC_MIN,COLUMN_EVENT_INC_SEC,
                         COLUMN_EVENT_DAYSONLY,COLUMN_EVENT_BGIMAGE }, COLUMN_ID + "=?",
                 new String[] { String.valueOf(rowid) }, null, null, null, null);
 
@@ -128,7 +125,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 Integer.parseInt(cursor.getString(3)),
                 Integer.parseInt(cursor.getString(4)),
                 cursor.getString(5),
-                Integer.parseInt(cursor.getString(6)),
+                cursor.getString(6),
                 Integer.parseInt(cursor.getString(7)),
                 Integer.parseInt(cursor.getString(8)),
                 Integer.parseInt(cursor.getString(9)),
@@ -146,7 +143,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         cv.put(COLUMN_EVENT_INFO, myEvent.get_eventinfo());
         cv.put(COLUMN_EVENT_DIR, myEvent.get_direction());
         cv.put(COLUMN_EVENT_TIME, myEvent.get_evtime());
-        cv.put(COLUMN_EVENT_INC_HRS, myEvent.get_inchrs());
+        cv.put(COLUMN_EVENT_TYPE, myEvent.get_type());
         cv.put(COLUMN_EVENT_INC_MIN, myEvent.get_incmin());
         cv.put(COLUMN_EVENT_INC_SEC, myEvent.get_incsec());
         cv.put(COLUMN_EVENT_DAYSONLY, myEvent.get_dayyears());
@@ -207,6 +204,19 @@ public class MyDBHandler extends SQLiteOpenHelper {
         }
         db.close();
         return result;
+    }
+    public void clearSampleEvents() {
+
+        SQLiteDatabase db = getWritableDatabase();
+        //System.out.println("!!- " + "rows to delete = " + rowIDs);
+        try {
+            db.execSQL("DELETE FROM " + TABLE_EVENTS +  " WHERE evtype = \"S\";");
+            //result = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        db.close();
+        //return result;
     }
 
     public boolean restoreSpecificEvents (String rowIDs) {

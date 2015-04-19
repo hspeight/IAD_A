@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 
 import org.joda.time.DateTime;
@@ -102,7 +103,7 @@ public class FirstTime extends Activity {
         }
         firstTimeDoneWith();
         finish();
-        //Toast.makeText(getApplicationContext(), "Create samples", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Samples can be removed from the settings menu", Toast.LENGTH_LONG).show();
     }
     public void dontCreateSamples(View view) {
         firstTimeDoneWith();
@@ -116,7 +117,7 @@ public class FirstTime extends Activity {
                 direction[i], // direction
                 getEpoch(date[i]),
                 "A",
-                0,
+                "S",
                 0,
                 sec[i], // show seconds ?
                 dy[i], // days only or days & years

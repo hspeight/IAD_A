@@ -8,7 +8,7 @@ public class Events {
     private int _direction;
     private int _evtime;
     private String _evstatus;
-    private int _inchrs;
+    private String _evtype;
     private int _incmin;
     private int _incsec;
     private int _dayyears;
@@ -25,14 +25,14 @@ public class Events {
     }
     // constructor
     public Events(int id, String eventname, String eventinfo, int direction, int evtime, String evstatus,
-                  int inchrs, int incmin, int incsec, int dayyears, String bgimage) {
+                  String evtype, int incmin, int incsec, int dayyears, String bgimage) {
         this._id = id;
         this._eventname = eventname;
         this._eventinfo = eventinfo;
         this._direction = direction;
         this._evtime = evtime;
         this._evstatus = evstatus;
-        this._inchrs = inchrs;
+        this._evtype = evtype;
         this._incmin = incmin;
         this._incsec = incsec;
         this._dayyears = dayyears;
@@ -40,13 +40,13 @@ public class Events {
     }
     // constructor
     public Events(String eventname, String eventinfo, int direction, int evtime, String evstatus,
-                  int inchrs, int incmin, int incsec, int dayyears, String bgimage) {
+                  String  evtype, int incmin, int incsec, int dayyears, String bgimage) {
         this._eventname = eventname;
         this._eventinfo = eventinfo;
         this._direction = direction;
         this._evtime = evtime;
         this._evstatus = evstatus;
-        this._inchrs = inchrs;
+        this._evtype = evtype;
         this._incmin = incmin;
         this._incsec = incsec;
         this._dayyears = dayyears;
@@ -74,8 +74,8 @@ public class Events {
     public String get_evstatus() {
         return _evstatus;
     }
-    public int get_inchrs() {
-        return _inchrs;
+    public String get_type() {
+        return _evtype;
     }
     public int get_incmin() {
         return _incmin;

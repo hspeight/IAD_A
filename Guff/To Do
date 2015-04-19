@@ -3,6 +3,7 @@ Pro Version
 Slide show of up to x counters
 Unlimited activities
 Backup events
+Change indivial counter colors
 
 
 Next
@@ -38,6 +39,11 @@ change background color of child row to theme background
 highlight parent row selected (swap background & text colors?)
 allow user to import 5 sample events (display instructions if no events exist)
 add a background image to timer - tried but no success (revisit)
+put add/remove samples option in settings
+Allow user to start a countdown in x hours, y mins
+add allow user to choose ringtone for finish (milestones too)
+Allow option to count up when countdown ends
+sort out rotation on all activities
 
 need to backup & restore entries before upgrading sqlite db
 create app icon

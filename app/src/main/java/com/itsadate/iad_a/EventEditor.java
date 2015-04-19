@@ -326,11 +326,11 @@ public class EventEditor extends Activity
         }
         //Events event = new Events(EventTitle, idx, timeInSeconds, cidx);
         //int rowsInDB = dbHandler.getRowCount()
-        //System.out.println("!!- "  + dbHandler.getRowCount());
+        //System.out.println("!!- "  + timeInSeconds);
         if (tranType.equals("update")) {
             Events event = new Events(rowID, EventTitle, EventInfo, idx_cd, timeInSeconds, "A",
                     //includeHrs.isChecked() ? 1 : 0,
-                    0,
+                    "R",
                     //includeMin.isChecked() ? 1 : 0,
                     0,
                     includeSec.isChecked() ? 1 : 0,
@@ -344,7 +344,7 @@ public class EventEditor extends Activity
         } else {
             Events event = new Events(EventTitle, EventInfo, idx_cd, timeInSeconds, "A",
                     //includeHrs.isChecked() ? 1 : 0,
-                    0,
+                    "R",
                     //includeMin.isChecked() ? 1 : 0,
                     0,
                     includeSec.isChecked() ? 1 : 0,
@@ -397,6 +397,8 @@ public class EventEditor extends Activity
             EventDialog eventDialog = new EventDialog();
             Bundle bundle = new Bundle();
             bundle.putString("dialogMessage", "Save changes before exit?");
+            bundle.putString("buttonPos", "Yes");
+            bundle.putString("buttonNeg", "No");
             eventDialog.setArguments(bundle);
             //eventDialog.show(fm, "fragment_edit_name");
             eventDialog.show(getFragmentManager(), "dialog");

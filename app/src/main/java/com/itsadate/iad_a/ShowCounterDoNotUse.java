@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class ShowCounter extends Activity {
+public class ShowCounterDoNotUse extends Activity {
 
     //DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
     //DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
@@ -127,8 +127,9 @@ public class ShowCounter extends Activity {
         if (myEvent.get_dayyears() == 0) { // 0 = days only
             textYears.setVisibility(View.GONE);
             textYearsLbl.setVisibility(View.GONE);
-            textDays.setTextScaleX(0.8f); // Should stop it overflowing if more than 3 digits
+            //textDays.setTextScaleX(0.8f); // Should stop it overflowing if more than 3 digits
             lin1.setWeightSum(5); // Not exactly certain why this works but it does.
+            //textDays.(89);
         } else {
             textYears.setVisibility(View.VISIBLE);
             textYearsLbl.setVisibility(View.VISIBLE);
