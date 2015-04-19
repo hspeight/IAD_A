@@ -27,8 +27,6 @@ import android.widget.ExpandableListView;
 //import android.widget.FrameLayout;
 //import android.widget.ImageView;
 
-import android.widget.Toast;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 //import org.joda.time.Duration;
@@ -144,7 +142,7 @@ public class MainActivity extends Activity
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         //expListView.setBackgroundColor(Color.RED);
-        String evstring = dbHandler.getActiveEventIDs("A");
+        String evstring = dbHandler.getEventIDs("A");
         //System.out.println("!!- " + "*" + evstring + "*");
         String[] foods = evstring.split(":"); // array of row_id's
         eventArray = new Events[foods.length];
@@ -244,7 +242,7 @@ public class MainActivity extends Activity
                 return true;
             case R.id.action_samples:
                 menuAction = "Sample";
-                boolean response = setupDialog("Manage Sample Events","Insert","Remove");
+                boolean response = setupDialog("Manage Sample Events","Restore","Delete");
                 return true;
             case R.id.action_settings:
                 Intent settings = new Intent(MainActivity.this, SettingsActivity.class); //will change to Settings.class when created
@@ -295,11 +293,13 @@ public class MainActivity extends Activity
         if(menuAction .equals("Sample")) {
             if (data .equals("No")) { // Sample menu item was selected and clear selected from dialog
                 //Toast.makeText(getApplicationContext(), "Sample " + data, Toast.LENGTH_SHORT).show();
-                dbHandler.clearSampleEvents();
-                onPause(); // call onpause so that on onresume can be called to refresh list
-                onResume();
-
+                dbHandler.manageSampleEvents("I"); // samples already exist but make them inactive
+            } else {
+                dbHandler.manageSampleEvents("A"); // create samples and make them inactive
+            //    dbHandler.insertSampleEvents();
             }
+            onPause(); // call onpause so that on onresume can be called to refresh list
+            onResume();
         }
     }
 

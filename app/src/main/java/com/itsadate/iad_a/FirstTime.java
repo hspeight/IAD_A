@@ -19,11 +19,15 @@ import java.util.Calendar;
 import java.util.Locale;
 //import android.support.v7.app.ActionBarActivity;
 
+/* If the user chooses to create sample events, add them into the DB with type=S and status=A
+   otherwise add them with type=S and status=I
+ */
 public class FirstTime extends Activity {
 
     MyDBHandler dbHandler;
 
     int year;
+    String status;
     int NUM_EVENTS = 5;
 
     String[] info;
@@ -39,6 +43,8 @@ public class FirstTime extends Activity {
         setContentView(R.layout.first_time);
 
         dbHandler = new MyDBHandler(this, null, null, 1);
+        dbHandler.deleteAllEvents("S"); // Samples i.e. not real ones
+
         year = Calendar.getInstance().get(Calendar.YEAR);
 
         DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
@@ -86,7 +92,6 @@ public class FirstTime extends Activity {
         sec[2] = 1;
         sec[3] = 0;
         sec[4] = 0;
-
     }
 
     public DateTime getMyDTF(int val) {
@@ -95,17 +100,22 @@ public class FirstTime extends Activity {
         return new DateTime(nowPlus24Hrs, DateTimeZone.getDefault());
     }
 
-    public void createSamples(View view) {
-
+    public void createSamplesActive(View view) {
+        status = "A"; // create active samples
         for(int i = 0; i < title.length; i++ ) {
             Events myEvent = constructEvent(i);
             dbHandler.addEvent(myEvent);
         }
         firstTimeDoneWith();
         finish();
-        Toast.makeText(getApplicationContext(), "Samples can be removed from the settings menu", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Samples can be removed from the menu", Toast.LENGTH_LONG).show();
     }
-    public void dontCreateSamples(View view) {
+    public void createSamplesInactive(View view) {
+        status = "I"; // create inactive samples
+        for(int i = 0; i < title.length; i++ ) {
+            Events myEvent = constructEvent(i);
+            dbHandler.addEvent(myEvent);
+        }
         firstTimeDoneWith();
         finish(); // Get me outa here
     }
@@ -116,7 +126,7 @@ public class FirstTime extends Activity {
                 info[i],
                 direction[i], // direction
                 getEpoch(date[i]),
-                "A",
+                status,
                 "S",
                 0,
                 sec[i], // show seconds ?

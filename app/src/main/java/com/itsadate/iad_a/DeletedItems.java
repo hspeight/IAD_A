@@ -193,7 +193,7 @@ public class DeletedItems extends Activity
     public ArrayList<ArchItem> loadItems() {
 
         //deletedEvents.clear();
-        String evstring = dbHandler.getActiveEventIDs("I");
+        String evstring = dbHandler.getEventIDs("I");
         // System.out.println("!!- "  + evstring);
         String[] foods = evstring.split(":");
         rowID = new String[foods.length]; // set number of array elements equal to number of events returned

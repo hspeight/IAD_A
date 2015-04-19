@@ -103,7 +103,7 @@ public class ScreenSlidePageractivity extends FragmentActivity {
     //}
 
     public ArrayList<SwipeItem> loadInitialObjectsFromDB() {
-        String evstring = dbHandler.getActiveEventIDs("A"); // Fetch Id's of active events
+        String evstring = dbHandler.getEventIDs("A"); // Fetch Id's of active events
         String[] foods = evstring.split(":");
         //System.out.println("!!- " + "foods=" + evstring);
         //String[] newfoods = rebuildArray(foods,initialId);

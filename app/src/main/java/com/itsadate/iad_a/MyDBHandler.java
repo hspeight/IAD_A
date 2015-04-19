@@ -8,6 +8,13 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.util.Calendar;
+
 public class MyDBHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 21;
@@ -81,12 +88,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     }
 
-    public String getActiveEventIDs(String status) {
-
+    public String getEventIDs(String status) {
+        String query;
         String dbString = "";
         SQLiteDatabase db = getReadableDatabase();
+        if (status.equals("A")) { // get everything
+            query = "SELECT _id FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENT_STATUS + " = \"" + status + "\";";
+        } else { // dont get samples for (I)nactive
+            query = "SELECT _id FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENT_STATUS +
+                                    " = \"" + status + "\" AND " + COLUMN_EVENT_TYPE + " = \"R\";";
 
-        String query = "SELECT _id FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENT_STATUS + " = \"" + status + "\";";
+        }
+
         // System.out.println("!!- "  + query);
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
@@ -176,13 +189,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     //Delete all rows
-    public boolean deleteAllEvents () {
+    public boolean deleteAllEvents (String type) {
 
         boolean result = false;
 
         SQLiteDatabase db = getWritableDatabase();
         try {
-            db.execSQL("DELETE FROM " + TABLE_EVENTS +  ";");
+            db.execSQL("DELETE FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENT_TYPE + " = \"" + type + "\";");
             result = true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -205,12 +218,14 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
         return result;
     }
-    public void clearSampleEvents() {
 
+    public void manageSampleEvents(String status) {
+        // Doesnt delete them. Just sets them to (A)ctive or (I)nactive.
         SQLiteDatabase db = getWritableDatabase();
         //System.out.println("!!- " + "rows to delete = " + rowIDs);
         try {
-            db.execSQL("DELETE FROM " + TABLE_EVENTS +  " WHERE evtype = \"S\";");
+            db.execSQL("UPDATE " + TABLE_EVENTS +   " SET " + COLUMN_EVENT_STATUS + " = \"" + status + "\" WHERE " +
+                                                                COLUMN_EVENT_TYPE + " = \"S\";");
             //result = true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -247,4 +262,72 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return (int) DatabaseUtils.queryNumEntries(db, TABLE_EVENTS, whereClause);
 
     }
+/*
+    public void insertSamples(int NUM_EVENTS) {
+
+        int year;
+
+        String[] info;
+        String[] title;
+        String[] date;
+        int[] direction;
+        int[] dy;
+        int[] sec;
+
+        year = Calendar.getInstance().get(Calendar.YEAR);
+
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
+
+        title = new String[NUM_EVENTS];
+        title[0] = "New Years Eve " + (year);
+        title[1] = "Since I stopped smoking";
+        title[2] = "This year's vacation";
+        title[3] = "How old am I..?";
+        title[4] = "A future event";
+
+        info = new String[NUM_EVENTS];
+        info[0] = "A count down to NYE";
+        info[1] = "The best decision I ever made! (An example of an event showing years & days)";
+        info[2] = "Can't wait, counting the seconds :-)";
+        info[3] = "This is my age in days";
+        info[4] = "You can create events that start some time in the future";
+
+        date = new String[NUM_EVENTS];
+        date[0] = "01/01/" + (year + 1) + " 00:00:00";
+        date[1] = "11/07/2012 09:00:00";
+        date[2] = dtf.print(getMyDTF(14 * 60 * 60 * 24 * 1000));
+        date[3] = "14/11/1957 11:15:00";
+        //System.out.println("!!- " + dtf.print(dt));
+        //date[4] = dtf.print(dt);
+        date[4] = dtf.print(getMyDTF(2 * 60 * 60 * 24 * 1000));
+
+        direction = new int[NUM_EVENTS];
+        direction[0] = 1; // down
+        direction[1] = 0; // up
+        direction[2] = 1; // down
+        direction[3] = 0; // up
+        direction[4] = 0; // up
+
+        dy = new int[NUM_EVENTS];
+        dy[0] = 0; // days only
+        dy[1] = 1; // years/days
+        dy[2] = 0; // days only
+        dy[3] = 0; // days only
+        dy[4] = 0; // days only
+
+        sec = new int[NUM_EVENTS];
+        sec[0] = 0; // 0 = dont show
+        sec[1] = 0;
+        sec[2] = 1;
+        sec[3] = 0;
+        sec[4] = 0;
+
+    }
+
+    public DateTime getMyDTF(int val) {
+
+        long nowPlus24Hrs = (System.currentTimeMillis() + val);
+        return new DateTime(nowPlus24Hrs, DateTimeZone.getDefault());
+    }
+*/
 }

@@ -2,10 +2,8 @@ package com.itsadate.iad_a;
 
 import android.app.Activity;
 //import android.content.Intent;
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 //import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -115,7 +113,7 @@ public class Utility extends Activity {
 
     public void clearEvents(View view) {
 
-        dbHandler.deleteAllEvents();
+        dbHandler.deleteAllEvents("R"); // Real i.e. not samples
         Toast.makeText(getApplicationContext(), "All events cleared", Toast.LENGTH_SHORT).show();
     }
 
@@ -146,7 +144,7 @@ public class Utility extends Activity {
     }
     public void dumpData(View view) {
 
-        String evstring = dbHandler.getActiveEventIDs("A"); // Fetch Id's of active events
+        String evstring = dbHandler.getEventIDs("A"); // Fetch Id's of active events
         String[] foods = evstring.split(":");
         //System.out.println("!!- " + "foods=" + evstring);
         //String[] newfoods = rebuildArray(foods,initialId);
@@ -164,7 +162,7 @@ public class Utility extends Activity {
 
     public void setInactive(View view) {
 
-        String evstring = dbHandler.getActiveEventIDs("A");
+        String evstring = dbHandler.getEventIDs("A");
         //dbHandler.deleteAllEvents();
         //System.out.println("!!- " + evstring);
         String[] foods = evstring.split(":"); // array of row_id's
