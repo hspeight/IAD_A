@@ -1,10 +1,10 @@
 Pro Version
 -----------
+Unlimited events
 Slide show of up to x counters
-Unlimited activities
-Backup events
 Change indivial counter colors
-
+Milestones (up to 3)
+Backup & restore events
 
 Next
 ----
@@ -30,21 +30,25 @@ add search function to main list screen
 allow 1 backup in free & unlimited in paid (need to check free disk space in paid) http://www.techrepublic.com/blog/software-engineer/export-sqlite-data-from-your-android-device/
     - oh bum! need a way of upgrading backups already take to latest version. maybe put version number in table?
 Import events from calendar
-milestones
+milestones (1 in lite)
 sorting lists
 swipe left & right in show counter - done
 Employ 'Lean back' full screen for counter
 move play/edit/delete buttons to left in line with parent text - done
 change background color of child row to theme background
 highlight parent row selected (swap background & text colors?)
-allow user to import 5 sample events (display instructions if no events exist)
+allow user to import 5 sample events (display instructions if no events exist) done
 add a background image to timer - tried but no success (revisit)
-put add/remove samples option in settings
+put add/remove samples option in settings done
 Allow user to start a countdown in x hours, y mins
 add allow user to choose ringtone for finish (milestones too)
 Allow option to count up when countdown ends
 sort out rotation on all activities
-
+This thing is gonna have to have a home screen widget
+Make counters full screen
+----------------------------------------------------------------------------------------------------
+Anything above this line will go in
+----------------------------------------------------------------------------------------------------
 need to backup & restore entries before upgrading sqlite db
 create app icon
 order event list by alpha

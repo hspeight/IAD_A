@@ -89,6 +89,8 @@
     <orderEntry type="library" exported="" name="support-annotations-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="joda-time-2.7" level="project" />
     <orderEntry type="library" exported="" name="1_joda-time-2.7" level="project" />
+    <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
+    <orderEntry type="library" exported="" name="1_picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="support-v13-22.0.0" level="project" />
   </component>
 </module>

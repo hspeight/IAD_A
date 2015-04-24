@@ -5,11 +5,17 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.CursorLoader;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +33,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -82,6 +93,8 @@ public class EventEditor extends Activity
     EditText optionalInfo;
     MyDBHandler dbHandler;
 
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Bitmap currentImage;
     int imageHeight;
     int imageWidth;
     String imageType;
@@ -267,7 +280,7 @@ public class EventEditor extends Activity
                 ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
         actionBar.setCustomView(customActionBarView);
 
-        //imgView = (ImageView) findViewById(R.id.imgView);
+        imgView = (ImageView) findViewById(R.id.imgView);
         //if(event has a background image) {
             //imgView.setImageBitmap(
                     //decodeSampledBitmapFromFile(imgDecodableString, 100, 100));
@@ -298,7 +311,7 @@ public class EventEditor extends Activity
 
         String givenDateString = dateButton.getText() + " " + timeButton.getText(); //e.g. 7 Jul 2014 15:30
         //System.out.println("!!- "  + "date & time=" + givenDateString);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.UK);
         try {
             Date mDate = sdf.parse(givenDateString);
             //long timeInMillis = mDate.getTime(); // Time entered in millis
@@ -492,29 +505,59 @@ public class EventEditor extends Activity
         updateDisplay();
         }
     };
-/*
+
     public void loadImagefromGallery(View view) {
 
-        // Create intent to Open Image applications like Gallery, Google Photos
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-         //Start the Intent
-        startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), RESULT_LOAD_IMG);
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        //startActivityForResult(Intent.createChooser(intent, "Select Picture"),PICK_IMAGE_REQUEST);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+
+    }
+    @Override
+     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //System.out.println("!!- " + "RESULT_OK "  + RESULT_OK);
+        if(resultCode == Activity.RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+            //System.out.println("!!- selectedimage=" + selectedImage);
+
+            // from http://square.github.io/picasso/
+            Picasso.with(this).load(selectedImage).resize(100, 100).error(R.drawable.roses).into(imgView);
+        }
 
     }
 
+    public String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+
+        CursorLoader cursorLoader = new CursorLoader(
+                this,
+                contentUri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        int column_index =
+                cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+/*
     //@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        try {
+        //System.out.println("!!- " + "RESULT_OK "  + RESULT_OK);
+        try
+        {
+            System.out.println("!!- " + "In");
             // When an Image is picked
-            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
+            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && null != data)
+            {
                 // Get the Image from data
 
                 Uri selectedImage = data.getData();
-                String[] filePathColumn = {
-                        MediaStore.Images.Media.DATA
-                };
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
                 // Get the cursor
                 Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -524,38 +567,39 @@ public class EventEditor extends Activity
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imgDecodableString = cursor.getString(columnIndex);
                 cursor.close();
-                getHeightWidth(imgDecodableString); // calc h & w of selected image
-                //System.out.println("!!- " + imageHeight + "/" + imageWidth);
+                //ImageView imgView = (ImageView) findViewById(R.id.imgVieww);
 
-                //ImageView imgView = (ImageView) findViewById(R.id.imgView);
+                Bitmap bitmapForImage = decodeSampledBitmapFromFile( imgDecodableString, 10, 10 );
+
                 // Set the Image in ImageView after decoding the String
-                //imgView.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
-                imgView.setImageBitmap(
-                        decodeSampledBitmapFromFile(imgDecodableString, 100, 100));
-
-            } else {
-                imgDecodableString = null;
-                //Toast.makeText(this, "You haven't picked Image",
-                //        Toast.LENGTH_LONG).show();
+                imgView.setImageBitmap(bitmapForImage);
             }
-        } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong " + requestCode + " , " + resultCode, Toast.LENGTH_LONG)
-                    .show();
+            else
+            {
+                Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
+            }
         }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+        }
+
     }
 
-    public void getHeightWidth(String imgDecodableString) {
+    public void getHeightWidth(String fPath) {
+        System.out.println("!!- " + "fPath is "  + fPath);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(imgDecodableString, options);
+        BitmapFactory.decodeFile(fPath, options);
         imageHeight = options.outHeight;
         imageWidth = options.outWidth;
         imageType = options.outMimeType;
+        System.out.println("!!- " + "imageHeight is "  + imageHeight);
     }
 
     public static Bitmap decodeSampledBitmapFromFile(String imgDecodableString,
                                                          int reqWidth, int reqHeight) {
-
+        System.out.println("!!- " + "imageHeight/width is "  + reqHeight + "/" + reqWidth);
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
