@@ -75,20 +75,20 @@ public class Utility extends Activity {
 
         String[] eString = new String[14];
 
-        eString[0] = "Da Ting`Example of an event with optional text`0`1419825600`A`0`0`0`0";
-        eString[1] = "Countdown to polling day`This is an example of an event with a very long optional text string that contains so much text it will probably go over multiple lines! Oh Gawd!`1`1430978400`A`0`0`1`0";
-        eString[2] = "Count up from a future date`A`0`" + nowPlus5Min / 1000 + "`A`1`0`0`1";
-        eString[3] = dtf4.print(dt4) + "``1`" + nowPlus5Min / 1000 + "`A`1`0`0`1";
-        eString[4] = "This is the first ever event!``0`1423440390`A`1`1`1`1";
-        eString[5] = "And this is the second``1`1424540190`A`1`0`0`0";
-        eString[6] = "Curly Watts Anniversary Countdown``0`1414440190`A`0`1`1`0";
-        eString[7] = "Since my 55th Birthday``0`1421317800`I`1`0`0`1";
-        eString[8] = "Until my 56th Birthday``1`1452853800`A`1`1`1`0";
-        eString[9] = dtf1.print(dt1) + "``0`" + nowMinus24Hrs / 1000 + "`A`0`1`0`1";
-        eString[10] = dtf2.print(dt2) + "``1`" + nowPlus24Hrs / 1000 + "`I`0`0`0`1";
-        eString[11] = dtf3.print(dt3) + "``1`" + nowPlus1Min / 1000 + "`A`1`0`0`1";
-        eString[12] = "Event with a veeeeeeeeery long title to see how it looks in the list except it needs to be even longer``0`1414840190`A`0`0`0`1";
-        eString[13] = "Since my 55th``0`1421318386`A`0`0`0`0";
+        eString[0] = "Da Ting`Example of an event with optional text`0`1419825600`A`R`0`0`0";
+        eString[1] = "Countdown to polling day`This is an example of an event with a very long optional text string that contains so much text it will probably go over multiple lines! Oh Gawd!`1`1430978400`A`R`0`1`0";
+        eString[2] = "Count up from a future date`A`0`" + nowPlus5Min / 1000 + "`A`R`0`0`1";
+        eString[3] = dtf4.print(dt4) + "``1`" + nowPlus5Min / 1000 + "`A`R`0`0`1";
+        eString[4] = "This is the first ever event!``0`1423440390`A`R`1`1`1";
+        eString[5] = "And this is the second``1`1424540190`I`R`0`0`0";
+        eString[6] = "Curly Watts Anniversary Countdown``0`1414440190`I`R`1`1`0";
+        eString[7] = "Since my 55th Birthday``0`1421317800`I`R`0`0`1";
+        eString[8] = "Until my 56th Birthday``1`1452853800`A`R`1`1`0";
+        eString[9] = dtf1.print(dt1) + "``0`" + nowMinus24Hrs / 1000 + "`A`R`1`0`1";
+        eString[10] = dtf2.print(dt2) + "``0`" + nowPlus24Hrs / 1000 + "`A`R`0`0`1";
+        eString[11] = dtf3.print(dt3) + "``1`" + nowPlus1Min / 1000 + "`A`R`0`0`1";
+        eString[12] = "Event with a veeeeeeeeery long title to see how it looks in the list except it needs to be even longer``0`1414840190`A`R`0`0`1";
+        eString[13] = "Since my 55th``0`1421318386`A`R`0`0`0";
         //eString[9] = dtf2.print(dt2) + "`1`" + nowPlus24Hrs / 1000 + "`0";
 
         //int i;
@@ -114,6 +114,7 @@ public class Utility extends Activity {
     public void clearEvents(View view) {
 
         dbHandler.deleteAllEvents("R"); // Real i.e. not samples
+        dbHandler.deleteAllEvents("S");
         Toast.makeText(getApplicationContext(), "All events cleared", Toast.LENGTH_SHORT).show();
     }
 

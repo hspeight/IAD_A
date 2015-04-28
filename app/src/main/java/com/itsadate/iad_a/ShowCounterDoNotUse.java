@@ -47,7 +47,7 @@ public class ShowCounterDoNotUse extends Activity {
         counterColor = pref.getInt("timerCounterColor", -16776961); // Get background color from pref file
         textColor = pref.getInt("timerTextColor", -1); // Get text color from pref file
 
-        relLayout = findViewById(R.id.relLayoutCounterBG);
+        relLayout = findViewById(R.id.linLayoutCounterBG);
         relLayout.setBackgroundColor(bgColor);
 
         dbHandler = new MyDBHandler(this, null, null, 1);
@@ -108,7 +108,7 @@ public class ShowCounterDoNotUse extends Activity {
         TextView textInfo = (TextView) findViewById(R.id.textOptionalInfo);
         textInfo.setTextColor(textColor);
         TextView textYearsLbl = (TextView) findViewById(R.id.textViewYearsLabel);
-        LinearLayout lin1 = (LinearLayout) findViewById(R.id.linLayout1); // Contains linear layouts for yy,dd,hh,mm,ss
+        LinearLayout lin1 = (LinearLayout) findViewById(R.id.linLayoutTimer); // Contains linear layouts for yy,dd,hh,mm,ss
 
 
         //String rowID;

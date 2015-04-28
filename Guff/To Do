@@ -74,5 +74,6 @@ remove any unused drawables
 
 Pre release
 -----------
+check out pro guard
 run a check from the Gradle tasks tool then check html report
 check for System print code

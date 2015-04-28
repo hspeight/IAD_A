@@ -38,9 +38,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -145,11 +148,18 @@ public class ScreenSlidePageFragment extends Fragment {
         textHour = (TextView) rootView.findViewById(R.id.textHour);
         textDays = (TextView) rootView.findViewById(R.id.textDays);
         textYears = (TextView) rootView.findViewById(R.id.textYears);
-        TextView textYearsLbl = (TextView) rootView.findViewById(R.id.textViewYearsLabel);
+        //TextView textYearsLbl = (TextView) rootView.findViewById(R.id.textViewYearsLabel);
         TextView textFuture = (TextView) rootView.findViewById(R.id.textViewFuture);
-        RelativeLayout relLayout = (RelativeLayout) rootView.findViewById(R.id.relLayoutCounterBG);
+        LinearLayout relLayout = (LinearLayout) rootView.findViewById(R.id.linLayoutCounterBG);
         relLayout.setBackgroundColor(mBgcolor);
-        LinearLayout lin1 = (LinearLayout) rootView.findViewById(R.id.linLayout1); // Contains linear layouts for yy,dd,hh,mm,ss
+        //LinearLayout lin1 = (LinearLayout) rootView.findViewById(R.id.linLayout1); // Contains linear layouts for yy,dd,hh,mm,ss
+        ImageView courteney = (ImageView) rootView.findViewById(R.id.imageViewImg);
+        Picasso.with(getActivity()).load(R.drawable.courteney)
+                //.resize(0, courteney.getHeight())
+                .resize(300, 300)
+                //.fit().centerCrop()
+                .error(R.drawable.panda)
+                .into(courteney);
 
         evTitle.setText(mTitle);
         evTitle.setTextColor(mTextcolor);
@@ -163,9 +173,9 @@ public class ScreenSlidePageFragment extends Fragment {
         textYears.setTextColor(mDigitcolor);
 
         final LinearLayout linYears = (LinearLayout) rootView.findViewById(R.id.linearLayoutYears);
-        final LinearLayout linDays = (LinearLayout) rootView.findViewById(R.id.linearLayoutdays);
-        final LinearLayout linHours = (LinearLayout) rootView.findViewById(R.id.linearLayouthrs);
-        final LinearLayout linMins = (LinearLayout) rootView.findViewById(R.id.linearLayoutmins);
+        //final LinearLayout linDays = (LinearLayout) rootView.findViewById(R.id.linearLayoutdays);
+        //final LinearLayout linHours = (LinearLayout) rootView.findViewById(R.id.linearLayouthrs);
+        //final LinearLayout linMins = (LinearLayout) rootView.findViewById(R.id.linearLayoutmins);
         final LinearLayout linSecs = (LinearLayout) rootView.findViewById(R.id.linearLayoutsecs);
 
         if (mIncsec == 0)

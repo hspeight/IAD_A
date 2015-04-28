@@ -525,7 +525,7 @@ public class EventEditor extends Activity
             //System.out.println("!!- selectedimage=" + selectedImage);
 
             // from http://square.github.io/picasso/
-            Picasso.with(this).load(selectedImage).resize(100, 100).error(R.drawable.roses).into(imgView);
+            Picasso.with(this).load(selectedImage).resize(100, 100).error(R.drawable.courteney).into(imgView);
         }
 
     }
