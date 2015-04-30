@@ -154,11 +154,12 @@ public class ScreenSlidePageFragment extends Fragment {
         relLayout.setBackgroundColor(mBgcolor);
         //LinearLayout lin1 = (LinearLayout) rootView.findViewById(R.id.linLayout1); // Contains linear layouts for yy,dd,hh,mm,ss
         ImageView courteney = (ImageView) rootView.findViewById(R.id.imageViewImg);
-        Picasso.with(getActivity()).load(R.drawable.courteney)
+        //Picasso.with(getActivity()).setIndicatorsEnabled(true);
+        Picasso.with(getActivity()).load(R.drawable.jennifer_aniston)
                 //.resize(0, courteney.getHeight())
-                .resize(300, 300)
+                .resize(400, 400)
                 //.fit().centerCrop()
-                .error(R.drawable.panda)
+                .error(R.drawable.image_not_found)
                 .into(courteney);
 
         evTitle.setText(mTitle);

@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +59,7 @@ public class EventEditor extends Activity
     private TextView textUpDown;
     private Button dateButton;
     private Button timeButton;
+    private Uri selectedImage; // Image selected from gallery
     //private Button bgimagebutton;
     private int pYear;
     private int pMonth;
@@ -269,7 +271,11 @@ public class EventEditor extends Activity
         customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(
                 new View.OnClickListener() {@Override
                                             public void onClick(View v) {
-                    addButtonClicked(v);
+                    try {
+                        addButtonClicked(v);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 });
 
@@ -297,7 +303,7 @@ public class EventEditor extends Activity
         return dtf.print(dt);
     }
 
-    public void addButtonClicked(View view) {
+    public void addButtonClicked(View view) throws IOException {
 
         String EventTitle = hsEditText.getText().toString();
         String EventInfo = optionalInfo.getText().toString();
@@ -340,6 +346,13 @@ public class EventEditor extends Activity
         //Events event = new Events(EventTitle, idx, timeInSeconds, cidx);
         //int rowsInDB = dbHandler.getRowCount()
         //System.out.println("!!- "  + timeInSeconds);
+
+        if(selectedImage != null) {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),selectedImage);
+            byte[] data = getBitmapAsByteArray(bitmap);
+            //System.out.println("!!- " + data.length);
+        }
+
         if (tranType.equals("update")) {
             Events event = new Events(rowID, EventTitle, EventInfo, idx_cd, timeInSeconds, "A",
                     //includeHrs.isChecked() ? 1 : 0,
@@ -424,8 +437,13 @@ public class EventEditor extends Activity
     @Override
     public void onDataPass(String data) {
 
+        // User tried to exit with unsaved changes
         if (data.equals("Yes")) {
-            addButtonClicked(myView);
+            try {
+                addButtonClicked(myView);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             finish();
         }
@@ -520,8 +538,9 @@ public class EventEditor extends Activity
      protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //System.out.println("!!- " + "RESULT_OK "  + RESULT_OK);
+        selectedImage = null;
         if(resultCode == Activity.RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
+            selectedImage = data.getData();
             //System.out.println("!!- selectedimage=" + selectedImage);
 
             // from http://square.github.io/picasso/
@@ -530,6 +549,12 @@ public class EventEditor extends Activity
 
     }
 
+    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
+    }
+/*
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = { MediaStore.Images.Media.DATA };
 
@@ -542,97 +567,6 @@ public class EventEditor extends Activity
                 cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
-    }
-/*
-    //@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //System.out.println("!!- " + "RESULT_OK "  + RESULT_OK);
-        try
-        {
-            System.out.println("!!- " + "In");
-            // When an Image is picked
-            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && null != data)
-            {
-                // Get the Image from data
-
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-                // Get the cursor
-                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                // Move to first row
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
-                //ImageView imgView = (ImageView) findViewById(R.id.imgVieww);
-
-                Bitmap bitmapForImage = decodeSampledBitmapFromFile( imgDecodableString, 10, 10 );
-
-                // Set the Image in ImageView after decoding the String
-                imgView.setImageBitmap(bitmapForImage);
-            }
-            else
-            {
-                Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
-            }
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-    public void getHeightWidth(String fPath) {
-        System.out.println("!!- " + "fPath is "  + fPath);
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(fPath, options);
-        imageHeight = options.outHeight;
-        imageWidth = options.outWidth;
-        imageType = options.outMimeType;
-        System.out.println("!!- " + "imageHeight is "  + imageHeight);
-    }
-
-    public static Bitmap decodeSampledBitmapFromFile(String imgDecodableString,
-                                                         int reqWidth, int reqHeight) {
-        System.out.println("!!- " + "imageHeight/width is "  + reqHeight + "/" + reqWidth);
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(imgDecodableString , options);
-
-        //System.out.println("!!- " + imgDecodableString);
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(imgDecodableString , options);
-    }
-
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
     }
 */
 }
