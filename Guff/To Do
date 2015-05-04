@@ -46,6 +46,7 @@ Allow option to count up when countdown ends
 sort out rotation on all activities
 This thing is gonna have to have a home screen widget
 Make counters full screen
+Put image load into async task in fragment
 ----------------------------------------------------------------------------------------------------
 Anything above this line will go in
 ----------------------------------------------------------------------------------------------------

@@ -20,14 +20,15 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:text="Large Text"
             android:id="@+id/textEvTitle"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:scrollHorizontally="true"
             android:maxLines="2"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -42,13 +43,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Large Text"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:text="Med Text"
             android:id="@+id/textOptionalInfo"
 
             android:gravity="center_vertical|center_horizontal"
 
-            android:textStyle="italic"
+            android:textStyle="bold|italic"
             android:scrollHorizontally="true"
             android:maxLines="3"
             android:ellipsize="end" />
@@ -71,6 +72,7 @@
             app:riv_mutate_background="true"
             app:riv_tile_mode="repeat"
             app:riv_oval="true"
+            android:adjustViewBounds="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -108,12 +110,12 @@
                 android:layout_weight=".7"
                 android:layout_gravity="center_horizontal"
                 android:gravity="bottom"
-                android:textSize="30sp" />
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:text="Years"
                 android:id="@+id/textViewYearsLabel"
                 android:layout_gravity="center_horizontal"
@@ -132,16 +134,16 @@
 
                 android:text="dd"
                 android:typeface="monospace"
-                android:textSize="30sp"
                 android:textColor="@color/Crimson"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight=".7"
-                android:gravity="bottom" />
+                android:gravity="bottom"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:text="Days"
                 android:id="@+id/textView17"
                 android:layout_gravity="center_horizontal"
@@ -159,16 +161,16 @@
                 android:id="@+id/textHour"
 
                 android:text="hh"
-                android:textSize="30sp"
                 android:textColor="@color/Crimson"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight=".7"
-                android:gravity="bottom" />
+                android:gravity="bottom"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:text="Hours"
                 android:id="@+id/textView18"
                 android:layout_gravity="center_horizontal"
@@ -186,16 +188,16 @@
                 android:id="@+id/textMins"
 
                 android:text="mm"
-                android:textSize="30sp"
                 android:textColor="@color/Crimson"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight=".7"
-                android:gravity="bottom" />
+                android:gravity="bottom"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:text="Mins"
                 android:id="@+id/textViewMinsText"
                 android:layout_gravity="center_horizontal"
@@ -215,7 +217,8 @@
                 android:text="ss"
                 android:textSize="20sp"
                 android:textColor="@color/Crimson"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -238,9 +241,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Future Text"
-            android:id="@+id/textViewFuture"/>
+            android:id="@+id/textViewFuture"
+            android:textStyle="bold"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
     </LinearLayout>
 
 </LinearLayout>

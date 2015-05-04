@@ -29,6 +29,7 @@
         <activity
             android:name=".ScreenSlidePageractivity"
             android:label="@string/title_activity_event_status"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

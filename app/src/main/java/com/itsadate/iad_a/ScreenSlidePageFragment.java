@@ -74,6 +74,10 @@ public class ScreenSlidePageFragment extends Fragment {
     private int mDigitcolor;
     private int mTextcolor;
 
+    private ImageView courteney;
+    int imgWidth;
+    int imgHeight;
+
     TextView textSecs;
     TextView textMins;
     TextView textHour;
@@ -153,13 +157,14 @@ public class ScreenSlidePageFragment extends Fragment {
         LinearLayout relLayout = (LinearLayout) rootView.findViewById(R.id.linLayoutCounterBG);
         relLayout.setBackgroundColor(mBgcolor);
         //LinearLayout lin1 = (LinearLayout) rootView.findViewById(R.id.linLayout1); // Contains linear layouts for yy,dd,hh,mm,ss
-        ImageView courteney = (ImageView) rootView.findViewById(R.id.imageViewImg);
-        //Picasso.with(getActivity()).setIndicatorsEnabled(true);
+        courteney = (ImageView) rootView.findViewById(R.id.imageViewImg);
+        //System.out.println("!!- " + courteney.getHeight() + "/" + courteney.getWidth());
+        // Got the blank placeholder tip from https://github.com/square/picasso/issues/457
         Picasso.with(getActivity()).load(R.drawable.jennifer_aniston)
-                //.resize(0, courteney.getHeight())
-                .resize(400, 400)
-                //.fit().centerCrop()
+                .placeholder(R.drawable.blank_placeholder)
                 .error(R.drawable.image_not_found)
+                .fit()
+                .centerInside()
                 .into(courteney);
 
         evTitle.setText(mTitle);
@@ -349,5 +354,7 @@ public class ScreenSlidePageFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
