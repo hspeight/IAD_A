@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:title="Event Title"
+        android:summary="event title"
+        android:key="evtitle"/>
+
+    <EditTextPreference
+        android:title="Optional Info"
+        android:summary="optional info"
+        android:key="evdesc"/>
+
+    <ListPreference
+        android:title="Type"
+        android:summary="count down or up"
+        android:entries="@array/upDown"
+        android:entryValues="@array/upDownValues"
+        android:defaultValue="1"
+        android:key="Type" />
+
+    <com.itsadate.iad_a.TimePreferenceCustom
+        android:key="date_and_time"
+
+        android:summary="Target date &amp; time"
+        android:dialogLayout="@layout/time_preference"
+        android:title="Date &amp; Time"
+        />
+
+</PreferenceScreen>
