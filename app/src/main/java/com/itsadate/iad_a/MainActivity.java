@@ -116,7 +116,8 @@ public class MainActivity extends Activity
     public void editIconClicked (View v){
 
         int eyd = eventArray[(int)v.getTag()].get_id();
-        Intent intent = new Intent(getBaseContext(), EventEditor.class);
+        //Intent intent = new Intent(getBaseContext(), EventEditor.class);
+        Intent intent = new Intent(getBaseContext(), CounterSettingsActivity.class);
         intent.putExtra("ROW_ID",eyd);
         startActivity(intent);
 

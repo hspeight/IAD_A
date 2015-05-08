@@ -72,6 +72,14 @@
                 android:value="com.itsadate.iad_a.MainActivity" />
         </activity>
         <activity
+            android:name=".CounterSettingsActivity"
+            android:label="@string/event_settings"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.itsadate.iad_a.MainActivity" />
+        </activity>
+        <activity
             android:name=".ColorPickerPreference"
             android:label="@string/action_settings"
             android:screenOrientation="portrait"

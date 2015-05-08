@@ -7,4 +7,15 @@
         <item name="minutes">Minutes</item>
         <item name="seconds">Seconds</item>
     </string-array>
+
+    <string-array name="upDown">
+        <item name="0">Count Down</item>
+        <item name="1">Count Up</item>
+    </string-array>
+
+    <string-array name="upDownValues">
+        <item name="0">0</item>
+        <item name="1">1</item>
+    </string-array>
+
 </resources>
