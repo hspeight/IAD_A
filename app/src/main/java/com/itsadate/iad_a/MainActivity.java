@@ -187,7 +187,7 @@ public class MainActivity extends Activity
 
         long millis = dateTime;
         millis *= 1000;
-        DateTime dt = new DateTime(millis, DateTimeZone.getDefault()); // needs to be a local date
+        //DateTime dt = new DateTime(millis, DateTimeZone.getDefault()); // needs to be a local date
         //DateTimeFormatter dtf = DateTimeFormat.forPattern("dd MMM yyyy hh:mm a", Locale.US);
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.US);
 
@@ -339,7 +339,7 @@ public class MainActivity extends Activity
 
     }
 
-    public void clearSampleEvents() {
+    //public void clearSampleEvents() {
 
-    }
+    //}
 }

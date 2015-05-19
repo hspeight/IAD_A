@@ -206,7 +206,7 @@ public class EventEditor extends Activity
             mHour = Integer.parseInt(formattedDate.split("-")[3]);
             mMinute = Integer.parseInt(formattedDate.split("-")[4]);
             AMPM = formattedDate.split("-")[5];
-            imgDecodableString = myEvent.get_bgimage();
+            //imgDecodableString = myEvent.get_bgimage();
         } else {
             //long millis =
             formattedDate = formatMyDate(System.currentTimeMillis());

@@ -21,8 +21,8 @@ public class MultiSelectSpinner extends Spinner {
     public MultiSelectSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MultiSpinner);
-        entries = a.getTextArray(R.styleable.MultiSpinner_android_entries);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ListPreferenceMultiSelect);
+        //entries = a.getTextArray(R.styleable.MultiSpinner_android_entries);
         if (entries != null) {
             selected = new boolean[entries.length]; // false-filled by default
         }

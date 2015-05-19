@@ -75,7 +75,7 @@ public class Utility extends Activity {
 
         String[] eString = new String[14];
 
-        eString[0] = "Da Ting`Example of an event with optional text`0`1419825600`A`R`0`0`0";
+        eString[0] = "Da Ting`Example of an event with optional text`0`1419825700`A`R`0`0`0";
         eString[1] = "Countdown to polling day`This is an example of an event with a very long optional text string that contains so much text it will probably go over multiple lines! Oh Gawd!`1`1430978400`A`R`0`1`0";
         eString[2] = "Count up from a future date`A`0`" + nowPlus5Min / 1000 + "`A`R`0`0`1";
         eString[3] = dtf4.print(dt4) + "``1`" + nowPlus5Min / 1000 + "`A`R`0`0`1";

@@ -1,5 +1,6 @@
 package com.itsadate.iad_a;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.DialogPreference;
@@ -7,6 +8,7 @@ import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 /**
@@ -16,14 +18,20 @@ import android.widget.TimePicker;
  */
 public class TimePreferenceCustom extends DialogPreference {
     private static final String DEBUG_TAG = "TPC";
-    /** The widget for picking a time */
+    // widgets for picking date & time
     private TimePicker timePicker;
+    private DatePicker datePicker;
 
     /** Default hour */
-    private static final int DEFAULT_HOUR = 8;
+    //private static final int DEFAULT_HOUR = 8;
 
     /** Default minute */
-    private static final int DEFAULT_MINUTE = 0;
+    //private static final int DEFAULT_MINUTE = 24;
+
+    //private int rowid;
+
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "transientPrefs";
 
     /**
      * Creates a preference for choosing a time based on its XML declaration.
@@ -34,8 +42,9 @@ public class TimePreferenceCustom extends DialogPreference {
     public TimePreferenceCustom(Context context,
                                 AttributeSet attributes) {
         super(context, attributes);
+        //SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         setPersistent(false);
-        Log.i(DEBUG_TAG, "attributecount="+Integer.toString(attributes.getAttributeCount()));
+        //Log.i(DEBUG_TAG, "attributecount="+Integer.toString(attributes.getAttributeCount()));
     }
 
     /**
@@ -47,10 +56,20 @@ public class TimePreferenceCustom extends DialogPreference {
     @Override
     public void onBindDialogView(View view) {
         super.onBindDialogView(view);
-        //Log.i(DEBUG_TAG, timePicker.su);
+
         timePicker = (TimePicker) view.findViewById(R.id.prefTimePicker);
-        timePicker.setCurrentHour(getSharedPreferences().getInt(getKey() + ".hour", DEFAULT_HOUR));
-        timePicker.setCurrentMinute(getSharedPreferences().getInt(getKey() + ".minute", DEFAULT_MINUTE));
+        datePicker = (DatePicker) view.findViewById(R.id.prefDatePicker);
+        sharedpreferences = getContext().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        //String Uname = userDetails.getString("username", "");
+        //Log.i(DEBUG_TAG, "Time=" + sharedpreferences.getInt("hour",9) + sharedpreferences.getInt("mins",45));
+        timePicker.setCurrentHour(sharedpreferences.getInt("hour", 0));
+        timePicker.setCurrentMinute(sharedpreferences.getInt("mins", 0));
+        datePicker.init(sharedpreferences.getInt("year", 1970),
+                sharedpreferences.getInt("month", 0),
+                sharedpreferences.getInt("day", 1),
+                null);
+        //datePicker.set(sharedpreferences.getInt("year", 1970));
+       //Log.i(DEBUG_TAG, "in onBindDialogView");
         timePicker.setIs24HourView(DateFormat.is24HourFormat(timePicker.getContext()));
         //System.out.println("!!- " + getSharedPreferences().getInt(getKey() + ".hour", DEFAULT_HOUR));
     }
@@ -67,12 +86,23 @@ public class TimePreferenceCustom extends DialogPreference {
     protected void onDialogClosed(boolean okToSave) {
         super.onDialogClosed(okToSave);
         //System.out.println("!!- " + okToSave);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        timePicker.clearFocus();
+        //SharedPreferences.Editor editor = getEditor();
         if (okToSave) {
-            timePicker.clearFocus();
-            SharedPreferences.Editor editor = getEditor();
-            editor.putInt(getKey() + ".hour", timePicker.getCurrentHour());
-            editor.putInt(getKey() + ".minute", timePicker.getCurrentMinute());
-            editor.commit();
+            //Log.i(DEBUG_TAG,"ok");
+            editor.putInt("hour", timePicker.getCurrentHour());
+            //editor.putInt(getKey() + ".hour", timePicker.getCurrentHour());
+            editor.putInt("mins", timePicker.getCurrentMinute());
+            //editor.putInt(getKey() + ".minute", timePicker.getCurrentMinute());
+            editor.putInt("year", datePicker.getYear());
+            editor.putInt("month", datePicker.getMonth());
+            editor.putInt("day", datePicker.getDayOfMonth());
+            editor.putBoolean("updated", true);
+            editor.apply();
+        } else {
+            //Log.i(DEBUG_TAG,"not ok");
+            editor.putBoolean("updated", false);
         }
     }
 }

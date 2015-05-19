@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threefiftyprefs="http://schemas.android.com/apk/res-auto">
 
     <EditTextPreference
         android:title="Event Title"
-        android:summary="event title"
+        android:summary=""
+        android:defaultValue="Enter title"
         android:key="evtitle"/>
 
     <EditTextPreference
         android:title="Optional Info"
-        android:summary="optional info"
+        android:summary=""
+        android:defaultValue="Enter optional info"
         android:key="evdesc"/>
 
     <ListPreference
         android:title="Type"
-        android:summary="count down or up"
+        android:summary="%s"
         android:entries="@array/upDown"
         android:entryValues="@array/upDownValues"
-        android:defaultValue="1"
-        android:key="Type" />
+        android:defaultValue="0"
+        android:key="evtype" />
 
     <com.itsadate.iad_a.TimePreferenceCustom
         android:key="date_and_time"
 
         android:summary="Target date &amp; time"
         android:dialogLayout="@layout/time_preference"
-        android:title="Date &amp; Time"
-        />
+        android:title="Date &amp; Time"/>
+
+    <com.itsadate.iad_a.ListPreferenceMultiSelect
+        threefiftyprefs:checkAll="All"
+        threefiftyprefs:separator="|"
+        android:defaultValue="#ALL#"
+        android:key="time_units"
+        android:title="Time Units"
+        android:dialogTitle="Select Time Units"
+        android:summary="Select which time units to display"
+        android:entries="@array/multiselect_entries"
+        android:entryValues="@array/multiselect_values"/>
 
 </PreferenceScreen>
