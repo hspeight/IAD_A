@@ -34,7 +34,7 @@ import android.widget.ListView;
 public class ListPreferenceMultiSelect extends ListPreference {
     private String separator;
     private static final String DEFAULT_SEPARATOR = "OV=I=XseparatorX=I=VO";
-    private static final String LOG_TAG = "ListPreferenceMultiSelect";
+    //private static final String LOG_TAG = "ListPreferenceMultiSelect";
     private String checkAllKey = null;
     private boolean[] mClickedDialogEntryIndices;
     private static final String DEBUG_TAG = "LPM";
@@ -52,6 +52,7 @@ public class ListPreferenceMultiSelect extends ListPreference {
         }
         // Initialize the array of boolean to the same size as number of entries
         mClickedDialogEntryIndices = new boolean[getEntries().length];
+
     }
 
     @Override
@@ -167,6 +168,7 @@ public class ListPreferenceMultiSelect extends ListPreference {
 
             if (callChangeListener(values)) {
                 setValue(join(values, separator));
+                //Log.i(DEBUG_TAG, "checkedvals here = " + checkedVals);
             }
         }
     }
@@ -203,6 +205,5 @@ public class ListPreferenceMultiSelect extends ListPreference {
         }
         return false;
     }
-
 
 }

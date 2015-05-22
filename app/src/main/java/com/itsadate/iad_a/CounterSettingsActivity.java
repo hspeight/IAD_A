@@ -14,7 +14,7 @@ public class CounterSettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Log.i(DEBUG_TAG, "youre in the csa");
+        //Log.i(DEBUG_TAG, "youre in the csa " + getIntent().getExtras());
         Bundle bundle = getIntent().getExtras();
 
         Fragment CounterSettingsFragment = new CounterSettingsFragment();

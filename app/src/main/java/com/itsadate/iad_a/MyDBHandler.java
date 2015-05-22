@@ -251,7 +251,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     // Get row count
-    public  int getRowCount(String status) {
+    public int getRowCount(String status) {
 
         String whereClause;
         if (status .equals("ALL"))
@@ -262,72 +262,5 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return (int) DatabaseUtils.queryNumEntries(db, TABLE_EVENTS, whereClause);
 
     }
-/*
-    public void insertSamples(int NUM_EVENTS) {
 
-        int year;
-
-        String[] info;
-        String[] title;
-        String[] date;
-        int[] direction;
-        int[] dy;
-        int[] sec;
-
-        year = Calendar.getInstance().get(Calendar.YEAR);
-
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
-
-        title = new String[NUM_EVENTS];
-        title[0] = "New Years Eve " + (year);
-        title[1] = "Since I stopped smoking";
-        title[2] = "This year's vacation";
-        title[3] = "How old am I..?";
-        title[4] = "A future event";
-
-        info = new String[NUM_EVENTS];
-        info[0] = "A count down to NYE";
-        info[1] = "The best decision I ever made! (An example of an event showing years & days)";
-        info[2] = "Can't wait, counting the seconds :-)";
-        info[3] = "This is my age in days";
-        info[4] = "You can create events that start some time in the future";
-
-        date = new String[NUM_EVENTS];
-        date[0] = "01/01/" + (year + 1) + " 00:00:00";
-        date[1] = "11/07/2012 09:00:00";
-        date[2] = dtf.print(getMyDTF(14 * 60 * 60 * 24 * 1000));
-        date[3] = "14/11/1957 11:15:00";
-        //System.out.println("!!- " + dtf.print(dt));
-        //date[4] = dtf.print(dt);
-        date[4] = dtf.print(getMyDTF(2 * 60 * 60 * 24 * 1000));
-
-        direction = new int[NUM_EVENTS];
-        direction[0] = 1; // down
-        direction[1] = 0; // up
-        direction[2] = 1; // down
-        direction[3] = 0; // up
-        direction[4] = 0; // up
-
-        dy = new int[NUM_EVENTS];
-        dy[0] = 0; // days only
-        dy[1] = 1; // years/days
-        dy[2] = 0; // days only
-        dy[3] = 0; // days only
-        dy[4] = 0; // days only
-
-        sec = new int[NUM_EVENTS];
-        sec[0] = 0; // 0 = dont show
-        sec[1] = 0;
-        sec[2] = 1;
-        sec[3] = 0;
-        sec[4] = 0;
-
-    }
-
-    public DateTime getMyDTF(int val) {
-
-        long nowPlus24Hrs = (System.currentTimeMillis() + val);
-        return new DateTime(nowPlus24Hrs, DateTimeZone.getDefault());
-    }
-*/
 }

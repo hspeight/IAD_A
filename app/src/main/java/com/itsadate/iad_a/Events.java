@@ -86,7 +86,10 @@ public class Events {
     public String get_bgimage() {
         return _bgimage;
     }
-    public void set_eventname(String _eventinfo) {
+    public void set_eventname(String _eventname) {
+        this._eventname = _eventname;
+    }
+    public void set_eventinfo(String _eventinfo) {
         this._eventinfo = _eventinfo;
     }
 }
