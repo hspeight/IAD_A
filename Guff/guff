@@ -7,3 +7,6 @@ sqlite3 /data/data/com.itsadate.iad_a/databases/events.db "PRAGMA table_info(eve
 
 cd /data/data/com.itsadate.iad_a/shared_prefs
 
+In Windows
+C:\Users\hector\AppData\Local\Android\sdk\platform-tools
+

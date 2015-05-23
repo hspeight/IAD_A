@@ -64,6 +64,15 @@ public class CounterSettingsFragment extends PreferenceFragment {
                     Preference evtitle = findPreference("evtitle");
                     evtitle.setSummary(myEvent.get_eventname());
                     break;
+                case "evdesc":
+                    Preference evdesc = findPreference("evdesc");
+                    evdesc.setSummary(myEvent.get_eventinfo());
+                    break;
+                case "time_units":
+                    Preference evunits = findPreference("time_units");
+                    //evunits.setSummary(constructUnitString(myEvent.get_units()));
+                    evunits.setSummary(constructUnitString("[3]"));
+                    break;
                 default:
                     //Toast.makeText(getActivity(), "Cannot be blank", Toast.LENGTH_SHORT).show();
                    // preference.setSummary((String) newValue);
@@ -91,7 +100,7 @@ public class CounterSettingsFragment extends PreferenceFragment {
         serverAddressPrefs.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-
+                //Log.i(DEBUG_TAG, "blah " + newValue.toString());
                 switch (key) {
                     //case "evtitle":
                     //    preference.setSummary(typeText[Integer.parseInt((String) newValue)]);
@@ -101,28 +110,15 @@ public class CounterSettingsFragment extends PreferenceFragment {
                     //    preference.setSummary(typeText[Integer.parseInt((String) newValue)]);
                     //    //preference.setSummary(key);
                     //    break;
-                    case "evtype":
-                        preference.setSummary(typeText[Integer.parseInt((String) newValue)]);
-                        break;
+                    //case "evtype":
+                    //    preference.setSummary(typeText[Integer.parseInt((String) newValue)]);
+                    //    break;
                     case "time_units":
-                        //preference.setSummary(typeText[Integer.parseInt((String) newValue)]);
-                        //preference.getEditor().apply();
-                        //preference.notify();
-                        //SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-                        //edit.putString("time_units", "1-2-3");
-
-                        //int end = newValue.toString().length() -1;
-                        if (newValue.toString().length() > 2) // length will be 2 if nothing is selected
+                        //if (newValue.toString().length() > 2) // length will be 2 if nothing is selected
                             preference.setSummary(constructUnitString(newValue));
-                        else
-                            preference.setSummary("");
+                       //else
+                       //     preference.setSummary("");
 
-                        //Log.i(DEBUG_TAG, "end is " + end);
-
-                        //Log.i(DEBUG_TAG, "and the winner is " + tot);
-
-
-                        //preference.setSummary(buildTimeUnitString());
                         break;
                     default:
                         //Toast.makeText(getActivity(), "Cannot be blank", Toast.LENGTH_SHORT).show();
@@ -157,16 +153,20 @@ public class CounterSettingsFragment extends PreferenceFragment {
 
     public String constructUnitString(Object newValue) {
 
-        String unitString = "";
-        int end = newValue.toString().length() -1;
-        final String[] tokens = newValue.toString().substring(1, end).replace(" ", "").split(",");
+        if (newValue.toString().length() > 2) {// length will be 2 if nothing was selected
+            String unitString = "";
+            int end = newValue.toString().length() - 1;
+            final String[] tokens = newValue.toString().substring(1, end).replace(" ", "").split(",");
 
-        for (String token : tokens) {
-            //tot += Integer.parseInt(token);
-            //Log.i(DEBUG_TAG, "newValue is " + token);
-            unitString += tUnits[Integer.parseInt(token)] + ",";
+            for (String token : tokens) {
+                //tot += Integer.parseInt(token);
+                //Log.i(DEBUG_TAG, "newValue is " + token);
+                unitString += tUnits[Integer.parseInt(token)] + ",";
+            }
+            return unitString.substring(0, unitString.length() - 1); //remove trailing comma
+        } else {
+            return "Nowt selected";
         }
-        return unitString.substring(0,unitString.length()-1); //remove trailing comma
     }
 
     // Concatenate values into a string for comparison
@@ -193,6 +193,7 @@ public class CounterSettingsFragment extends PreferenceFragment {
 
         myEvent.set_eventname(prefs.getString("evtitle", "Error"));
         myEvent.set_eventinfo(prefs.getString("evdesc", "Error"));
+        myEvent.set_timeunits(prefs.getString("time_units", "Error"));
         dbHandler.updateEvent(myEvent);
     }
 }

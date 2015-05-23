@@ -13,6 +13,7 @@ public class Events {
     private int _incsec;
     private int _dayyears;
     private String _bgimage;
+    private String _timeunits;
 
     // empty constructor
     public Events() {
@@ -86,10 +87,16 @@ public class Events {
     public String get_bgimage() {
         return _bgimage;
     }
+    public String get_timeunits() {
+        return _timeunits;
+    }
     public void set_eventname(String _eventname) {
         this._eventname = _eventname;
     }
     public void set_eventinfo(String _eventinfo) {
         this._eventinfo = _eventinfo;
+    }
+    public void set_timeunits(String _timeunits) {
+        this._timeunits = _timeunits;
     }
 }
