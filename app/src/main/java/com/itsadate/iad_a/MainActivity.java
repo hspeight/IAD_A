@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 //import android.widget.FrameLayout;
 //import android.widget.ImageView;
 
@@ -35,7 +36,7 @@ import org.joda.time.DateTimeZone;
 
 public class MainActivity extends Activity
     implements EventDialog.OnDataPass {
-    int maxAllowableEvents = 2; // not yet in use. Wil be 9999 in paid version
+    int maxAllowableEvents = 12; // not yet in use. Wil be 9999 in paid version
 
     MyDBHandler dbHandler;
 
@@ -189,7 +190,7 @@ public class MainActivity extends Activity
         millis *= 1000;
         //DateTime dt = new DateTime(millis, DateTimeZone.getDefault()); // needs to be a local date
         //DateTimeFormatter dtf = DateTimeFormat.forPattern("dd MMM yyyy hh:mm a", Locale.US);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", java.util.Locale.getDefault());
 
         return sdf.format(new Date(millis));
         //return indicator + dtf.print(dt);
@@ -222,16 +223,21 @@ public class MainActivity extends Activity
         menuAction = "";
         switch (item.getItemId()) {
             case R.id.action_add:
-                Intent addAct = new Intent(MainActivity.this, EventEditor.class);
+                //Intent addAct = new Intent(MainActivity.this, EventEditor.class);
+                Intent addAct = new Intent(MainActivity.this, CounterSettingsActivity.class);
+                //Intent.putExtra("ROW_ID","11");
                 int eventsInPlay = dbHandler.getRowCount("ALL"); //get number of active rows
+                //Toast.makeText(getApplicationContext(), "You already have " + eventsInPlay + " events", Toast.LENGTH_SHORT).show();
                 if (eventsInPlay >= maxAllowableEvents) {
                     boolean response = setupDialog("Upgrade to Pro?","Yes","No");
-
                         //Toast.makeText(getApplicationContext(), "OK, Your loss pal" , Toast.LENGTH_SHORT).show();
 
                 } else {
                     startActivity(addAct);
                 }
+
+
+
                 return true;
             case R.id.action_utility:
                 Intent utility = new Intent(MainActivity.this, Utility.class);

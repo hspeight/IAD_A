@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="multiselect_entries">
-        <item name="years">All</item>
+        <item name="allofem">All</item>
         <item name="years">Years</item>
         <item name="days">Days</item>
         <item name="hours">Hours</item>
@@ -11,7 +11,7 @@
     </string-array>
 
     <string-array name="multiselect_values">
-        <item name="years">All</item>
+        <item name="allofem">#ALL#</item>
         <item name="years">1</item>
         <item name="days">2</item>
         <item name="hours">3</item>

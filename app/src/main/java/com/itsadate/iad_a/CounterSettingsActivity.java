@@ -2,12 +2,8 @@ package com.itsadate.iad_a;
 
 //import android.app.Activity;
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class CounterSettingsActivity extends PreferenceActivity {
     private static final String DEBUG_TAG = "CSA";

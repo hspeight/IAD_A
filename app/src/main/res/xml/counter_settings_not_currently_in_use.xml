@@ -31,4 +31,15 @@
         android:dialogLayout="@layout/time_preference"
         android:title="Date &amp; Time"/>
 
+    <com.itsadate.iad_a.ListPreferenceMultiSelect_not_currently_in_use
+        threefiftyprefs:checkAll="All"
+        threefiftyprefs:separator=","
+        android:defaultValue="#ALL#"
+        android:key="time_units"
+        android:title="Time Units"
+        android:dialogTitle="Select Time Units"
+        android:summary="Select which time units to display"
+        android:entries="@array/multiselect_entries"
+        android:entryValues="@array/multiselect_values"/>
+
 </PreferenceScreen>

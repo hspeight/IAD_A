@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -150,7 +151,7 @@ public class EventEditor extends Activity
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)@Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        System.out.println("!!- oncreate");
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_event_editor);
@@ -175,10 +176,11 @@ public class EventEditor extends Activity
         includeSec = (CheckBox) findViewById(R.id.checkBoxSecs);
 
         tranType = "add";
+        //tranType = "update";
         String formattedDate;
-
+        //Log.d("trantype", tranType);
         dbHandler = new MyDBHandler(this, null, null, 1);
-
+        //System.out.println("!!- trantype is " + tranType);
         // If this is an edit there will be an associated row ID in the extras
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -317,13 +319,13 @@ public class EventEditor extends Activity
 
         String givenDateString = dateButton.getText() + " " + timeButton.getText(); //e.g. 7 Jul 2014 15:30
         //System.out.println("!!- "  + "date & time=" + givenDateString);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.UK);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", java.util.Locale.getDefault());
         try {
             Date mDate = sdf.parse(givenDateString);
             //long timeInMillis = mDate.getTime(); // Time entered in millis
             timeInSeconds = (int)(mDate.getTime() / 1000);
             int diffInSecs = validateInDate(timeInSeconds);
-            //System.out.println("!!- "  + "diff in secs is " + diffInSecs);
+            //System.out.println("!!- "  + "time in secs is  " + timeInSeconds);
             //if (idx_cd == 0 && diffInSecs < 0) { // Count up selected but date is in future
             //pDisplayDate.setTextColor(Color.RED);
             //                textTime.setTextColor(Color.RED);
@@ -352,6 +354,7 @@ public class EventEditor extends Activity
             byte[] data = getBitmapAsByteArray(bitmap);
             //System.out.println("!!- " + data.length);
         }
+        //System.out.println("!!- trantpe is " + tranType);
 
         if (tranType.equals("update")) {
             Events event = new Events(rowID, EventTitle, EventInfo, idx_cd, timeInSeconds, "A",
@@ -361,7 +364,8 @@ public class EventEditor extends Activity
                     0,
                     includeSec.isChecked() ? 1 : 0,
                     idx_dy,
-                    imgDecodableString // path to background image if one is selected
+                    imgDecodableString, // path to background image if one is selected
+                    "[1,2,3]"
             );
             //System.out.println("!!- "  + "sending  " + (daysOnly.isChecked() ? 1 : 0));
 
@@ -375,7 +379,8 @@ public class EventEditor extends Activity
                     0,
                     includeSec.isChecked() ? 1 : 0,
                     idx_dy,
-                    imgDecodableString // path to background image if one is selected
+                    imgDecodableString, // path to background image if one is selected
+                    "[2,3,4]"
             );
             dbHandler.addEvent(event);
             //Toast.makeText(getApplicationContext(), "Your event has been created", Toast.LENGTH_SHORT).show();

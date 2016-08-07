@@ -32,6 +32,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,6 +63,7 @@ public class ScreenSlidePageFragment extends Fragment {
     public static final String ARG_INCSEC = "incsec";
     public static final String ARG_USEDAYYEAR = "usedayyear";
     //public static final String ARG_BGCOLOR = "bgcolor";
+    public String DEBUG_TAG = "SSPF";
 
     private int mId;
     private String mTitle;
@@ -83,16 +85,14 @@ public class ScreenSlidePageFragment extends Fragment {
     TextView textHour;
     TextView textDays;
     TextView textYears;
-
+    TextView textFuture;
     CountDownTimer cdt;
 
     public static final String MyPREFERENCES = "MyPreferences_002";
     //int bgColor,counterColor,textColor;
     private static ScreenSlidePageFragment fragment;
-    /*
-     * Factory method for this fragment class. Constructs a new fragment for the given page number.
-     */
-    //public static ScreenSlidePageFragment create(int num, String title) {
+    Resources res;
+
     public static ScreenSlidePageFragment create(SwipeItem myEvent) {
         //ScreenSlidePageFragment fragment = new ScreenSlidePageFragment();
         fragment = new ScreenSlidePageFragment();
@@ -135,6 +135,7 @@ public class ScreenSlidePageFragment extends Fragment {
         mDigitcolor = pref.getInt("timerCounterColor", -16776961); // Get timer digits color from pref file
         mTextcolor = pref.getInt("timerTextColor", -1); // Get text color from pref file
 
+        res = getResources();
         //System.out.println("!!- " + "page no=" + getArguments().getInt(ARG_PAGE));
     }
 
@@ -153,7 +154,7 @@ public class ScreenSlidePageFragment extends Fragment {
         textDays = (TextView) rootView.findViewById(R.id.textDays);
         textYears = (TextView) rootView.findViewById(R.id.textYears);
         //TextView textYearsLbl = (TextView) rootView.findViewById(R.id.textViewYearsLabel);
-        TextView textFuture = (TextView) rootView.findViewById(R.id.textViewFuture);
+        textFuture = (TextView) rootView.findViewById(R.id.textViewFuture);
         LinearLayout relLayout = (LinearLayout) rootView.findViewById(R.id.linLayoutCounterBG);
         relLayout.setBackgroundColor(mBgcolor);
         //LinearLayout lin1 = (LinearLayout) rootView.findViewById(R.id.linLayout1); // Contains linear layouts for yy,dd,hh,mm,ss
@@ -221,17 +222,20 @@ public class ScreenSlidePageFragment extends Fragment {
         //System.out.println("!!- " + "timediff=" + timeDiff);
         //textFuture = (TextView) findViewById(R.id.textViewFuture);
         if (timeDiff < 0 && mDirection == 0) { // future count up
+        //Log.d(DEBUG_TAG, "timeDiff is " + timeDiff + " and dir is " + mDirection );
             //textFuture.setTypeface(font);
             textYears.setText("0");
             textDays.setText("0");
             textHour.setText("0");
             textMins.setText("0"); textSecs.setText("0");
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.US);
-            textFuture.setText("Scheduled start: " + sdf.format((long) mTime * 1000));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm a", java.util.Locale.getDefault());
+            //textFuture.setText("Scheduled start: " + sdf.format((long) mTime * 1000));
+            textFuture.setText(String.format(res.getString(R.string.future_date), sdf.format((long) mTime * 1000)));
             textFuture.setTextColor(mTextcolor);
             textFuture.setVisibility(View.VISIBLE);
             //timerIsRunning = false;
         } else {
+            //Log.d(DEBUG_TAG, "making view invisible");
             textFuture.setVisibility(View.INVISIBLE);
             //timerIsRunning = true;
 
@@ -246,7 +250,7 @@ public class ScreenSlidePageFragment extends Fragment {
     }
     public Drawable setBackgroundImage (String pathName) {
         //String pathName = "/sdcard/gif001.gif";
-        Resources res = getResources();
+        //Resources res = getResources();
         Bitmap bitmap = BitmapFactory.decodeFile(pathName);
         //BitmapDrawable bd = new BitmapDrawable(res, bitmap);
         //View view = findViewById(R.id.container);
@@ -291,7 +295,7 @@ public class ScreenSlidePageFragment extends Fragment {
                 secs = timeDiff + ((millisToStart / 1000) - ((int) (millisUntilFinished / 1000)));
                 //int millisUntilStart = myEvent.get_evtime();
                 //System.out.println("!!- " + "timediff=" + timeDiff + " secs=" + secs + " until start=" + millisUntilStart);
-                if (!(secs < 0 && mDirection == 0)) { // future count up but not there yet
+                if (!(secs < 0 && mDirection == 0)) {
                     //timerIsRunning = true; // doing this every second until a better way is found
                     // so dont display ANYTHING
                     if (mDirection == 1) // 1 = countdown
@@ -315,6 +319,10 @@ public class ScreenSlidePageFragment extends Fragment {
                     //textDays.setText(String.valueOf(modDays));
                     textDays.setText(String.valueOf(modDays));
                     textYears.setText(String.valueOf((int) Math.floor(years)));
+
+                    if (textFuture.getVisibility() == View.VISIBLE) { // future date has been reached
+                        textFuture.setVisibility(View.INVISIBLE);
+                    }
 /*
                     if (secs < 0) {
                         // go to a new new activity?

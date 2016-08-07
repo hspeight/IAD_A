@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 //import android.preference.PreferenceManager;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 //import android.view.View.OnClickListener;
@@ -101,7 +102,7 @@ public class Utility extends Activity {
 
             //System.out.println("!!- " + i + " done");
             Events event = new Events(parts[0], parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), parts[4],
-                    parts[5],Integer.parseInt(parts[6]),Integer.parseInt(parts[7]),Integer.parseInt(parts[8]),null);
+                    parts[5],Integer.parseInt(parts[6]),Integer.parseInt(parts[7]),Integer.parseInt(parts[8]),null,"[3]");
             dbHandler.addEvent(event);
 
         }
@@ -115,18 +116,21 @@ public class Utility extends Activity {
 
         dbHandler.deleteAllEvents("R"); // Real i.e. not samples
         dbHandler.deleteAllEvents("S");
+        dbHandler.deleteAllEvents("T"); //Template
         Toast.makeText(getApplicationContext(), "All events cleared", Toast.LENGTH_SHORT).show();
     }
 
     public void clearPrefs(View view) {
-
-        SharedPreferences settings = getSharedPreferences("MyPreferences_001", Context.MODE_PRIVATE);
-        settings.edit().clear().apply();
-        settings = getSharedPreferences("MyPreferences_002", Context.MODE_PRIVATE);
-        settings.edit().clear().apply();
+        SharedPreferences settings;
+        //SharedPreferences settings = getSharedPreferences("MyPreferences_001", Context.MODE_PRIVATE);
+        //settings.edit().clear().apply();
+        //settings = getSharedPreferences("MyPreferences_002", Context.MODE_PRIVATE);
+        //settings.edit().clear().apply();
         settings = getSharedPreferences("MyPreferences_ftp", Context.MODE_PRIVATE);
         settings.edit().clear().apply();
-        Toast.makeText(getApplicationContext(), "All events prefs", Toast.LENGTH_SHORT).show();
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
+        settings.edit().clear().apply();
+        Toast.makeText(getApplicationContext(), "Phew!", Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -138,7 +142,7 @@ public class Utility extends Activity {
                                         0,
                                         1419825600,
                                         "A",
-                                        "R",0,1,0,null
+                                        "R",0,1,0,null, "[4]"
             );
             dbHandler.addEvent(event);
         }

@@ -26,7 +26,7 @@ public class Events {
     }
     // constructor
     public Events(int id, String eventname, String eventinfo, int direction, int evtime, String evstatus,
-                  String evtype, int incmin, int incsec, int dayyears, String bgimage) {
+                  String evtype, int incmin, int incsec, int dayyears, String bgimage, String tunits) {
         this._id = id;
         this._eventname = eventname;
         this._eventinfo = eventinfo;
@@ -38,10 +38,11 @@ public class Events {
         this._incsec = incsec;
         this._dayyears = dayyears;
         this._bgimage = bgimage;
+        this._timeunits = tunits;
     }
     // constructor
     public Events(String eventname, String eventinfo, int direction, int evtime, String evstatus,
-                  String  evtype, int incmin, int incsec, int dayyears, String bgimage) {
+                  String  evtype, int incmin, int incsec, int dayyears, String bgimage, String tunits) {
         this._eventname = eventname;
         this._eventinfo = eventinfo;
         this._direction = direction;
@@ -52,6 +53,8 @@ public class Events {
         this._incsec = incsec;
         this._dayyears = dayyears;
         this._bgimage = bgimage;
+        this._timeunits = tunits;
+
     }
 
     public int get_id() {
@@ -98,5 +101,17 @@ public class Events {
     }
     public void set_timeunits(String _timeunits) {
         this._timeunits = _timeunits;
+    }
+    public void set_evtype(String _evtype) {
+        this._evtype = _evtype;
+    }
+    public void set_evstatus(String _evstatus) {
+        this._evstatus = _evstatus;
+    }
+    public void set_evtime(int _evtime) {
+        this._evtime = _evtime;
+    }
+    public void set_direction(int _direction) {
+        this._direction = _direction;
     }
 }

@@ -1,77 +1,99 @@
 package com.itsadate.iad_a;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.TypedArray;
 import android.preference.ListPreference;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.widget.ListView;
 
-/**
- *
- * @author declanshanaghy
- * http://blog.350nice.com/wp/archives/240
- * MultiChoice Preference Widget for Android
- *
- * @contributor matiboy
- * Added support for check all/none and custom separator defined in XML.
- * IMPORTANT: The following attributes MUST be defined (probably inside attr.xml) for the code to even compile
- * <declare-styleable name="ListPreferenceMultiSelect">
-<attr format="string" name="checkAll" />
-<attr format="string" name="separator" />
-</declare-styleable>
- *  Whether you decide to then use those attributes is up to you.
- *
- */
+
 public class ListPreferenceMultiSelect extends ListPreference {
-    private String separator;
-    private static final String DEFAULT_SEPARATOR = "OV=I=XseparatorX=I=VO";
-    //private static final String LOG_TAG = "ListPreferenceMultiSelect";
-    private String checkAllKey = null;
-    private boolean[] mClickedDialogEntryIndices;
-    private static final String DEBUG_TAG = "LPM";
+    // Need to make sure the SEPARATOR is unique and weird enough that it
+    // doesn't match one of the entries.
+    // Not using any fancy symbols because this is interpreted as a regex for
+    // splitting strings.
+    /** The Constant SEPARATOR. */
+    private static final String SEPARATOR = ",";
 
-    // Constructor
-    public ListPreferenceMultiSelect(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ListPreferenceMultiSelect);
-        checkAllKey = a.getString( R.styleable.ListPreferenceMultiSelect_checkAll );
-        String s = a.getString(R.styleable.ListPreferenceMultiSelect_separator );
-        if( s != null ) {
-            separator = s;
+    /**
+     * Parses the stored value.
+     *
+     * @param val
+     *            the val
+     *
+     * @return the string[]
+     */
+    public static String[] parseStoredValue(final CharSequence val) {
+        if (val == null) {
+            return null;
+        } else if ("".equals(val)) {
+            return null;
         } else {
-            separator = DEFAULT_SEPARATOR;
+            return ((String) val).split(ListPreferenceMultiSelect.SEPARATOR);
         }
-        // Initialize the array of boolean to the same size as number of entries
-        mClickedDialogEntryIndices = new boolean[getEntries().length];
-
     }
 
-    @Override
-    public void setEntries(CharSequence[] entries) {
-        super.setEntries(entries);
-        // Initialize the array of boolean to the same size as number of entries
-        mClickedDialogEntryIndices = new boolean[entries.length];
-    }
+    /** The clicked dialog entry indices. */
+    private boolean[] mClickedDialogEntryIndices;
 
-    public ListPreferenceMultiSelect(Context context) {
+    /**
+     * Instantiates a new list preference multi select.
+     *
+     * @param context
+     *            the context
+     */
+    public ListPreferenceMultiSelect(final Context context) {
         this(context, null);
     }
 
+    /**
+     * Instantiates a new list preference multi select.
+     *
+     * @param context
+     *            the context
+     * @param attrs
+     *            the attrs
+     */
+    public ListPreferenceMultiSelect(final Context context,
+                                     final AttributeSet attrs) {
+        super(context, attrs);
+
+        mClickedDialogEntryIndices = new boolean[getEntries().length];
+    }
+
     @Override
-    protected void onPrepareDialogBuilder(Builder builder) {
-        //Log.i(DEBUG_TAG, "prep builder");
-        CharSequence[] entries = getEntries();
-        CharSequence[] entryValues = getEntryValues();
-        if (entries == null || entryValues == null || entries.length != entryValues.length ) {
+    protected void onDialogClosed(final boolean positiveResult) {
+        // super.onDialogClosed(positiveResult);
+        // Update the Calendar list according to the user selections
+        final CharSequence[] entryValues = getEntryValues();
+        if (positiveResult && (entryValues != null)) {
+            final StringBuffer value = new StringBuffer();
+            for (int i = 0; i < entryValues.length; i++) {
+                if (mClickedDialogEntryIndices[i]) {
+                    value.append(entryValues[i]).append(
+                            ListPreferenceMultiSelect.SEPARATOR);
+                }
+            }
+
+            if (callChangeListener(value)) {
+                String val = value.toString();
+                if (val.length() > 0) {
+                    val = val.substring(0, val.length()
+                            - ListPreferenceMultiSelect.SEPARATOR.length());
+                }
+                setValue(val);
+            }
+        }
+        restoreCheckedEntries();
+    }
+
+    @Override
+    protected void onPrepareDialogBuilder(final Builder builder) {
+        final CharSequence[] entries = getEntries();
+        final CharSequence[] entryValues = getEntryValues();
+
+        if ((entries == null) || (entryValues == null)
+                || (entries.length != entryValues.length)) {
             throw new IllegalStateException(
                     "ListPreference requires an entries array and an entryValues array which are both the same length");
         }
@@ -79,131 +101,36 @@ public class ListPreferenceMultiSelect extends ListPreference {
         restoreCheckedEntries();
         builder.setMultiChoiceItems(entries, mClickedDialogEntryIndices,
                 new DialogInterface.OnMultiChoiceClickListener() {
-                    public void onClick(DialogInterface dialog, int which, boolean val) {
-                        if(isCheckAllValue(which)) {
-                            checkAll(dialog, val);
-                            //Log.i(DEBUG_TAG, "which is " + which + "/" + val);
-                        }
+                    public void onClick(final DialogInterface dialog,
+                                        final int which, final boolean val) {
                         mClickedDialogEntryIndices[which] = val;
                     }
                 });
     }
 
-    private boolean isCheckAllValue( int which ){
-
-        final CharSequence[] entryValues = getEntryValues();
-        if(checkAllKey != null) {
-            //Log.i(DEBUG_TAG, entryValues[which] + "/" + checkAllKey + "/" + entryValues[which].equals(checkAllKey));
-            return entryValues[which].equals(checkAllKey);
-        }
-        return false;
-    }
-
-    private void checkAll( DialogInterface dialog, boolean val ) {
-        //Log.i(DEBUG_TAG, "IN CHECKALL");
-        ListView lv = ((AlertDialog) dialog).getListView();
-        int size = lv.getCount();
-        for(int i = 0; i < size; i++) {
-            lv.setItemChecked(i, val);
-            mClickedDialogEntryIndices[i] = val;
-        }
-    }
-
-    public String[] parseStoredValue(CharSequence val) {
-        if ( "".equals(val) ) {
-            return null;
-        }
-        else {
-            return ((String)val).split(separator);
-        }
-    }
-
     private void restoreCheckedEntries() {
-        CharSequence[] entryValues = getEntryValues();
+        final CharSequence[] entryValues = getEntryValues();
 
-        // Explode the string read in sharedpreferences
-        String[] vals = parseStoredValue(getValue());
-
-        if ( vals != null ) {
-            List<String> valuesList = Arrays.asList(vals);
-            //Log.i(DEBUG_TAG, "vals size is " + vals);
-//        	for ( int j=0; j<vals.length; j++ ) {
-//    		TODO: Check why the trimming... Can there be some random spaces added somehow? What if we want a value with trailing spaces, is that an issue?
-//        		String val = vals[j].trim();
-            //mClickedDialogEntryIndices[0] = false;
-            int checkedItems = 0;
-            for ( int i=0; i<entryValues.length; i++ ) {
-                CharSequence entry = entryValues[i];
-                if ( valuesList.contains(entry) ) {
-                    mClickedDialogEntryIndices[i] = true;
-                    checkedItems++;
+        final String[] vals = ListPreferenceMultiSelect
+                .parseStoredValue(getValue());
+        if (vals != null) {
+            for (final String val2 : vals) {
+                final String val = val2.trim();
+                for (int i = 0; i < entryValues.length; i++) {
+                    final CharSequence entry = entryValues[i];
+                    if (entry.equals(val)) {
+                        mClickedDialogEntryIndices[i] = true;
+                        break;
+                    }
                 }
             }
-            // hard code for now with the check all button set to zero
-            if (checkedItems < entryValues.length -1)
-                mClickedDialogEntryIndices[0] = false;
-            else
-                mClickedDialogEntryIndices[0] = true;
-            //Log.i(DEBUG_TAG, checkedItems + " checked");
-//        	}
         }
     }
 
     @Override
-    protected void onDialogClosed(boolean positiveResult) {
-//        super.onDialogClosed(positiveResult);
-        ArrayList<String> values = new ArrayList<String>();
-
-        CharSequence[] entryValues = getEntryValues();
-        if (positiveResult && entryValues != null) {
-            for ( int i=0; i<entryValues.length; i++ ) {
-                if (mClickedDialogEntryIndices[i]) {
-                    // Don't save the state of check all option - if any
-                    String val = (String) entryValues[i];
-                    if( checkAllKey == null || (!val.equals(checkAllKey)) ) {
-                        values.add(val);
-                    }
-                }
-            }
-
-            if (callChangeListener(values)) {
-                setValue(join(values, separator));
-                //Log.i(DEBUG_TAG, "checkedvals here = " + checkedVals);
-            }
-        }
-    }
-
-    // Credits to kurellajunior on this post http://snippets.dzone.com/posts/show/91
-    protected static String join( Iterable< ? extends Object > pColl, String separator )
-    {
-        Iterator< ? extends Object > oIter;
-        if ( pColl == null || ( !( oIter = pColl.iterator() ).hasNext() ) )
-            return "";
-        StringBuilder oBuilder = new StringBuilder( String.valueOf( oIter.next() ) );
-        while ( oIter.hasNext() )
-            oBuilder.append( separator ).append( oIter.next() );
-        return oBuilder.toString();
-    }
-
-    // TODO: Would like to keep this static but separator then needs to be put in by hand or use default separator "OV=I=XseparatorX=I=VO"...
-    /**
-     *
-     * @param straw String to be found
-     * @param haystack Raw string that can be read direct from preferences
-     * @param separator Separator string. If null, static default separator will be used
-     * @return boolean True if the straw was found in the haystack
-     */
-    public static boolean contains( String straw, String haystack, String separator ){
-        if( separator == null ) {
-            separator = DEFAULT_SEPARATOR;
-        }
-        String[] vals = haystack.split(separator);
-        for (String val : vals) {
-            if (val.equals(straw)) {
-                return true;
-            }
-        }
-        return false;
+    public void setEntries(final CharSequence[] entries) {
+        super.setEntries(entries);
+        mClickedDialogEntryIndices = new boolean[entries.length];
     }
 
 }

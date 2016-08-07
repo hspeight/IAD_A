@@ -55,10 +55,15 @@ public class ColorPickerPreference extends Activity  {
     };
     String[] listContent = {
             "25th Wedding Anniversary",
-            "School's out for summer",
+            "Count down to new year's eve",
             "Since I quit smoking",
-            "Happy birthday to you"
+            "Happy birthday to you",
+            "Counting down to NYE",
+            "Vacation starts in .."
     };
+
+    //int[] rainbow = context.getResources().getIntArray(R.array.listTextColors);
+    //int[] listtxtcolor = {getResources().getColor(android.R.color.holo_blue_bright)};
 
     private Button[] butt = new Button[BUTTON_IDS.length];
 
@@ -80,10 +85,12 @@ public class ColorPickerPreference extends Activity  {
         loremlist = (ListView) findViewById(R.id.listViewHS); // Used to show sample
         lc = (RadioGroup) findViewById(R.id.eventListColors); // BG,Row,Text
 
+        refreshList(-16711936);
+
         // create a reference to the shared preferences object
-        mySharedPreferences = getSharedPreferences(MYPREFS, MODE_PRIVATE);
+        //mySharedPreferences = getSharedPreferences(MYPREFS, MODE_PRIVATE);
         // obtain an editor to add data to (my)SharedPreferences object
-        myEditor = mySharedPreferences.edit();
+        //myEditor = mySharedPreferences.edit();
         // has a Preferences file been already created?
         /*
         if (mySharedPreferences != null
@@ -95,7 +102,7 @@ public class ColorPickerPreference extends Activity  {
                     "No Preferences found", Toast.LENGTH_SHORT).show();
         }
         */
-
+/*
         for (int i = 0; i < BUTTON_IDS.length; i++) {
 
             final int b = i;
@@ -116,10 +123,11 @@ public class ColorPickerPreference extends Activity  {
         }
 
         setPreferences(9); // Start with a value that wont match
-
+*/
     }
 
     // public void onClick(View v) {
+    /*
     public void setPreferences(int b) {
 
         int buttonIndex = b;
@@ -186,8 +194,9 @@ public class ColorPickerPreference extends Activity  {
         //applySavedPreferences(backColor, -256, textColor); // Background, row & text
     }
 
-
-    public void refreshList(final int backColor, final int rowColor, final int textColor) {
+*/
+    //public void refreshList(final int backColor, final int rowColor, final int textColor) {
+    public void refreshList(final int backColor) {
 
         linLayout.setBackgroundColor(backColor);
 
@@ -197,8 +206,8 @@ public class ColorPickerPreference extends Activity  {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 listViewText = (TextView) view.findViewById(android.R.id.text1);
-                listViewText.setTextColor(textColor);
-                listViewText.setBackgroundColor(rowColor);
+                listViewText.setTextColor(THEME_COLORS[5]);
+                listViewText.setBackgroundColor(THEME_COLORS[1]);
                 return view;
             }
         };

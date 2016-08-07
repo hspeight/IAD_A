@@ -42,7 +42,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(DEBUG_TAG, "in create");
+        //Log.i(DEBUG_TAG, "in create");
         //System.out.println("!!- 1");
         String query = "CREATE TABLE " + TABLE_EVENTS + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -58,7 +58,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_EVENT_BGIMAGE + " TEXT, " +
                 COLUMN_EVENT_UNITS + " TEXT " +
                 ");";
-        Log.i(DEBUG_TAG, "query is " + query);
+        //Log.i(DEBUG_TAG, "query is " + query);
         try{
             db.execSQL(query);
         }catch(SQLException e){
@@ -68,7 +68,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.i(DEBUG_TAG, "Upgrading");
+        //Log.i(DEBUG_TAG, "Upgrading");
         //System.out.println("!!- 2");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
         onCreate(db);
@@ -151,8 +151,23 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 Integer.parseInt(cursor.getString(7)),
                 Integer.parseInt(cursor.getString(8)),
                 Integer.parseInt(cursor.getString(9)),
-                cursor.getString(10)
+                cursor.getString(10),
+                cursor.getString(11)
          );
+    }
+
+    public  int getTemplateEventID() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor =  db.rawQuery( "select _id from events where evtype = \"T\" ", null );
+
+        if (cursor != null)
+            cursor.moveToFirst();
+        //System.out.println("!!- "  + "checkbox is " + Integer.parseInt(cursor.getString(4)));
+        db.close();
+        return Integer.parseInt(cursor.getString(0));
+        //return 57;
     }
 
     // Updating a single event
